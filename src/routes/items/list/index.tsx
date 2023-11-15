@@ -1,5 +1,6 @@
 import { component$, useStore } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
+import type { Item } from "@prisma/client";
 import type { SortingState } from "@tanstack/table-core";
 import {
   createTable,
@@ -10,11 +11,6 @@ import {
 import { prisma } from "~/routes/plugin@auth";
 import type { ItemForm } from "~/types-and-validation/item";
 
-interface Item {
-  name: string;
-  unit: string;
-  description: string;
-}
 export const columnHelper = createColumnHelper<Item>();
 export const columns = [
   columnHelper.accessor("name", {
@@ -41,8 +37,6 @@ export const useTable = (
     },
     renderFallbackValue: "fallback",
     onStateChange: (newState) => console.log(newState),
-    // TODO: newState might be a value rather than a function.
-    // (tableState.sorting = newState(tableState).sorting),
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
   });

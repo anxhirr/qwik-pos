@@ -1,6 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { prisma } from "../plugin@auth";
+import { ItemsBActionBar } from "~/components/bottom-action-bar/items/index";
 
 export const useItemsLoader = routeLoader$(async () => {
   const items = await prisma.item.findMany();
@@ -15,8 +16,8 @@ export default component$(() => {
       <ul class="3xl:grid-cols-4 grid grid-cols-1 gap-4  sm:grid-cols-2 xl:grid-cols-3">
         {items.value.map((item) => (
           <Link key={item.id} href={`/items/${item.id}`}>
-            <li>
-              <div class="card w-96 bg-base-100 shadow-xl">
+            <li class="h-full">
+              <div class="card h-full bg-base-100 shadow-xl">
                 <figure>
                   {/* <img
                     src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
@@ -42,6 +43,7 @@ export default component$(() => {
           </Link>
         ))}
       </ul>
+      <ItemsBActionBar />
     </div>
   );
 });

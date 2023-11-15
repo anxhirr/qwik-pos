@@ -5,7 +5,7 @@ import {
   type ResponseData,
   type FormStore,
 } from "@modular-forms/qwik";
-import ItemsBottomBar from "~/components/bottom-action-bar/items";
+import { NewItemBActionBar } from "~/components/bottom-action-bar/items/new";
 import { type ItemForm } from "~/types-and-validation/item";
 
 type Props = {
@@ -151,7 +151,7 @@ export const AdvancedItemForm = component$(({ form, action }: Props) => {
           </div>
         </div>
       </div>
-      <ItemsBottomBar form={form} />
+      <NewItemBActionBar form={form} />
     </Form>
   );
 });

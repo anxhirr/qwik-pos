@@ -1,3 +1,4 @@
+import { component$ } from "@builder.io/qwik";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import { IcBaselineCheckCircle } from "~/components/icons";
 import type { ItemForm } from "~/types-and-validation/item";
@@ -5,7 +6,7 @@ import type { ItemForm } from "~/types-and-validation/item";
 type Props = {
   form?: FormStore<ItemForm, ResponseData>;
 };
-export default function ItemsBottomBar({ form }: Props) {
+export const NewItemBActionBar = component$<Props>(({ form }) => {
   return (
     <div class="navbar fixed bottom-0 right-0 bg-base-100">
       <div class="navbar-start"></div>
@@ -26,4 +27,4 @@ export default function ItemsBottomBar({ form }: Props) {
       </div>
     </div>
   );
-}
+});

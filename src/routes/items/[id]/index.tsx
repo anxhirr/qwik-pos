@@ -69,7 +69,6 @@ export default component$(() => {
 
   return (
     <div>
-      <h1>Item</h1>
       <AdvancedItemForm form={form} action={action} />
     </div>
   );
