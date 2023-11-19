@@ -49,6 +49,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  shops         UserShop[]
+
   @@map("users")
 }
 
@@ -78,4 +80,59 @@ model Item {
   favorite  Boolean
 
   @@map("items")
+}
+
+
+model Role {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name      String
+  description String
+  permissions String[]
+  shopId    String @map("shop_id") @db.ObjectId
+  userId    String @map("user_id") @db.ObjectId
+
+  users UserShop[]
+  
+  @@map("roles")
+}
+
+model Shop {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  address   String
+  baseCurrency String
+  city     String
+  description String
+  email    String
+  name     String
+  ownerId  String @map("owner_id") @db.ObjectId
+  phone    String
+
+  users UserShop[]
+
+  @@map("shops")
+}
+
+model UserShop {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  role      Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop      Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  roleId    String @map("role_id") @db.ObjectId
+  userId    String @map("user_id") @db.ObjectId
+  shopId    String @map("shop_id") @db.ObjectId
+
+  @@map("users_shops")
 }

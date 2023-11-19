@@ -10,7 +10,7 @@ export default function Sidebar() {
             return (
               <div
                 key={i}
-                class="collapse join-item collapse-arrow border border-base-300"
+                class="collapse-arrow collapse join-item border border-base-300"
               >
                 <input type="radio" name="my-accordion-4" />
                 <div class="collapse-title text-xl font-medium">
@@ -18,7 +18,9 @@ export default function Sidebar() {
                 </div>
                 <div class="collapse-content">
                   {accordion.items.map((item, j) => (
-                    <p key={j}>{item.title}</p>
+                    <Link href={item.route} key={j}>
+                      <p>{item.title}</p>
+                    </Link>
                   ))}
                 </div>
               </div>
