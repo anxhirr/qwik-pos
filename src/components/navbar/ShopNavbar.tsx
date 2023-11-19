@@ -1,9 +1,9 @@
 import { NavBar } from "./index";
 import { $, component$ } from "@builder.io/qwik";
 
-export interface ItemsNavbarProps {}
+export interface Props {}
 
-export const ShopNavbar = component$<ItemsNavbarProps>(() => {
+export const ShopNavbar = component$<Props>(() => {
   const onSearch = $((e: Event) => {
     console.log(e);
   });

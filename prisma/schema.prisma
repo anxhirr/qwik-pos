@@ -136,3 +136,17 @@ model UserShop {
 
   @@map("users_shops")
 }
+
+model Category {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name      String
+  type      String
+  color     String
+  // shopId    String @map("shop_id") @db.ObjectId
+
+  @@map("categories")
+}

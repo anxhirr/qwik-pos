@@ -29,7 +29,7 @@ export default component$(() => {
               class="btn"
               onClick$={() =>
                 signOut.submit({
-                  callbackUrl: "/auth",
+                  callbackUrl: "/",
                 })
               }
             >
