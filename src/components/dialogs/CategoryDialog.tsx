@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { CategoryForm } from "../forms/categories";
+import { CategoryForm } from "../forms/category/CategoryForm";
 import type { ResponseData } from "@modular-forms/qwik";
 import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
 import type { CategoryFormType } from "~/types-and-validation/categorySchema";

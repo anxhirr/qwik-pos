@@ -7,7 +7,7 @@ import {
   formAction$,
   type ResponseData,
 } from "@modular-forms/qwik";
-import { ItemForm } from "~/components/forms/items/ItemForm";
+import { ItemForm } from "~/components/forms/item/ItemForm";
 import { prisma } from "~/routes/plugin@auth";
 import {
   type ItemFormType,
@@ -78,11 +78,7 @@ export default component$(() => {
 
   return (
     <div>
-      <ItemForm
-        form={form}
-        action={action}
-        categories={categories.value}
-      />
+      <ItemForm form={form} action={action} categories={categories.value} />
     </div>
   );
 });

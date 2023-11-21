@@ -1,8 +1,8 @@
 import { component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { InitialValues, ResponseData } from "@modular-forms/qwik";
-import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
-import { ShopUpdateActionBar } from "~/components/bottom-action-bar/shop/update";
+import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
+import { ShopForm } from "~/components/forms/shop/ShopForm";
 import { prisma } from "~/routes/plugin@auth";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";
 import { ShopSchema } from "~/types-and-validation/shopSchema";
@@ -29,7 +29,7 @@ export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(
   },
 );
 
-export const useFormAction = formAction$<ShopFormType, ResponseData>(
+export const useFormAction = formAction$<ShopFormType, ResponseData>( // TODO: we do not want to create a new shop, we want to update the existing one
   async (values) => {
     // Runs on server
     console.log("formAction$ values", values);
@@ -67,129 +67,15 @@ export const useFormAction = formAction$<ShopFormType, ResponseData>(
 );
 
 export default component$(() => {
-  const [form, { Form, Field }] = useForm<ShopFormType>({
+  const action = useFormAction();
+  const sform = useFormStore<ShopFormType, ResponseData>({
     loader: useFormLoader(),
-    action: useFormAction(),
     validate: valiForm$(ShopSchema),
   });
 
   return (
     <div>
-      <Form class="flex flex-col gap-4">
-        <Field name="address">
-          {(field, props) => (
-            <div>
-              <input
-                class="input input-bordered"
-                {...props}
-                type="text"
-                value={field.value}
-                placeholder="Address"
-              />
-              {field.error && <div>{field.error}</div>}
-            </div>
-          )}
-        </Field>
-        <Field name="baseCurrency">
-          {(field, props) => (
-            <div>
-              <input
-                class="input input-bordered"
-                {...props}
-                type="text"
-                value={field.value}
-                placeholder="Base Currency"
-              />
-              {field.error && <div>{field.error}</div>}
-            </div>
-          )}
-        </Field>
-        <Field name="city">
-          {(field, props) => (
-            <div>
-              <input
-                class="input input-bordered"
-                {...props}
-                type="text"
-                value={field.value}
-                placeholder="City"
-              />
-              {field.error && <div>{field.error}</div>}
-            </div>
-          )}
-        </Field>
-        <Field name="description">
-          {(field, props) => (
-            <div>
-              <input
-                class="input input-bordered"
-                {...props}
-                type="text"
-                value={field.value}
-                placeholder="Description"
-              />
-              {field.error && <div>{field.error}</div>}
-            </div>
-          )}
-        </Field>
-        <Field name="email">
-          {(field, props) => (
-            <div>
-              <input
-                class="input input-bordered"
-                {...props}
-                type="text"
-                value={field.value}
-                placeholder="Email"
-              />
-              {field.error && <div>{field.error}</div>}
-            </div>
-          )}
-        </Field>
-        <Field name="name">
-          {(field, props) => (
-            <div>
-              <input
-                class="input input-bordered"
-                {...props}
-                type="text"
-                value={field.value}
-                placeholder="Name"
-              />
-              {field.error && <div>{field.error}</div>}
-            </div>
-          )}
-        </Field>
-        <Field name="ownerId">
-          {(field, props) => (
-            <div>
-              <input
-                class="input input-bordered"
-                {...props}
-                type="text"
-                value={field.value}
-                placeholder="Owner ID"
-              />
-              {field.error && <div>{field.error}</div>}
-            </div>
-          )}
-        </Field>
-        <Field name="phone">
-          {(field, props) => (
-            <div>
-              <input
-                class="input input-bordered"
-                {...props}
-                type="text"
-                value={field.value}
-                placeholder="Phone"
-              />
-              {field.error && <div>{field.error}</div>}
-            </div>
-          )}
-        </Field>
-        <ShopUpdateActionBar form={form} />
-      </Form>
+      <ShopForm form={sform} action={action} />
     </div>
   );
 });

@@ -9,7 +9,6 @@ import {
   getSortedRowModel,
 } from "@tanstack/table-core";
 import { prisma } from "~/routes/plugin@auth";
-import type { ItemFormType } from "~/types-and-validation/itemSchema";
 
 export const columnHelper = createColumnHelper<Item>();
 export const columns = [
@@ -24,10 +23,7 @@ export const columns = [
   }),
 ];
 
-export const useTable = (
-  tableState: { sorting: SortingState },
-  data: ItemFormType[],
-) =>
+export const useTable = (tableState: { sorting: SortingState }, data: Item[]) =>
   createTable({
     columns,
     data,

@@ -80,7 +80,7 @@ export const LIST_ITEMS = [
     title: "New Order",
     prefix: LuRocket,
     route: "/orders/new",
-    suffix: 10,
+    suffix: 0,
   },
   {
     title: "All Orders",
