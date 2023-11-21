@@ -7,7 +7,7 @@ import {
   formAction$,
   type ResponseData,
 } from "@modular-forms/qwik";
-import { AdvancedItemForm } from "~/components/forms/items/AdvancedItemForm";
+import { ItemForm } from "~/components/forms/items/ItemForm";
 import { prisma } from "~/routes/plugin@auth";
 import {
   type ItemFormType,
@@ -63,8 +63,14 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
   valiForm$(ItemSchema),
 );
 
+export const useCategoriesLoader = routeLoader$(async () => {
+  const categories = await prisma.category.findMany();
+  return categories;
+});
+
 export default component$(() => {
   const action = useFormAction();
+  const categories = useCategoriesLoader();
   const form = useFormStore<ItemFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(ItemSchema),
@@ -72,7 +78,11 @@ export default component$(() => {
 
   return (
     <div>
-      <AdvancedItemForm form={form} action={action} />
+      <ItemForm
+        form={form}
+        action={action}
+        categories={categories.value}
+      />
     </div>
   );
 });

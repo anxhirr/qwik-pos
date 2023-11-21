@@ -1,5 +1,6 @@
 import { $, component$, useContext } from "@builder.io/qwik";
 import { UiContext } from "~/routes/layout";
+import { IcRoundMenu } from "../icons";
 
 type Props = {
   title: string;
@@ -14,21 +15,9 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
   return (
     <div class="navbar bg-base-100">
       <div class="navbar-start">
-        <div class="flex-none">
+        <div class="flex-none md:hidden">
           <button class="btn btn-square btn-ghost" onClick$={toggleSidebar}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block h-5 w-5 stroke-current"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              ></path>
-            </svg>
+            <IcRoundMenu />
           </button>
         </div>
         <div class="flex-1">

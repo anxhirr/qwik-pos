@@ -11,6 +11,7 @@ import {
   type ResponseData,
   type FormStore,
 } from "@modular-forms/qwik";
+import type { Category } from "@prisma/client";
 import { NewItemBActionBar } from "~/components/bottom-action-bar/items/new";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
 
@@ -23,9 +24,10 @@ type Props = {
       true
     >
   >;
+  categories: Category[];
 };
 
-export const AdvancedItemForm = component$<Props>(({ form, action }) => {
+export const ItemForm = component$<Props>(({ form, action, categories }) => {
   return (
     <Form of={form} action={action}>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -69,8 +71,11 @@ export const AdvancedItemForm = component$<Props>(({ form, action }) => {
                   <option disabled selected>
                     Category
                   </option>
-                  <option>Han Solo </option>
-                  <option>Greedo</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
                 </select>
 
                 {field.error && <div>{field.error}</div>}

@@ -6,12 +6,13 @@ import { prisma } from "../plugin@auth";
 import { CategoryCard } from "~/components/cards/CategoryCard";
 import { CategoryDialog } from "~/components/dialogs/CategoryDialog";
 
-export const useLoader = routeLoader$(async () => {
+export const useCategoriesLoader = routeLoader$(async () => {
   const categories = await prisma.category.findMany();
   return categories;
 });
+
 export default component$(() => {
-  const data = useLoader();
+  const data = useCategoriesLoader();
 
   return (
     <div>
