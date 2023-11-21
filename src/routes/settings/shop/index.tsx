@@ -4,30 +4,32 @@ import type { InitialValues, ResponseData } from "@modular-forms/qwik";
 import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
 import { ShopUpdateActionBar } from "~/components/bottom-action-bar/shop/update";
 import { prisma } from "~/routes/plugin@auth";
-import type { ShopForm } from "~/types-and-validation/shop";
-import { ShopSchema } from "~/types-and-validation/shop";
+import type { ShopFormType } from "~/types-and-validation/shopSchema";
+import { ShopSchema } from "~/types-and-validation/shopSchema";
 
-export const useFormLoader = routeLoader$<InitialValues<ShopForm>>(async () => {
-  const shops = await prisma.shop.findMany(); // TODO: fetch only the current user's shop
-  console.log("shops", shops);
+export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(
+  async () => {
+    const shops = await prisma.shop.findMany(); // TODO: fetch only the current user's shop
+    console.log("shops", shops);
 
-  if (!shops.length) {
-    return {
-      address: "",
-      baseCurrency: "",
-      city: "",
-      description: "",
-      email: "",
-      name: "",
-      ownerId: "",
-      phone: "",
-    };
-  }
+    if (!shops.length) {
+      return {
+        address: "",
+        baseCurrency: "",
+        city: "",
+        description: "",
+        email: "",
+        name: "",
+        ownerId: "",
+        phone: "",
+      };
+    }
 
-  return shops[0];
-});
+    return shops[0];
+  },
+);
 
-export const useFormAction = formAction$<ShopForm, ResponseData>(
+export const useFormAction = formAction$<ShopFormType, ResponseData>(
   async (values) => {
     // Runs on server
     console.log("formAction$ values", values);
@@ -65,7 +67,7 @@ export const useFormAction = formAction$<ShopForm, ResponseData>(
 );
 
 export default component$(() => {
-  const [form, { Form, Field }] = useForm<ShopForm>({
+  const [form, { Form, Field }] = useForm<ShopFormType>({
     loader: useFormLoader(),
     action: useFormAction(),
     validate: valiForm$(ShopSchema),

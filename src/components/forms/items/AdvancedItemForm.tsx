@@ -1,4 +1,10 @@
 import { component$ } from "@builder.io/qwik";
+import type { ActionStore } from "@builder.io/qwik-city";
+import type {
+  FormActionStore,
+  Maybe,
+  PartialValues,
+} from "@modular-forms/qwik";
 import {
   Field,
   Form,
@@ -6,14 +12,20 @@ import {
   type FormStore,
 } from "@modular-forms/qwik";
 import { NewItemBActionBar } from "~/components/bottom-action-bar/items/new";
-import { type ItemForm } from "~/types-and-validation/item";
+import { type ItemFormType } from "~/types-and-validation/itemSchema";
 
 type Props = {
-  form: FormStore<ItemForm, ResponseData>;
-  action: () => void; // TODO: Fix this
+  form: FormStore<ItemFormType, ResponseData>;
+  action: Maybe<
+    ActionStore<
+      FormActionStore<ItemFormType, ResponseData>,
+      PartialValues<ItemFormType>,
+      true
+    >
+  >;
 };
 
-export const AdvancedItemForm = component$(({ form, action }: Props) => {
+export const AdvancedItemForm = component$<Props>(({ form, action }) => {
   return (
     <Form of={form} action={action}>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

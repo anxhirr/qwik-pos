@@ -11,4 +11,4 @@ export const ItemSchema = object({
   favorite: boolean(),
 });
 
-export type ItemForm = Input<typeof ItemSchema>;
+export type ItemFormType = Input<typeof ItemSchema>;

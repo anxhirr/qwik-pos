@@ -12,4 +12,4 @@ export const ShopSchema = object({
   phone: string([minLength(1, "Please enter your phone.")]),
 });
 
-export type ShopForm = Input<typeof ShopSchema>;
+export type ShopFormType = Input<typeof ShopSchema>;

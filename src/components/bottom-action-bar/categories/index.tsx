@@ -1,5 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { IcRoundPlus } from "~/components/icons";
+import { openCategoryModal } from "~/triggers/dialogs";
 
 export const CategoriesBActionBar = component$(() => {
   return (
@@ -7,13 +8,7 @@ export const CategoriesBActionBar = component$(() => {
       <div class="navbar-start"></div>
       <div class="navbar-center"></div>
       <div class="navbar-end">
-        <button
-          class="btn btn-secondary"
-          onClick$={async () => {
-            const modal = document.getElementById("category_modal");
-            modal?.setAttribute("open", "true");
-          }}
-        >
+        <button class="btn btn-secondary" onClick$={openCategoryModal}>
           <IcRoundPlus />
           New Category
         </button>

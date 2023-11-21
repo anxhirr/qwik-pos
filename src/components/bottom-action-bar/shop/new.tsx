@@ -1,10 +1,10 @@
 import { component$ } from "@builder.io/qwik";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import { IcBaselineCheckCircle } from "~/components/icons";
-import type { ShopForm } from "~/types-and-validation/shop";
+import type { ShopFormType } from "~/types-and-validation/shopSchema";
 
 type Props = {
-  form?: FormStore<ShopForm, ResponseData>;
+  form?: FormStore<ShopFormType, ResponseData>;
 };
 export const ShopNewActionBar = component$<Props>(({ form }) => {
   return (

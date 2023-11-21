@@ -9,9 +9,12 @@ import {
 } from "@modular-forms/qwik";
 import { AdvancedItemForm } from "~/components/forms/items/AdvancedItemForm";
 import { prisma } from "~/routes/plugin@auth";
-import { type ItemForm, ItemSchema } from "~/types-and-validation/item";
+import {
+  type ItemFormType,
+  ItemSchema,
+} from "~/types-and-validation/itemSchema";
 
-export const useFormLoader = routeLoader$<InitialValues<ItemForm>>(
+export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(
   async ({ params }) => {
     const { id } = params;
 
@@ -27,7 +30,7 @@ export const useFormLoader = routeLoader$<InitialValues<ItemForm>>(
   },
 );
 
-export const useFormAction = formAction$<ItemForm, ResponseData>(
+export const useFormAction = formAction$<ItemFormType, ResponseData>(
   async (values, event) => {
     const { id } = event.params;
 
@@ -62,7 +65,7 @@ export const useFormAction = formAction$<ItemForm, ResponseData>(
 
 export default component$(() => {
   const action = useFormAction();
-  const form = useFormStore<ItemForm, ResponseData>({
+  const form = useFormStore<ItemFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(ItemSchema),
   });

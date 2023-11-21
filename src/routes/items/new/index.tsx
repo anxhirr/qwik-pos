@@ -4,9 +4,12 @@ import type { InitialValues, ResponseData } from "@modular-forms/qwik";
 import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
 import { AdvancedItemForm } from "~/components/forms/items/AdvancedItemForm";
 import { prisma } from "~/routes/plugin@auth";
-import { type ItemForm, ItemSchema } from "~/types-and-validation/item";
+import {
+  type ItemFormType,
+  ItemSchema,
+} from "~/types-and-validation/itemSchema";
 
-export const useFormLoader = routeLoader$<InitialValues<ItemForm>>(() => ({
+export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => ({
   name: "",
   unit: "",
   category: "",
@@ -17,7 +20,7 @@ export const useFormLoader = routeLoader$<InitialValues<ItemForm>>(() => ({
   favorite: true,
 }));
 
-export const useFormAction = formAction$<ItemForm, ResponseData>(
+export const useFormAction = formAction$<ItemFormType, ResponseData>(
   async (values) => {
     const item = await prisma.item.create({
       data: {
@@ -49,7 +52,7 @@ export const useFormAction = formAction$<ItemForm, ResponseData>(
 
 export default component$(() => {
   const action = useFormAction();
-  const form = useFormStore<ItemForm, ResponseData>({
+  const form = useFormStore<ItemFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(ItemSchema),
   });
