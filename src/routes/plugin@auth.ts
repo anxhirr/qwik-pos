@@ -1,6 +1,6 @@
 import { serverAuth$ } from "@builder.io/qwik-auth";
 import GitHub from "@auth/core/providers/github";
-import Google from "@auth/core/providers/google";
+// import Google from "@auth/core/providers/google";
 import type { Provider } from "@auth/core/providers";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
@@ -24,6 +24,7 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } =
     ] as Provider[],
     callbacks: {
       async redirect({ url, baseUrl }) {
+        console.log("REDIRECT", url, baseUrl);
         return baseUrl;
       },
     },
