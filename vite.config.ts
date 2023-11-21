@@ -5,6 +5,11 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(() => {
   return {
+    resolve: {
+      alias: {
+        ".prisma/client/edge":"./node_modules/.prisma/client/edge.js" // https://fixtergeek.com/blog/how-to-use-prismaclient-with-qwik-on-cloudflare-pages-2023
+      },
+    },
     plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
     preview: {
       headers: {
