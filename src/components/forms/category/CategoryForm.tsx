@@ -45,8 +45,8 @@ export const CategoryForm = component$<Props>(({ form, action }) => {
                 <option disabled selected>
                   Type
                 </option>
-                {CATEGORY_ENUM.map((category) => (
-                  <option key={category}>{category}</option>
+                {CATEGORY_ENUM.map((option) => (
+                  <option key={option}>{option}</option>
                 ))}
               </select>
 

@@ -71,9 +71,9 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                   <option disabled selected>
                     Category
                   </option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
+                  {categories.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.name}
                     </option>
                   ))}
                 </select>
