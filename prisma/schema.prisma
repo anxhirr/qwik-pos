@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+  directUrl = env("MONGO_DB_URL")
 }
 
 model Account {

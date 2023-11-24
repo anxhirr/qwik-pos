@@ -3,7 +3,8 @@ import GitHub from "@auth/core/providers/github";
 // import Google from "@auth/core/providers/google";
 import type { Provider } from "@auth/core/providers";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client/edge";
 
 export const prisma = new PrismaClient();
 
