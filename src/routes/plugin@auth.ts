@@ -28,5 +28,12 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } =
         console.log("REDIRECT", url, baseUrl);
         return baseUrl;
       },
+
+      session: async ({ session, user }) => {
+        return {
+          ...session,
+          userId: user.id,
+        };
+      },
     },
   }));

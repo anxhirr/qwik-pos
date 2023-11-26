@@ -53,10 +53,10 @@ export const ACCORDIONS = [
 
 export const LIST_ITEMS = [
   {
-    title: "Dashboard",
+    title: "Home",
     prefix: LuRocket,
-    route: "/dashboard",
-    suffix: 14,
+    route: "/",
+    suffix: 0,
   },
   {
     title: "Items",

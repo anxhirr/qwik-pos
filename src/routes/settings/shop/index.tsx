@@ -9,10 +9,18 @@ import { ShopSchema } from "~/types-and-validation/shopSchema";
 
 export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(
   async () => {
-    const shops = await prisma.shop.findMany(); // TODO: fetch only the current user's shop
-    console.log("shops", shops);
+    const shop = await prisma.shop.findUnique({
+      where: {
+        id: "656374af7d001c2bdb2ae73e",
+      },
+      include: {
+        users: true,
+      },
+    });
 
-    if (!shops.length) {
+    console.log("shop", shop);
+
+    if (!shop) {
       return {
         address: "",
         baseCurrency: "",
@@ -25,18 +33,65 @@ export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(
       };
     }
 
-    return shops[0];
+    return {
+      address: shop.address,
+      baseCurrency: shop.baseCurrency,
+      city: shop.city,
+      description: shop.description,
+      email: shop.email,
+      name: shop.name,
+      ownerId: shop.ownerId,
+      phone: shop.phone,
+    };
   },
 );
 
 export const useFormAction = formAction$<ShopFormType, ResponseData>( // TODO: we do not want to create a new shop, we want to update the existing one
   async (values) => {
     // Runs on server
-    console.log("formAction$ values", values);
+    // console.log("formAction$ values", values);
 
     // create a new shop
 
-    const newShop = await prisma.shop.create({
+    // const newShop = await prisma.shop.create({
+    //   data: {
+    //     address: values.address,
+    //     baseCurrency: values.baseCurrency,
+    //     city: values.city,
+    //     description: values.description,
+    //     email: values.email,
+    //     name: values.name,
+    //     ownerId: values.ownerId,
+    //     phone: values.phone,
+    //     users: {
+    //       create: [
+    //         {
+    //           roleId: values.ownerId,
+    //           userId: values.ownerId,
+    //         },
+    //       ],
+    //     },
+    //   },
+    // });
+
+    // console.log("newShop", newShop);
+
+    // if (!newShop.id) {
+    //   return {
+    //     status: "error",
+    //     message: "Error creating shop",
+    //   };
+    // }
+
+    // return {
+    //   status: "success",
+    //   data: newShop,
+    // };
+
+    const updatedShop = await prisma.shop.update({
+      where: {
+        id: "656374af7d001c2bdb2ae73e",
+      },
       data: {
         address: values.address,
         baseCurrency: values.baseCurrency,
@@ -49,18 +104,18 @@ export const useFormAction = formAction$<ShopFormType, ResponseData>( // TODO: w
       },
     });
 
-    console.log("newShop", newShop);
+    console.log("updatedShop", updatedShop);
 
-    if (!newShop.id) {
+    if (!updatedShop.id) {
       return {
         status: "error",
-        message: "Error creating shop",
+        message: "Error updating shop",
       };
     }
 
     return {
       status: "success",
-      data: newShop,
+      data: updatedShop,
     };
   },
   valiForm$(ShopSchema),

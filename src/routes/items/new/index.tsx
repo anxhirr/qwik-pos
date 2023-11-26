@@ -8,6 +8,7 @@ import {
   type ItemFormType,
   ItemSchema,
 } from "~/types-and-validation/itemSchema";
+import { getSessionSS } from "~/utils/auth";
 
 export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => ({
   name: "",
@@ -21,7 +22,9 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => ({
 }));
 
 export const useFormAction = formAction$<ItemFormType, ResponseData>(
-  async (values) => {
+  async (values, event) => {
+    const session = getSessionSS(event);
+
     const item = await prisma.item.create({
       data: {
         name: values.name,
@@ -32,6 +35,11 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
         description: values.description,
         active: values.active,
         favorite: values.favorite,
+        user: {
+          connect: {
+            id: session?.userId,
+          },
+        },
       },
     });
 

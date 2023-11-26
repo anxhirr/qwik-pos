@@ -51,6 +51,7 @@ model User {
   sessions      Session[]
 
   shops         UserShop[]
+  items         Item[]
 
   @@map("users")
 }
@@ -79,6 +80,9 @@ model Item {
   description String
   active    Boolean
   favorite  Boolean
+
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String @map("user_id") @db.ObjectId
 
   @@map("items")
 }

@@ -1,3 +1,5 @@
+import type { DefaultSession } from "@auth/core/types";
+
 export type OrderItemType = {
   id: string;
   name: string;
@@ -11,4 +13,8 @@ export type OrderItemType = {
   // finalPrice: string;
   // total: string;
   // merged: boolean;
+};
+
+export type AuthSession = DefaultSession & {
+  userId: string;
 };

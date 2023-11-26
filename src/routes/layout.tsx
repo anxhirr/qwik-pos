@@ -1,4 +1,3 @@
-import type { Session } from "@auth/core/types";
 import {
   component$,
   createContextId,
@@ -9,15 +8,24 @@ import {
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import Sidebar from "~/components/Sidebar";
+// import { prisma } from "./plugin@auth";
+import { getSessionSS } from "~/utils/auth";
 
-export const onRequest: RequestHandler = (event) => {
-  const session: Session | null = event.sharedMap.get("session");
+export const onRequest: RequestHandler = async (event) => {
+  const session = getSessionSS(event);
+
   if (!session || new Date(session.expires) < new Date()) {
     throw event.redirect(
       302,
       `/api/auth/signin?callbackUrl=${event.url.pathname}`,
     );
   }
+
+  // const shops = await prisma.shop.findMany({
+  //   where: {
+  //     ownerId: session.userId,
+  //   },
+  // });
 };
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {

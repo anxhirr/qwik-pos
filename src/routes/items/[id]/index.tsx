@@ -13,13 +13,15 @@ import {
   type ItemFormType,
   ItemSchema,
 } from "~/types-and-validation/itemSchema";
+import { getSessionSS } from "~/utils/auth";
 
 export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(
-  async ({ params }) => {
-    const { id } = params;
+  async (event) => {
+    const session = getSessionSS(event);
+    const { id } = event.params;
 
     const item = await prisma.item.findUnique({
-      where: { id },
+      where: { id, userId: session?.userId },
     });
 
     if (!item) {
@@ -32,6 +34,7 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(
 
 export const useFormAction = formAction$<ItemFormType, ResponseData>(
   async (values, event) => {
+    const session = getSessionSS(event);
     const { id } = event.params;
 
     const item = await prisma.item.update({
@@ -45,6 +48,11 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
         description: values.description,
         active: values.active,
         favorite: values.favorite,
+        user: {
+          connect: {
+            id: session?.userId,
+          },
+        },
       },
     });
 
