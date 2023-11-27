@@ -18,3 +18,8 @@ export type OrderItemType = {
 export type AuthSession = DefaultSession & {
   userId: string;
 };
+
+export interface SelectOption {
+  value: string;
+  label: string;
+}
