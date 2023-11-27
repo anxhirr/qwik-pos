@@ -1,5 +1,5 @@
-import type { Signal } from "@builder.io/qwik";
-import { component$, useComputed$ } from "@builder.io/qwik";
+import type { QwikChangeEvent, Signal } from "@builder.io/qwik";
+import { $, component$, useComputed$ } from "@builder.io/qwik";
 import type { ActionStore } from "@builder.io/qwik-city";
 import type {
   FormActionStore,
@@ -14,7 +14,7 @@ import {
   FieldArray,
   replace,
 } from "@modular-forms/qwik";
-import { NumberInput, TextInput } from "~/components/shared";
+import { NumberInput, Select, TextInput } from "~/components/shared";
 import type { Item } from "@prisma/client";
 
 import { CURRENCIES, DISCOUNT_TYPES, PAYMENT_METHODS } from "~/constants/enum";
@@ -38,6 +38,25 @@ export const OrderForm = component$<Props>(({ form, action, items }) => {
       value: item.id,
     }));
   });
+
+  const handleItemSelect = $(
+    (e: QwikChangeEvent<HTMLSelectElement>, index: number) => {
+      const option = e.target.value;
+      const item = items.value.find((item) => item.id === option);
+      if (!item) return;
+      replace(form, "items", {
+        at: index,
+        value: {
+          id: item.id,
+          name: item.name,
+          unit: item.unit,
+          quantity: 10,
+          unitPrice: 10,
+          unitPriceWithTax: 10,
+        },
+      });
+    },
+  );
   return (
     <>
       <Form of={form} action={action} class="flex flex-col gap-4">
@@ -166,37 +185,13 @@ export const OrderForm = component$<Props>(({ form, action, items }) => {
                 <>
                   <Field of={form} type="string" name={`items.${index}.name`}>
                     {(field, props) => (
-                      <select
+                      <Select
                         {...props}
-                        class="select select-bordered w-full max-w-xs"
-                        onChange$={(e) => {
-                          const item = items.value.find(
-                            (item) => item.id === e.target.value,
-                          );
-                          if (!item) return;
-                          replace(form, "items", {
-                            at: index,
-                            value: {
-                              id: item.id,
-                              name: item.name,
-                              unit: item.unit,
-                              quantity: 10,
-                              unitPrice: 10,
-                              unitPriceWithTax: 10,
-                            },
-                          });
-                        }}
-                      >
-                        {options.value.map(({ label, value }) => (
-                          <option
-                            key={value}
-                            value={value}
-                            selected={field.value === value}
-                          >
-                            {label}
-                          </option>
-                        ))}
-                      </select>
+                        options={options.value}
+                        value={field.value}
+                        placeholder="Item"
+                        onChange$={(e) => handleItemSelect(e, index)}
+                      />
                     )}
                   </Field>
                   <Field of={form} type="string" name={`items.${index}.unit`}>

@@ -13,6 +13,8 @@ import {
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
 import { NewItemBActionBar } from "~/components/bottom-action-bar/items/new";
+import { TextInput } from "~/components/shared";
+import { CheckBoxInput } from "~/components/shared/CheckBoxInput";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
 
 type Props = {
@@ -34,30 +36,22 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
         <div class="flex flex-col gap-4">
           <Field of={form} name="name">
             {(field, props) => (
-              <div>
-                <input
-                  {...props}
-                  value={field.value}
-                  type="text"
-                  placeholder="Name"
-                  class="input input-bordered w-full max-w-xs"
-                />
-                {field.error && <div>{field.error}</div>}
-              </div>
+              <TextInput
+                {...props}
+                value={field.value}
+                error={field.error}
+                placeholder="Name"
+              />
             )}
           </Field>
           <Field of={form} name="unit">
             {(field, props) => (
-              <div>
-                <input
-                  {...props}
-                  value={field.value}
-                  type="text"
-                  placeholder="Unit"
-                  class="input input-bordered w-full max-w-xs"
-                />
-                {field.error && <div>{field.error}</div>}
-              </div>
+              <TextInput
+                {...props}
+                value={field.value}
+                error={field.error}
+                placeholder="Unit"
+              />
             )}
           </Field>
           <Field of={form} name="category">
@@ -86,30 +80,22 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
         <div class="flex flex-col gap-4">
           <Field of={form} name="barcode">
             {(field, props) => (
-              <div>
-                <input
-                  {...props}
-                  value={field.value}
-                  type="text"
-                  placeholder="Barcode"
-                  class="input input-bordered w-full max-w-xs"
-                />
-                {field.error && <div>{field.error}</div>}
-              </div>
+              <TextInput
+                {...props}
+                value={field.value}
+                error={field.error}
+                placeholder="Barcode"
+              />
             )}
           </Field>
           <Field of={form} name="code">
             {(field, props) => (
-              <div>
-                <input
-                  {...props}
-                  value={field.value}
-                  type="text"
-                  placeholder="Code"
-                  class="input input-bordered w-full max-w-xs"
-                />
-                {field.error && <div>{field.error}</div>}
-              </div>
+              <TextInput
+                {...props}
+                value={field.value}
+                error={field.error}
+                placeholder="Code"
+              />
             )}
           </Field>
           <Field of={form} name="description">
@@ -131,38 +117,22 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
           <div class="grid grid-cols-2 gap-4">
             <Field of={form} name="active" type="boolean">
               {(field, props) => (
-                <div>
-                  <div class="form-control">
-                    <label class="label cursor-pointer">
-                      <span class="label-text">Active</span>
-                      <input
-                        type="checkbox"
-                        class="toggle"
-                        {...props}
-                        checked={field.value}
-                      />
-                    </label>
-                  </div>
-                  {field.error && <div>{field.error}</div>}
-                </div>
+                <CheckBoxInput
+                  label="Active"
+                  value={field.value}
+                  error={field.error}
+                  {...props}
+                />
               )}
             </Field>
             <Field of={form} name="favorite" type="boolean">
               {(field, props) => (
-                <div>
-                  <div class="form-control">
-                    <label class="label cursor-pointer">
-                      <span class="label-text">Favorite</span>
-                      <input
-                        type="checkbox"
-                        class="toggle"
-                        {...props}
-                        checked={field.value}
-                      />
-                    </label>
-                  </div>
-                  {field.error && <div>{field.error}</div>}
-                </div>
+                <CheckBoxInput
+                  label="Favorite"
+                  value={field.value}
+                  error={field.error}
+                  {...props}
+                />
               )}
             </Field>
           </div>

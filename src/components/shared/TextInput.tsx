@@ -5,9 +5,9 @@ import { InputError } from "./InputError";
 type Props = {
   name: string;
   value: string | undefined;
+  error?: string;
   placeholder?: string;
   class?: string;
-  error?: string;
 };
 
 export const TextInput = component$(({ error, name, ...props }: Props) => {

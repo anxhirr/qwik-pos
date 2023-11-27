@@ -1,56 +1,52 @@
-import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
+import type { PropFunction, QwikChangeEvent } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
+import clsx from "clsx";
+import { InputError } from "./InputError";
 import type { SelectOption } from "../../../types";
 
-export interface Props {
-  value: string;
+type Props = {
+  name: string;
+  value: string | undefined;
   options: SelectOption[];
+  onChange$: PropFunction<
+    (
+      event: QwikChangeEvent<HTMLSelectElement>,
+      element: HTMLSelectElement,
+    ) => void
+  >;
+  error?: string;
   placeholder?: string;
-  onSelect: (option: SelectOption) => void;
-  onClear?: () => void;
-}
+  class?: string;
+};
 
-export const Select = component$<Props>(
-  ({ onSelect, placeholder = "Select", options, value }) => {
-    const input = useSignal("");
-    const showMenu = useSignal(false);
-
-    const handleSelect = $((value: SelectOption) => {
-      input.value = value.label;
-      onSelect(value);
-    });
-
-    useTask$(({ track }) => {
-      if (track(() => value)) {
-        input.value = value;
-      }
-    });
-
+export const Select = component$(
+  ({ error, name, value, options, ...props }: Props) => {
     return (
-      <div class="relative max-w-sm">
-        <input
-          type="text"
-          placeholder={placeholder}
-          value={input.value}
-          class="input input-bordered w-full"
-          onChange$={(ev) => (input.value = ev.target.value)}
-          onFocus$={() => (showMenu.value = true)}
-          onBlur$={() => setTimeout(() => (showMenu.value = false), 100)}
-        />
-        {showMenu.value && (
-          <div class="absolute top-14 z-50 w-full bg-secondary-content">
-            <ul>
-              {options.map((item) => (
-                <li
-                  class="cursor-pointer rounded-md p-2 hover:bg-primary"
-                  key={item.value}
-                  onClick$={() => handleSelect(item)}
-                >
-                  {item.label}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+      <div class={props.class}>
+        <select
+          {...props}
+          class={clsx(
+            "input input-bordered w-full max-w-xs",
+            error ? "input-error" : "",
+          )}
+          id={name}
+          aria-invalid={!!error}
+          aria-errormessage={`${name}-error`}
+        >
+          <option disabled selected>
+            {props.placeholder}
+          </option>
+          {options.map((option) => (
+            <option
+              key={option.value}
+              value={option.value}
+              selected={value === option.value}
+            >
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <InputError name={name} error={error} />
       </div>
     );
   },
