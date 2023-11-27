@@ -13,8 +13,7 @@ import {
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
 import { NewItemBActionBar } from "~/components/bottom-action-bar/items/new";
-import { TextInput } from "~/components/shared";
-import { CheckBoxInput } from "~/components/shared/CheckBoxInput";
+import { CheckBoxInput, Select, TextInput } from "~/components/shared";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
 
 type Props = {
@@ -56,24 +55,14 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
           </Field>
           <Field of={form} name="category">
             {(field, props) => (
-              <div>
-                <select
-                  {...props}
-                  value={field.value}
-                  class="select select-bordered w-full max-w-xs"
-                >
-                  <option disabled selected>
-                    Category
-                  </option>
-                  {categories.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.name}
-                    </option>
-                  ))}
-                </select>
-
-                {field.error && <div>{field.error}</div>}
-              </div>
+              <Select
+                {...props}
+                error={field.error}
+                options={categories.map((category) => ({
+                  label: category.name,
+                  value: category.id,
+                }))}
+              />
             )}
           </Field>
         </div>

@@ -6,7 +6,6 @@ import type { SelectOption } from "../../../types";
 
 type Props = {
   name: string;
-  value: string | undefined;
   options: SelectOption[];
   onChange$: PropFunction<
     (
@@ -14,6 +13,7 @@ type Props = {
       element: HTMLSelectElement,
     ) => void
   >;
+  value?: string | undefined;
   error?: string;
   placeholder?: string;
   class?: string;

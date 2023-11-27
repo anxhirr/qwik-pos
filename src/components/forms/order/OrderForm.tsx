@@ -19,6 +19,7 @@ import type { Item } from "@prisma/client";
 
 import { CURRENCIES, DISCOUNT_TYPES, PAYMENT_METHODS } from "~/constants/enum";
 import { type OrderFormType } from "~/types-and-validation/orderSchema";
+import { NewOrderActBar } from "~/components/bottom-action-bar/order/new";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
@@ -47,7 +48,7 @@ export const OrderForm = component$<Props>(({ form, action, items }) => {
       replace(form, "items", {
         at: index,
         value: {
-          id: item.id,
+          // id: item.id,
           name: item.name,
           unit: item.unit,
           quantity: 10,
@@ -60,7 +61,17 @@ export const OrderForm = component$<Props>(({ form, action, items }) => {
   return (
     <>
       <Form of={form} action={action} class="flex flex-col gap-4">
-        <Field of={form} name="date">
+        <Field of={form} type="number" name="docNo">
+          {(field, props) => (
+            <NumberInput
+              value={field.value}
+              error={field.error}
+              placeholder="Customer"
+              {...props}
+            />
+          )}
+        </Field>
+        <Field of={form} type="string" name="date">
           {(field, props) => (
             <div>
               <input
@@ -75,7 +86,17 @@ export const OrderForm = component$<Props>(({ form, action, items }) => {
           )}
         </Field>
         <div class="flex gap-4">
-          <Field of={form} name="customerId">
+          <Field of={form} name="notes">
+            {(field, props) => (
+              <TextInput
+                value={field.value}
+                error={field.error}
+                placeholder="Notes"
+                {...props}
+              />
+            )}
+          </Field>
+          <Field of={form} name="customer.name">
             {(field, props) => (
               <TextInput
                 value={field.value}
@@ -87,57 +108,43 @@ export const OrderForm = component$<Props>(({ form, action, items }) => {
           </Field>
           <Field of={form} name="currency">
             {(field, props) => (
-              <div>
-                <select
-                  {...props}
-                  class="select select-bordered w-full max-w-xs"
-                >
-                  <option disabled selected>
-                    Currency
-                  </option>
-                  {CURRENCIES.map((option) => (
-                    <option
-                      key={option}
-                      value={option}
-                      selected={field.value === option}
-                    >
-                      {option}
-                    </option>
-                  ))}
-                </select>
-
-                {field.error && <div>{field.error}</div>}
-              </div>
+              <Select
+                {...props}
+                options={CURRENCIES.map((option) => ({
+                  label: option,
+                  value: option,
+                }))}
+                placeholder="Currency"
+              />
             )}
           </Field>
 
           <Field of={form} name="payment.method">
             {(field, props) => (
-              <div>
-                <select
-                  {...props}
-                  class="select select-bordered w-full max-w-xs"
-                >
-                  <option disabled selected>
-                    Payment Method
-                  </option>
-                  {PAYMENT_METHODS.map((option) => (
-                    <option
-                      key={option}
-                      value={option}
-                      selected={field.value === option}
-                    >
-                      {option}
-                    </option>
-                  ))}
-                </select>
-
-                {field.error && <div>{field.error}</div>}
-              </div>
+              <Select
+                {...props}
+                options={PAYMENT_METHODS.map((option) => ({
+                  label: option,
+                  value: option,
+                }))}
+                placeholder="Payment Method"
+              />
             )}
           </Field>
         </div>
         <div class="flex">
+          <Field of={form} type="number" name="exchangeRate">
+            {(field, props) => (
+              <div class="col-span-2">
+                <NumberInput
+                  {...props}
+                  value={field.value}
+                  placeholder="Exchange Rate"
+                />
+                {field.error && <div>{field.error}</div>}
+              </div>
+            )}
+          </Field>
           <Field of={form} type="number" name="discount.amount">
             {(field, props) => (
               <div class="col-span-2">
@@ -152,27 +159,14 @@ export const OrderForm = component$<Props>(({ form, action, items }) => {
           </Field>
           <Field of={form} name="discount.type">
             {(field, props) => (
-              <div>
-                <select
-                  {...props}
-                  class="select select-bordered w-full max-w-xs"
-                >
-                  <option disabled selected>
-                    Discount Type
-                  </option>
-                  {DISCOUNT_TYPES.map((option) => (
-                    <option
-                      key={option}
-                      value={option}
-                      selected={field.value === option}
-                    >
-                      {option}
-                    </option>
-                  ))}
-                </select>
-
-                {field.error && <div>{field.error}</div>}
-              </div>
+              <Select
+                {...props}
+                options={DISCOUNT_TYPES.map((option) => ({
+                  label: option,
+                  value: option,
+                }))}
+                placeholder="Discount Type"
+              />
             )}
           </Field>
         </div>
@@ -188,7 +182,6 @@ export const OrderForm = component$<Props>(({ form, action, items }) => {
                       <Select
                         {...props}
                         options={options.value}
-                        value={field.value}
                         placeholder="Item"
                         onChange$={(e) => handleItemSelect(e, index)}
                       />
@@ -251,6 +244,7 @@ export const OrderForm = component$<Props>(({ form, action, items }) => {
             </div>
           )}
         </FieldArray>
+        <NewOrderActBar form={form} />
       </Form>
     </>
   );

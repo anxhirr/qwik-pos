@@ -11,6 +11,7 @@ import {
   type ResponseData,
   type FormStore,
 } from "@modular-forms/qwik";
+import { Select, TextInput } from "~/components/shared";
 import { CATEGORY_ENUM, CATEGORY_FORM_ID } from "~/constants/enum";
 import type { CategoryFormType } from "~/types-and-validation/categorySchema";
 
@@ -36,52 +37,36 @@ export const CategoryForm = component$<Props>(({ form, action }) => {
       <div class="flex">
         <Field of={form} name="type">
           {(field, props) => (
-            <div>
-              <select
-                {...props}
-                value={field.value}
-                class="select select-bordered w-full max-w-xs"
-              >
-                <option disabled selected>
-                  Type
-                </option>
-                {CATEGORY_ENUM.map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
-
-              {field.error && <div>{field.error}</div>}
-            </div>
+            <Select
+              {...props}
+              options={CATEGORY_ENUM.map((option) => ({
+                label: option,
+                value: option,
+              }))}
+              placeholder="Type"
+            />
           )}
         </Field>
         <Field of={form} name="color">
           {(field, props) => (
-            <div>
-              <input
-                {...props}
-                value={field.value}
-                type="color"
-                placeholder="Color"
-                class="input input-bordered w-20"
-              />
-              {field.error && <div>{field.error}</div>}
-            </div>
+            <TextInput
+              {...props}
+              value={field.value}
+              error={field.error}
+              placeholder="Color"
+            />
           )}
         </Field>
       </div>
       <div>
         <Field of={form} name="name">
           {(field, props) => (
-            <div>
-              <input
-                {...props}
-                value={field.value}
-                type="text"
-                placeholder="Name"
-                class="input input-bordered w-full max-w-xs"
-              />
-              {field.error && <div>{field.error}</div>}
-            </div>
+            <TextInput
+              {...props}
+              value={field.value}
+              error={field.error}
+              placeholder="Name"
+            />
           )}
         </Field>
       </div>

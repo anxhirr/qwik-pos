@@ -9,7 +9,7 @@ import { OrderSchema } from "~/types-and-validation/orderSchema";
 
 export const useFormAction = formAction$<OrderFormType, ResponseData>(
   async (values) => {
-    console.log(values);
+    console.log("values", values);
   },
   valiForm$(OrderSchema),
 );
@@ -23,12 +23,12 @@ export const useItemsLoader = routeLoader$(async () => {
 export const useFormLoader = routeLoader$<InitialValues<OrderFormType>>(() => ({
   date: "",
   currency: "",
-  customerId: "",
+  // customerId: "",
   exchangeRate: 1,
   payment: {
     method: "",
-    amount: 0,
-    currency: "",
+    // amount: 0,
+    // currency: "",
   },
   discount: {
     amount: 0,
@@ -36,7 +36,7 @@ export const useFormLoader = routeLoader$<InitialValues<OrderFormType>>(() => ({
   },
   items: [
     {
-      id: "",
+      // id: "",
       name: "",
       unit: "",
       quantity: 0,
@@ -46,10 +46,10 @@ export const useFormLoader = routeLoader$<InitialValues<OrderFormType>>(() => ({
   ],
   customer: {
     name: "",
-    id: "",
+    // id: "",
   },
-  docNo: "",
-  layout: "",
+  docNo: 0,
+  // layout: "",
   notes: "",
 }));
 
