@@ -1,11 +1,11 @@
 import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
-import type { SelectOption } from "../../../types";
+import type { CustomSelectOption } from "../../../types";
 
 export interface Props {
-  value: string;
-  options: SelectOption[];
+  value: string | undefined;
+  options: CustomSelectOption[];
   placeholder?: string;
-  onSelect: (option: SelectOption) => void;
+  onSelect: (option: CustomSelectOption) => void;
   onClear?: () => void;
 }
 
@@ -14,15 +14,17 @@ export const CustomSelect = component$<Props>(
     const input = useSignal("");
     const showMenu = useSignal(false);
 
-    const handleSelect = $((value: SelectOption) => {
+    const handleSelect = $((value: CustomSelectOption) => {
       input.value = value.label;
       onSelect(value);
     });
 
     useTask$(({ track }) => {
-      if (track(() => value)) {
-        input.value = value;
-      }
+      track(() => value);
+
+      if (!value) return;
+
+      input.value = value;
     });
 
     return (

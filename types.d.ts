@@ -19,7 +19,7 @@ export type AuthSession = DefaultSession & {
   userId: string;
 };
 
-export interface SelectOption {
+export interface CustomSelectOption {
   value: string;
   label: string;
 }
