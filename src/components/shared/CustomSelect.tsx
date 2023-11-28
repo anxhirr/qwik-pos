@@ -28,7 +28,7 @@ export const CustomSelect = component$<Props>(
     });
 
     return (
-      <div class="relative max-w-sm">
+      <div class="relative">
         <input
           type="text"
           placeholder={placeholder}

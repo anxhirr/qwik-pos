@@ -7,16 +7,17 @@ type Props = {
   name: string;
   value: string | undefined;
   label?: string;
+  required?: boolean;
   error?: string;
   placeholder?: string;
   class?: string;
 };
 
 export const TextInput = component$(
-  ({ error, name, label, ...props }: Props) => {
+  ({ error, name, label, required, ...props }: Props) => {
     return (
       <div class="form-control w-full max-w-xs">
-        <InputLabel name={name} label={label} required />
+        <InputLabel name={name} label={label} required={required} />
         <input
           {...props}
           class={clsx(

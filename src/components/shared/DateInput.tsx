@@ -4,7 +4,7 @@ import { InputLabel } from "./InputLabel";
 
 type NumberInputProps = {
   name: string;
-  value: number | undefined;
+  value: undefined | string | number | Date;
   label?: string;
   required?: boolean;
   placeholder?: string;
@@ -12,14 +12,18 @@ type NumberInputProps = {
   error?: string;
 };
 
-export const NumberInput = component$(
+export const DateInput = component$(
   ({ value, error, name, label, required, ...props }: NumberInputProps) => {
-    // Update signal if value is not `NaN`
-    const input = useSignal<number>();
+    // Transform date or number to string
+    const input = useSignal<string>();
+
     useTask$(({ track }) => {
-      if (!Number.isNaN(track(() => value))) {
-        input.value = value;
-      }
+      track(() => value);
+      typeof value === "number" || value instanceof Date
+        ? (input.value = new Date(value).toISOString().split("T", 1)[0])
+        : typeof value === "string"
+        ? (input.value = value)
+        : (input.value = undefined);
     });
     return (
       <div class={props.class}>
@@ -31,7 +35,7 @@ export const NumberInput = component$(
             error ? "input-error" : "",
           )}
           id={name}
-          type="number"
+          type="date"
           value={input.value}
         />
       </div>
