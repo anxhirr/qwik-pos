@@ -18,6 +18,7 @@ import {
 } from "@modular-forms/qwik";
 import {
   CustomSelect,
+  DateInput,
   NumberInput,
   Select,
   TextInput,
@@ -28,7 +29,6 @@ import { CURRENCIES, DISCOUNT_TYPES, PAYMENT_METHODS } from "~/constants/enum";
 import { type OrderFormType } from "~/types-and-validation/orderSchema";
 import { NewOrderActBar } from "~/components/bottom-action-bar/order/new";
 import type { CustomSelectOption } from "../../../../types";
-import { DateInput } from "~/components/shared/DateInput";
 import { IcRoundPlus, IcRoundSwapVert } from "~/components/icons";
 
 type Props = {
