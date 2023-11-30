@@ -1,24 +1,20 @@
-import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 import clsx from "clsx";
+import { component$, useSignal, useTask$ } from "@builder.io/qwik";
+import type { ModularInputProps } from "../../../types";
 import { InputLabel } from "./InputLabel";
+import { InputError } from "./InputError";
 
 type NumberInputProps = {
-  name: string;
   value: undefined | string | number | Date;
-  label?: string;
-  required?: boolean;
-  placeholder?: string;
-  class?: string;
-  error?: string;
-};
+} & ModularInputProps;
 
 export const DateInput = component$(
   ({ value, error, name, label, required, ...props }: NumberInputProps) => {
-    // Transform date or number to string
     const input = useSignal<string>();
 
     useTask$(({ track }) => {
       track(() => value);
+      // Transform date or number to string
       typeof value === "number" || value instanceof Date
         ? (input.value = new Date(value).toISOString().split("T", 1)[0])
         : typeof value === "string"
@@ -37,7 +33,10 @@ export const DateInput = component$(
           id={name}
           type="date"
           value={input.value}
+          aria-invalid={!!error}
+          aria-errormessage={`${name}-error`}
         />
+        <InputError name={name} error={error} />
       </div>
     );
   },

@@ -31,6 +31,8 @@ export const NumberInput = component$(
           id={name}
           type="number"
           value={input.value}
+          aria-invalid={!!error}
+          aria-errormessage={`${name}-error`}
         />
         <InputError name={name} error={error} />
       </div>
