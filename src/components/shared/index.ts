@@ -1,4 +1,3 @@
-export * from "./Expandable";
 export * from "./InputError";
 export * from "./CustomSelect";
 export * from "./Select";

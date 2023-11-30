@@ -1,8 +1,9 @@
-import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 import clsx from "clsx";
-import { InputLabel } from "./InputLabel";
+import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 import type { ModularInputProps } from "../../../types";
 import type { Maybe } from "@modular-forms/qwik";
+import { InputLabel } from "./InputLabel";
+import { InputError } from "./InputError";
 
 type NumberInputProps = {
   value: Maybe<number>;
@@ -31,6 +32,7 @@ export const NumberInput = component$(
           type="number"
           value={input.value}
         />
+        <InputError name={name} error={error} />
       </div>
     );
   },
