@@ -1,12 +1,4 @@
-import {
-  type Input,
-  // boolean,
-  // minLength,
-  object,
-  string,
-  array,
-  number,
-} from "valibot";
+import { type Input, object, string, array, number, minLength } from "valibot";
 
 export const OrderSchema = object({
   // shopId: string([minLength(1, "ShopId is missing.")]),
@@ -15,14 +7,14 @@ export const OrderSchema = object({
   // layout: string(),
   docNo: number(),
   date: string(),
-  currency: string(),
+  currency: string([minLength(1, "Choose a currency.")]),
   customer: object({
-    name: string(),
+    name: string([minLength(1, "Customer is missing.")]),
     // id: string(),
   }),
   exchangeRate: number(),
   payment: object({
-    method: string(), // TODO: enum
+    method: string([minLength(1, "Please select a payment method.")]),
     // amount: number(),
     // currency: string(),
   }),
@@ -34,8 +26,8 @@ export const OrderSchema = object({
   items: array(
     object({
       // id: string(),
-      name: string(),
-      unit: string(),
+      name: string([minLength(1, "Item name is missing.")]),
+      unit: string([minLength(1, "Unit is missing.")]),
       quantity: number(),
       unitPrice: number(),
       unitPriceWithTax: number(),

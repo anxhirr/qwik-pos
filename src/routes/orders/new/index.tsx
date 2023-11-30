@@ -8,6 +8,7 @@ import {
   valiForm$,
 } from "@modular-forms/qwik";
 import { OrderForm } from "~/components/forms/order/OrderForm";
+import { successToast } from "~/providers/toast";
 import { prisma } from "~/routes/plugin@auth";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";
 import { OrderSchema } from "~/types-and-validation/orderSchema";
@@ -70,6 +71,10 @@ export default component$(() => {
 
   const errors = getErrors(form);
   console.log("errors", errors);
+
+  if (action.status === 200) {
+    successToast("Order created successfully");
+  }
   return (
     <div class="h-full">
       <OrderForm form={form} action={action} items={items} />
