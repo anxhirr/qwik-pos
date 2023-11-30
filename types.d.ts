@@ -1,4 +1,9 @@
 import type { DefaultSession } from "@auth/core/types";
+import type {
+  PropFunction,
+  QwikChangeEvent,
+  QwikFocusEvent,
+} from "@builder.io/qwik";
 
 export type OrderItemType = {
   id: string;
@@ -22,4 +27,24 @@ export type AuthSession = DefaultSession & {
 export interface CustomSelectOption {
   value: string;
   label: string;
+}
+
+export interface ModularInputProps {
+  ref: PropFunction<(element: Element) => void>;
+  name: string;
+  onInput$: PropFunction<(event: Event, element: HTMLInputElement) => void>;
+  onChange$: PropFunction<
+    (
+      event: QwikChangeEvent<HTMLInputElement>,
+      element: HTMLInputElement,
+    ) => void
+  >;
+  onBlur$: PropFunction<
+    (event: QwikFocusEvent<HTMLInputElement>, element: HTMLInputElement) => void
+  >;
+  placeholder?: string;
+  required?: boolean;
+  class?: string;
+  label?: string;
+  error?: string;
 }

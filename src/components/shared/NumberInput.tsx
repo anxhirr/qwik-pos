@@ -1,19 +1,16 @@
 import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 import clsx from "clsx";
 import { InputLabel } from "./InputLabel";
+import type { ModularInputProps } from "../../../types";
+import type { Maybe } from "@modular-forms/qwik";
 
 type NumberInputProps = {
-  name: string;
-  value: number | undefined;
-  label?: string;
-  required?: boolean;
-  placeholder?: string;
-  class?: string;
-  error?: string;
-};
+  value: Maybe<number>;
+} & ModularInputProps;
 
 export const NumberInput = component$(
-  ({ value, error, name, label, required, ...props }: NumberInputProps) => {
+  ({ label, value, error, ...props }: NumberInputProps) => {
+    const { name, required } = props;
     // Update signal if value is not `NaN`
     const input = useSignal<number>();
     useTask$(({ track }) => {

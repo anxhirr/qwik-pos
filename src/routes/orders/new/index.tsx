@@ -1,7 +1,12 @@
 import { component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { InitialValues, ResponseData } from "@modular-forms/qwik";
-import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
+import {
+  formAction$,
+  getErrors,
+  useFormStore,
+  valiForm$,
+} from "@modular-forms/qwik";
 import { OrderForm } from "~/components/forms/order/OrderForm";
 import { prisma } from "~/routes/plugin@auth";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";
@@ -62,6 +67,9 @@ export default component$(() => {
     validate: valiForm$(OrderSchema),
     fieldArrays: ["items"],
   });
+
+  const errors = getErrors(form);
+  console.log("errors", errors);
   return (
     <div class="h-full">
       <OrderForm form={form} action={action} items={items} />

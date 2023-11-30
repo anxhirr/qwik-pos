@@ -1,20 +1,17 @@
 import { component$ } from "@builder.io/qwik";
 import clsx from "clsx";
-import { InputError } from "./InputError";
+// import { InputError } from "./InputError";
 import { InputLabel } from "./InputLabel";
+import type { ModularInputProps } from "../../../types";
+import type { Maybe } from "@modular-forms/qwik";
 
 type Props = {
-  name: string;
-  value: string | undefined;
-  label?: string;
-  required?: boolean;
-  error?: string;
-  placeholder?: string;
-  class?: string;
-};
+  value: Maybe<string>;
+} & ModularInputProps;
 
 export const TextInput = component$(
-  ({ error, name, label, required, ...props }: Props) => {
+  ({ label, value, error, ...props }: Props) => {
+    const { name, required } = props;
     return (
       <div class="form-control w-full max-w-xs">
         <InputLabel name={name} label={label} required={required} />
@@ -26,10 +23,11 @@ export const TextInput = component$(
           )}
           id={name}
           type="text"
+          value={value}
           aria-invalid={!!error}
           aria-errormessage={`${name}-error`}
         />
-        <InputError name={name} error={error} />
+        {/* <InputError name={name} error={error} /> */}
       </div>
     );
   },
