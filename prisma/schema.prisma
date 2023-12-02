@@ -51,7 +51,6 @@ model User {
   sessions      Session[]
 
   shops         UserShop[]
-  items         Item[]
 
   @@map("users")
 }
@@ -81,8 +80,8 @@ model Item {
   active    Boolean
   favorite  Boolean
 
-  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String @map("user_id") @db.ObjectId
+  shop      Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  shopId    String @map("shop_id") @db.ObjectId
 
   @@map("items")
 }
@@ -101,6 +100,7 @@ model Role {
   userId    String @map("user_id") @db.ObjectId
 
   users UserShop[]
+  shop  Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
   
   @@map("roles")
 }
@@ -121,6 +121,8 @@ model Shop {
   phone    String
 
   users UserShop[]
+  roles Role[]
+  items Item[]
 
   @@map("shops")
 }
