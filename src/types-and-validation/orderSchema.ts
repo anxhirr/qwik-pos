@@ -14,7 +14,7 @@ export const OrderSchema = object({
   }),
   exchangeRate: number(),
   payment: object({
-    method: string([minLength(1, "Please select a payment method.")]),
+    method: string([minLength(1, "Choose payment method.")]),
     // amount: number(),
     // currency: string(),
   }),

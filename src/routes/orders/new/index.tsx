@@ -7,7 +7,7 @@ import {
   useFormStore,
   valiForm$,
 } from "@modular-forms/qwik";
-import { OrderForm } from "~/components/forms/order/OrderForm";
+import { OrderForm } from "~/components/forms/order";
 import { successToast } from "~/providers/toast";
 import { prisma } from "~/routes/plugin@auth";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";

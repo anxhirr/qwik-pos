@@ -15,7 +15,9 @@ const createToast = (
   // stack on top of each other
   if (toast) return (toast.innerHTML += getAlert(type, message));
 
-  const toastContainer = document.createElement("div");
+  const toastContainer = document.body.appendChild(
+    document.createElement("div"),
+  );
   toastContainer.className = `toast toast-${position}`;
   toastContainer.innerHTML = getAlert(type, message);
   document.body.appendChild(toastContainer);
