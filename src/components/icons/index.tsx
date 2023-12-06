@@ -1,9 +1,6 @@
-import type { QwikIntrinsicElements } from "@builder.io/qwik";
+import type { IconProps } from "@qwikest/icons/*";
 
-export function IcBaselineCheckCircle(
-  props: QwikIntrinsicElements["svg"],
-  key: string,
-) {
+export function IcBaselineCheckCircle({ props, key }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +18,7 @@ export function IcBaselineCheckCircle(
   );
 }
 
-export function IcRoundPlus(props: QwikIntrinsicElements["svg"], key: string) {
+export function IcRoundPlus({ props, key }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -39,10 +36,7 @@ export function IcRoundPlus(props: QwikIntrinsicElements["svg"], key: string) {
   );
 }
 
-export function IcRoundModeEdit(
-  props: QwikIntrinsicElements["svg"],
-  key: string,
-) {
+export function IcRoundModeEdit({ props, key }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -60,10 +54,7 @@ export function IcRoundModeEdit(
   );
 }
 
-export function IcRoundDelete(
-  props: QwikIntrinsicElements["svg"],
-  key: string,
-) {
+export function IcRoundDelete({ props, key }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +72,7 @@ export function IcRoundDelete(
   );
 }
 
-export function IcRoundMenu(props: QwikIntrinsicElements["svg"], key: string) {
+export function IcRoundMenu({ props, key }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -99,10 +90,7 @@ export function IcRoundMenu(props: QwikIntrinsicElements["svg"], key: string) {
   );
 }
 
-export function IcRoundNotifications(
-  props: QwikIntrinsicElements["svg"],
-  key: string,
-) {
+export function IcRoundNotifications({ props, key }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -120,10 +108,7 @@ export function IcRoundNotifications(
   );
 }
 
-export function IcRoundSwapVert(
-  props: QwikIntrinsicElements["svg"],
-  key: string,
-) {
+export function IcRoundSwapVert({ props, key }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -141,10 +126,7 @@ export function IcRoundSwapVert(
   );
 }
 
-export function IcRoundInsertDriveFile(
-  props: QwikIntrinsicElements["svg"],
-  key: string,
-) {
+export function IcRoundInsertDriveFile({ props, key }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -162,7 +144,7 @@ export function IcRoundInsertDriveFile(
   );
 }
 
-export function IcRoundInfo(props: QwikIntrinsicElements["svg"], key: string) {
+export function IcRoundInfo({ props, key }: IconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

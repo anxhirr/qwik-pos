@@ -1,18 +1,35 @@
-import { component$ } from "@builder.io/qwik";
+import type { IntrinsicHTMLElements, QwikMouseEvent } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import type { JSX } from "@builder.io/qwik/jsx-runtime";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import { IcBaselineCheckCircle } from "~/components/icons";
 import { SHOP_FORM_ID } from "~/constants/enum";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";
+import type { IconProps } from "@qwikest/icons/*";
 
 type Props = {
   form?: FormStore<ShopFormType, ResponseData>;
 };
+
+type BtnProps = {
+  text: string;
+  Icon: (props: IconProps) => JSX.Element;
+  submittingText?: string;
+  type?: IntrinsicHTMLElements["button"]["type"];
+  onClick$?: (
+    event: QwikMouseEvent<HTMLButtonElement, MouseEvent>,
+    element: HTMLButtonElement,
+  ) => any;
+};
+
+type BtnMap = Map<string, BtnProps[]>;
+
 export const ShopActionBar = component$<Props>(({ form }) => {
   const location = useLocation();
   const nav = useNavigate();
 
-  const BTNS = new Map([
+  const BTNS: BtnMap = new Map([
     [
       "/settings/shop/",
       [
@@ -20,14 +37,14 @@ export const ShopActionBar = component$<Props>(({ form }) => {
           text: "Update",
           submittingText: "Updating...",
           Icon: IcBaselineCheckCircle,
-          // type: "submit",
+          type: "submit",
         },
         {
           text: "Create New",
           submittingText: "Creating...",
           Icon: IcBaselineCheckCircle,
-          // type: "button",
-          onClick: () => nav("/settings/shop/new/"),
+          type: "button",
+          onClick$: $(() => nav("/settings/shop/new/")),
         },
       ],
     ],
@@ -38,7 +55,7 @@ export const ShopActionBar = component$<Props>(({ form }) => {
           text: "Create",
           submittingText: "Creating...",
           Icon: IcBaselineCheckCircle,
-          // type: "submit",
+          type: "submit",
         },
       ],
     ],
