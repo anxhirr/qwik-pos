@@ -6,19 +6,19 @@ import { ShopForm } from "~/components/forms/shop/ShopForm";
 import { prisma } from "~/routes/plugin@auth";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";
 import { ShopSchema } from "~/types-and-validation/shopSchema";
+import { getSessionSS } from "~/utils/auth";
 
 export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(
-  async () => {
+  async (event) => {
+    const session = getSessionSS(event);
     const shop = await prisma.shop.findUnique({
       where: {
-        id: "656374af7d001c2bdb2ae73e",
+        id: session?.shopId,
       },
       include: {
         users: true,
       },
     });
-
-    console.log("shop", shop);
 
     if (!shop) {
       return {

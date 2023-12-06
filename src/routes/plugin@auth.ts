@@ -27,15 +27,23 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } =
       },
 
       session: async ({ session, user }) => {
-        console.log("user", user);
+        let shopId;
+        console.log("user.id", user.id);
         const shop = await prisma.shop.findFirst({
-          where: { users: { some: { id: user.id } } },
+          where: {
+            users: {
+              some: {
+                userId: user.id,
+              },
+            },
+          },
         });
-        console.log("shop", shop);
+        console.log("findFirst shop", shop);
+        shopId = shop?.id;
 
         if (!shop) {
           console.log("creating shop");
-          await prisma.shop.create({
+          const shop = await prisma.shop.create({
             data: {
               name: "My First Shop",
               address: user.email,
@@ -45,14 +53,39 @@ export const { onRequest, useAuthSession, useAuthSignin, useAuthSignout } =
               email: "",
               phone: "",
               ownerId: user.id,
-              // users: { connect: { id: user.id } },TODO: add this, also the role
             },
           });
+
+          console.log("shop created", shop);
+
+          const role = await prisma.role.create({
+            data: {
+              name: "Owner",
+              description: "Owner of the shop",
+              userId: user.id,
+              shopId: shop.id,
+            },
+          });
+
+          console.log("role created", role);
+
+          const userShop = await prisma.userShop.create({
+            data: {
+              userId: user.id,
+              shopId: shop.id,
+              roleId: role.id,
+            },
+          });
+
+          console.log("userShop created", userShop);
+
+          shopId = shop.id;
         }
 
         return {
           ...session,
           userId: user.id,
+          shopId,
         };
       },
     },
