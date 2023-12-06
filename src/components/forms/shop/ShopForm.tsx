@@ -11,8 +11,8 @@ import {
   type ResponseData,
   type FormStore,
 } from "@modular-forms/qwik";
-import { ShopUpdateActionBar } from "~/components/bottom-action-bar/shop/update";
 import { TextInput } from "~/components/shared";
+import { SHOP_FORM_ID } from "~/constants/enum";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";
 
 type Props = {
@@ -28,7 +28,12 @@ type Props = {
 
 export const ShopForm = component$<Props>(({ form, action }) => {
   return (
-    <Form of={form} action={action} class="flex flex-col gap-4">
+    <Form
+      of={form}
+      action={action}
+      id={SHOP_FORM_ID}
+      class="flex flex-col gap-4"
+    >
       <Field of={form} name="address">
         {(field, props) => (
           <TextInput
@@ -109,7 +114,6 @@ export const ShopForm = component$<Props>(({ form, action }) => {
           />
         )}
       </Field>
-      <ShopUpdateActionBar form={form} />
     </Form>
   );
 });

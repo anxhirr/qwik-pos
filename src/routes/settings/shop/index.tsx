@@ -46,48 +46,8 @@ export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(
   },
 );
 
-export const useFormAction = formAction$<ShopFormType, ResponseData>( // TODO: we do not want to create a new shop, we want to update the existing one
+export const useFormAction = formAction$<ShopFormType, ResponseData>(
   async (values) => {
-    // Runs on server
-    // console.log("formAction$ values", values);
-
-    // create a new shop
-
-    // const newShop = await prisma.shop.create({
-    //   data: {
-    //     address: values.address,
-    //     baseCurrency: values.baseCurrency,
-    //     city: values.city,
-    //     description: values.description,
-    //     email: values.email,
-    //     name: values.name,
-    //     ownerId: values.ownerId,
-    //     phone: values.phone,
-    //     users: {
-    //       create: [
-    //         {
-    //           roleId: values.ownerId,
-    //           userId: values.ownerId,
-    //         },
-    //       ],
-    //     },
-    //   },
-    // });
-
-    // console.log("newShop", newShop);
-
-    // if (!newShop.id) {
-    //   return {
-    //     status: "error",
-    //     message: "Error creating shop",
-    //   };
-    // }
-
-    // return {
-    //   status: "success",
-    //   data: newShop,
-    // };
-
     const updatedShop = await prisma.shop.update({
       where: {
         id: "656374af7d001c2bdb2ae73e",

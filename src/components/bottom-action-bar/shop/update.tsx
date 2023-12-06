@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
-import { IcBaselineCheckCircle, IcRoundPlus } from "~/components/icons";
+import { IcBaselineCheckCircle } from "~/components/icons";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";
 
 type Props = {
@@ -23,10 +23,6 @@ export const ShopUpdateActionBar = component$<Props>(({ form }) => {
               {form.submitting ? "Updating..." : "Update"}
             </button>
           )}
-          <button class="btn btn-secondary" type="submit">
-            <IcRoundPlus />
-            New Shop
-          </button>
         </div>
       </div>
     </div>
