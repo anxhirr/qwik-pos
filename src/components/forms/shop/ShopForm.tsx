@@ -94,7 +94,7 @@ export const ShopForm = component$<Props>(({ form, action }) => {
           />
         )}
       </Field>
-      <Field of={form} name="ownerId">
+      {/* <Field of={form} name="ownerId">
         {(field, props) => (
           <TextInput
             {...props}
@@ -103,7 +103,7 @@ export const ShopForm = component$<Props>(({ form, action }) => {
             placeholder="Owner ID"
           />
         )}
-      </Field>
+      </Field> */}
       <Field of={form} name="phone">
         {(field, props) => (
           <TextInput

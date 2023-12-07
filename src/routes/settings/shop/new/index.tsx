@@ -8,50 +8,26 @@ import type { ShopFormType } from "~/types-and-validation/shopSchema";
 import { ShopSchema } from "~/types-and-validation/shopSchema";
 import { getSessionSS } from "~/utils/auth";
 
-export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(
-  async (event) => {
-    const session = getSessionSS(event);
-    const shop = await prisma.shop.findUnique({
-      where: {
-        id: session?.shopId,
-      },
-      include: {
-        users: true,
-      },
-    });
-
-    if (!shop) {
-      return {
-        address: "",
-        baseCurrency: "",
-        city: "",
-        description: "",
-        email: "",
-        name: "",
-        ownerId: "",
-        phone: "",
-      };
-    }
-
-    return {
-      address: shop.address,
-      baseCurrency: shop.baseCurrency,
-      city: shop.city,
-      description: shop.description,
-      email: shop.email,
-      name: shop.name,
-      ownerId: shop.ownerId,
-      phone: shop.phone,
-    };
-  },
-);
+export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(() => {
+  return {
+    address: "",
+    baseCurrency: "",
+    city: "",
+    description: "",
+    email: "",
+    name: "",
+    ownerId: "",
+    phone: "",
+  };
+});
 
 export const useFormAction = formAction$<ShopFormType, ResponseData>(
-  async (values) => {
-    const updatedShop = await prisma.shop.update({
-      where: {
-        id: "656374af7d001c2bdb2ae73e",
-      },
+  async (values, event) => {
+    const session = getSessionSS(event);
+    console.log(session);
+    if (!session) return;
+
+    await prisma.shop.create({
       data: {
         address: values.address,
         baseCurrency: values.baseCurrency,
@@ -60,22 +36,17 @@ export const useFormAction = formAction$<ShopFormType, ResponseData>(
         email: values.email,
         name: values.name,
         phone: values.phone,
+        ownerId: session.userId,
       },
     });
 
-    console.log("updatedShop", updatedShop);
-
-    if (!updatedShop.id) {
-      return {
-        status: "error",
-        message: "Error updating shop",
-      };
-    }
-
-    return {
-      status: "success",
-      data: updatedShop,
-    };
+    await prisma.userShop.create({
+      data: {
+        userId: session.userId,
+        shopId: session.shopId,
+        roleId: session.roleId,
+      },
+    });
   },
   valiForm$(ShopSchema),
 );

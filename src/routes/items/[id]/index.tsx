@@ -21,7 +21,7 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(
     const { id } = event.params;
 
     const item = await prisma.item.findUnique({
-      where: { id, userId: session?.userId },
+      where: { id, shopId: session?.shopId },
     });
 
     if (!item) {
@@ -48,9 +48,9 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
         description: values.description,
         active: values.active,
         favorite: values.favorite,
-        user: {
+        shop: {
           connect: {
-            id: session?.userId,
+            id: session?.shopId,
           },
         },
       },

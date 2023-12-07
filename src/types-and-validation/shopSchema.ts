@@ -8,7 +8,7 @@ export const ShopSchema = object({
   description: string([minLength(1, "Please enter your description.")]),
   email: string([minLength(1, "Please enter your email.")]),
   name: string([minLength(1, "Please enter your name.")]),
-  ownerId: string([minLength(1, "Please enter your ownerId.")]),
+  // ownerId: string([minLength(1, "Please enter your ownerId.")]),
   phone: string([minLength(1, "Please enter your phone.")]),
 });
 

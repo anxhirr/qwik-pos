@@ -62,6 +62,7 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                   label: category.name,
                   value: category.id,
                 }))}
+                placeholder="Category"
               />
             )}
           </Field>

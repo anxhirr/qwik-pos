@@ -23,6 +23,7 @@ export type OrderItemType = {
 export type AuthSession = DefaultSession & {
   userId: string;
   shopId: string;
+  roleId: string;
 };
 
 export interface CustomSelectOption {
