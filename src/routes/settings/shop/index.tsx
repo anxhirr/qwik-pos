@@ -47,10 +47,12 @@ export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(
 );
 
 export const useFormAction = formAction$<ShopFormType, ResponseData>(
-  async (values) => {
+  async (values, event) => {
+    const session = getSessionSS(event);
+
     const updatedShop = await prisma.shop.update({
       where: {
-        id: "656374af7d001c2bdb2ae73e",
+        id: session?.shopId,
       },
       data: {
         address: values.address,
