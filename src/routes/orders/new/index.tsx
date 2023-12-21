@@ -8,10 +8,9 @@ import {
   valiForm$,
 } from "@modular-forms/qwik";
 import { OrderForm } from "~/components/forms/order";
-import { CURRENCIES } from "~/constants/enum";
+import { getAllItems } from "~/lib/queries/items";
 import { getOrderPref } from "~/lib/queries/order-pref";
 import { successToast } from "~/providers/toast";
-import { prisma } from "~/routes/plugin@auth";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";
 import { OrderSchema } from "~/types-and-validation/orderSchema";
 import { getSessionSS } from "~/utils/auth";
@@ -23,8 +22,9 @@ export const useFormAction = formAction$<OrderFormType, ResponseData>(
   valiForm$(OrderSchema),
 );
 
-export const useItemsLoader = routeLoader$(async () => {
-  const items = await prisma.item.findMany();
+export const useItemsLoader = routeLoader$(async (event) => {
+  const session = getSessionSS(event);
+  const items = await getAllItems(session.shopId);
 
   return items;
 });
@@ -38,11 +38,11 @@ export const useFormLoader = routeLoader$<InitialValues<OrderFormType>>(
 
     return {
       date: "",
-      currency: pref?.currency || CURRENCIES.at(0),
+      currency: pref?.currency,
       // customerId: "",
       exchangeRate: 1,
       payment: {
-        method: "",
+        method: pref?.paymentMethod,
         // amount: 0,
         // currency: "",
       },

@@ -1,18 +1,13 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
-import { prisma } from "../plugin@auth";
 import { ItemsBActionBar } from "~/components/bottom-action-bar/items/index";
 import { ItemCard } from "~/components/cards/ItemCard";
 import { getSessionSS } from "~/utils/auth";
+import { getAllItems } from "~/lib/queries/items";
 
 export const useItemsLoader = routeLoader$(async (event) => {
   const session = getSessionSS(event);
-
-  const items = await prisma.item.findMany({
-    where: {
-      shopId: session.shopId,
-    },
-  });
+  const items = await getAllItems(session.shopId);
 
   return items;
 });

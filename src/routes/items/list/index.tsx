@@ -8,7 +8,8 @@ import {
   getCoreRowModel,
   getSortedRowModel,
 } from "@tanstack/table-core";
-import { prisma } from "~/routes/plugin@auth";
+import { getAllItems } from "~/lib/queries/items";
+import { getSessionSS } from "~/utils/auth";
 
 export const columnHelper = createColumnHelper<Item>();
 export const columns = [
@@ -37,8 +38,9 @@ export const useTable = (tableState: { sorting: SortingState }, data: Item[]) =>
     getCoreRowModel: getCoreRowModel(),
   });
 
-export const useItemsLoader = routeLoader$(async () => {
-  const items = await prisma.item.findMany();
+export const useItemsLoader = routeLoader$(async (event) => {
+  const session = getSessionSS(event);
+  const items = await getAllItems(session.shopId);
 
   return items;
 });

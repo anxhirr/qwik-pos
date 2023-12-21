@@ -68,6 +68,7 @@ export const OrderPrefForm = component$<Props>(({ form, action }) => {
               value: option,
             }))}
             placeholder="Payment Method"
+            value={field.value}
             error={field.error}
           />
         )}
