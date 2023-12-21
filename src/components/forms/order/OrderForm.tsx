@@ -113,6 +113,7 @@ export const OrderForm = component$<Props>(({ form, action, items }) => {
                   value: option,
                 }))}
                 placeholder="Currency"
+                value={field.value}
                 error={field.error}
               />
             )}

@@ -13,7 +13,7 @@ export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(
     const session = getSessionSS(event);
     const shop = await prisma.shop.findUnique({
       where: {
-        id: session?.shopId,
+        id: session.shopId,
       },
       include: {
         users: true,
@@ -52,7 +52,7 @@ export const useFormAction = formAction$<ShopFormType, ResponseData>(
 
     const updatedShop = await prisma.shop.update({
       where: {
-        id: session?.shopId,
+        id: session.shopId,
       },
       data: {
         address: values.address,

@@ -3,6 +3,7 @@ import { routeLoader$ } from "@builder.io/qwik-city";
 import type { InitialValues, ResponseData } from "@modular-forms/qwik";
 import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
 import { OrderPrefForm } from "~/components/forms/pref/OrderPrefForm";
+import { getOrderPref } from "~/lib/queries/order-pref";
 import { prisma } from "~/routes/plugin@auth";
 import type { OrderPrefFormType } from "~/types-and-validation/orderPrefSchema";
 import { OrderPrefSchema } from "~/types-and-validation/orderPrefSchema";
@@ -12,12 +13,7 @@ export const useFormLoader = routeLoader$<InitialValues<OrderPrefFormType>>(
   async (event) => {
     const session = getSessionSS(event);
 
-    const pref = await prisma.orderPref.findFirst({
-      where: {
-        shopId: session?.shopId,
-        userId: session?.userId,
-      },
-    });
+    const pref = await getOrderPref(session.shopId, session.userId);
 
     if (!pref) {
       return {
@@ -39,12 +35,7 @@ export const useFormAction = formAction$<OrderPrefFormType, ResponseData>(
   async (values, event) => {
     const session = getSessionSS(event);
 
-    const pref = await prisma.orderPref.findFirst({
-      where: {
-        shopId: session?.shopId,
-        userId: session?.userId,
-      },
-    });
+    const pref = await getOrderPref(session.shopId, session.userId);
 
     if (!pref?.id) {
       // TODO: create pref maybe?

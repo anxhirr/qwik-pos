@@ -8,10 +8,13 @@ import {
   valiForm$,
 } from "@modular-forms/qwik";
 import { OrderForm } from "~/components/forms/order";
+import { CURRENCIES } from "~/constants/enum";
+import { getOrderPref } from "~/lib/queries/order-pref";
 import { successToast } from "~/providers/toast";
 import { prisma } from "~/routes/plugin@auth";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";
 import { OrderSchema } from "~/types-and-validation/orderSchema";
+import { getSessionSS } from "~/utils/auth";
 
 export const useFormAction = formAction$<OrderFormType, ResponseData>(
   async (values) => {
@@ -26,38 +29,47 @@ export const useItemsLoader = routeLoader$(async () => {
   return items;
 });
 
-export const useFormLoader = routeLoader$<InitialValues<OrderFormType>>(() => ({
-  date: "",
-  currency: "",
-  // customerId: "",
-  exchangeRate: 1,
-  payment: {
-    method: "",
-    // amount: 0,
-    // currency: "",
+export const useFormLoader = routeLoader$<InitialValues<OrderFormType>>(
+  async (event) => {
+    const session = getSessionSS(event);
+
+    const pref = await getOrderPref(session.shopId, session.userId);
+    console.log("pref", pref);
+
+    return {
+      date: "",
+      currency: pref?.currency || CURRENCIES.at(0),
+      // customerId: "",
+      exchangeRate: 1,
+      payment: {
+        method: "",
+        // amount: 0,
+        // currency: "",
+      },
+      discount: {
+        amount: 0,
+        type: "",
+      },
+      items: [
+        {
+          // id: "",
+          name: "",
+          unit: "",
+          quantity: 0,
+          unitPrice: 0,
+          unitPriceWithTax: 0,
+        },
+      ],
+      customer: {
+        name: "",
+        // id: "",
+      },
+      docNo: 0,
+      // layout: "",
+      notes: "",
+    };
   },
-  discount: {
-    amount: 0,
-    type: "",
-  },
-  items: [
-    {
-      // id: "",
-      name: "",
-      unit: "",
-      quantity: 0,
-      unitPrice: 0,
-      unitPriceWithTax: 0,
-    },
-  ],
-  customer: {
-    name: "",
-    // id: "",
-  },
-  docNo: 0,
-  // layout: "",
-  notes: "",
-}));
+);
 
 export default component$(() => {
   const action = useFormAction();

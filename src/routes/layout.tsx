@@ -14,12 +14,7 @@ import { getSessionSS } from "~/utils/auth";
 export const onRequest: RequestHandler = async (event) => {
   const session = getSessionSS(event);
 
-  if (!session || new Date(session.expires) < new Date()) {
-    throw event.redirect(
-      302,
-      `/api/auth/signin?callbackUrl=${event.url.pathname}`,
-    );
-  }
+  console.log("session", session);
 
   // const shops = await prisma.shop.findMany({
   //   where: {

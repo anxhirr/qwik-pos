@@ -10,7 +10,7 @@ export const useItemsLoader = routeLoader$(async (event) => {
 
   const items = await prisma.item.findMany({
     where: {
-      shopId: session?.shopId,
+      shopId: session.shopId,
     },
   });
 

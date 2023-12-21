@@ -37,7 +37,7 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
         favorite: values.favorite,
         shop: {
           connect: {
-            id: session?.shopId,
+            id: session.shopId,
           },
         },
       },

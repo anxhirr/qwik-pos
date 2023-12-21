@@ -24,8 +24,6 @@ export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(() => {
 export const useFormAction = formAction$<ShopFormType, ResponseData>(
   async (values, event) => {
     const session = getSessionSS(event);
-    console.log(session);
-    if (!session) return;
 
     await prisma.shop.create({
       data: {
