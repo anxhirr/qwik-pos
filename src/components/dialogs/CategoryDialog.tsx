@@ -15,7 +15,6 @@ export const useFormAction = formAction$<CategoryFormType>(async (values) => {
       type: values.type,
     },
   });
-  console.log("newCategory", newCategory);
 
   if (!newCategory.id) {
     return {

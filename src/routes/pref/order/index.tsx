@@ -14,19 +14,22 @@ export const useFormLoader = routeLoader$<InitialValues<OrderPrefFormType>>(
     const session = getSessionSS(event);
 
     const pref = await getOrderPref(session.shopId, session.userId);
+    const { currency, shouldPrint, paymentMethod, printFormat } = pref || {};
 
     if (!pref) {
       return {
         currency: "",
         shouldPrint: false,
         paymentMethod: "",
+        printFormat: "",
       };
     }
 
     return {
-      currency: pref.currency,
-      shouldPrint: pref.shouldPrint,
-      paymentMethod: pref.paymentMethod,
+      currency,
+      shouldPrint,
+      paymentMethod,
+      printFormat,
     };
   },
 );
@@ -53,10 +56,11 @@ export const useFormAction = formAction$<OrderPrefFormType, ResponseData>(
         currency: values.currency,
         shouldPrint: values.shouldPrint,
         paymentMethod: values.paymentMethod,
+        printFormat: values.printFormat,
       },
     });
 
-    if (!updated) {
+    if (!updated.id) {
       return {
         status: "error",
         message: "Error updating pref",

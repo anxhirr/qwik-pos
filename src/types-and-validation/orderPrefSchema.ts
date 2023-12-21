@@ -1,9 +1,10 @@
-import { type Input, object, string, minLength, boolean } from "valibot";
+import { type Input, object, string, boolean } from "valibot";
 
 export const OrderPrefSchema = object({
-  currency: string([minLength(1, "Choose a currency.")]),
-  paymentMethod: string([minLength(1, "Choose payment method.")]),
+  currency: string(),
+  paymentMethod: string(),
   shouldPrint: boolean(),
+  printFormat: string(),
 });
 
 export type OrderPrefFormType = Input<typeof OrderPrefSchema>;

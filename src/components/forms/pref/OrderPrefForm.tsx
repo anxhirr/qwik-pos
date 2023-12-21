@@ -13,7 +13,12 @@ import {
 } from "@modular-forms/qwik";
 import { OrderPrefActionBar } from "~/components/bottom-action-bar/pref/order";
 import { CheckBoxInput, Select } from "~/components/shared";
-import { CURRENCIES, PAYMENT_METHODS, SHOP_FORM_ID } from "~/constants/enum";
+import {
+  CURRENCIES,
+  PAYMENT_METHODS,
+  PRINT_FORMATS,
+  SHOP_FORM_ID,
+} from "~/constants/enum";
 import type { OrderPrefFormType } from "~/types-and-validation/orderPrefSchema";
 
 type Props = {
@@ -68,6 +73,20 @@ export const OrderPrefForm = component$<Props>(({ form, action }) => {
               value: option,
             }))}
             placeholder="Payment Method"
+            value={field.value}
+            error={field.error}
+          />
+        )}
+      </Field>
+      <Field of={form} name="printFormat">
+        {(field, props) => (
+          <Select
+            {...props}
+            options={PRINT_FORMATS.map((option) => ({
+              label: option,
+              value: option,
+            }))}
+            placeholder="Print Format"
             value={field.value}
             error={field.error}
           />

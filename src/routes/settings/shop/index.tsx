@@ -65,8 +65,6 @@ export const useFormAction = formAction$<ShopFormType, ResponseData>(
       },
     });
 
-    console.log("updatedShop", updatedShop);
-
     if (!updatedShop.id) {
       return {
         status: "error",

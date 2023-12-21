@@ -15,4 +15,6 @@ export const CURRENCIES = ["ALL", "EUR", "USD"] as const;
 
 export const PAYMENT_METHODS = ["CASH", "CARD", "BANK"] as const;
 
+export const PRINT_FORMATS = ["80mm", "58mm", "A4", "A5"] as const;
+
 export const DISCOUNT_TYPES = ["PERCENTAGE", "AMOUNT"] as const;
