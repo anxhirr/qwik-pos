@@ -11,8 +11,8 @@ import {
   type ResponseData,
   type FormStore,
 } from "@modular-forms/qwik";
-import { TextInput } from "~/components/shared";
-import { SHOP_FORM_ID } from "~/constants/enum";
+import { Select, TextInput } from "~/components/shared";
+import { CURRENCIES, SHOP_FORM_ID } from "~/constants/enum";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";
 
 type Props = {
@@ -46,11 +46,15 @@ export const ShopForm = component$<Props>(({ form, action }) => {
       </Field>
       <Field of={form} name="baseCurrency">
         {(field, props) => (
-          <TextInput
+          <Select
             {...props}
+            options={CURRENCIES.map((option) => ({
+              label: option,
+              value: option,
+            }))}
+            placeholder="Currency"
             value={field.value}
             error={field.error}
-            placeholder="Base Currency"
           />
         )}
       </Field>
