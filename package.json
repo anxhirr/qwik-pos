@@ -23,7 +23,7 @@
     "postinstall": "prisma generate",
     "preview": "qwik build preview && vite preview --open",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate": "prisma db push",
     "prisma:migrate:prod": "prisma migrate deploy",
     "start": "vite --open --mode ssr",
     "qwik": "qwik"

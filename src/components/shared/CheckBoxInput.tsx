@@ -15,7 +15,7 @@ export const CheckBoxInput = component$(
   ({ value, error, label, name, ...props }: Props) => {
     return (
       <div class={props.class}>
-        <div class="form-control">
+        <div class="form-control w-full max-w-xs">
           <label class="label cursor-pointer">
             <span class="label-text">{label}</span>
             <input

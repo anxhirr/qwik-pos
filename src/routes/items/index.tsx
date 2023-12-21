@@ -3,9 +3,16 @@ import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { prisma } from "../plugin@auth";
 import { ItemsBActionBar } from "~/components/bottom-action-bar/items/index";
 import { ItemCard } from "~/components/cards/ItemCard";
+import { getSessionSS } from "~/utils/auth";
 
-export const useItemsLoader = routeLoader$(async () => {
-  const items = await prisma.item.findMany();
+export const useItemsLoader = routeLoader$(async (event) => {
+  const session = getSessionSS(event);
+
+  const items = await prisma.item.findMany({
+    where: {
+      shopId: session?.shopId,
+    },
+  });
 
   return items;
 });
