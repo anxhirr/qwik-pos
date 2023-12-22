@@ -1,6 +1,10 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
-import type { InitialValues, ResponseData } from "@modular-forms/qwik";
+import type {
+  InitialValues,
+  ResponseData,
+  SubmitHandler,
+} from "@modular-forms/qwik";
 import {
   formAction$,
   getErrors,
@@ -11,6 +15,7 @@ import { OrderForm } from "~/components/forms/order";
 import { getAllItems } from "~/lib/queries/items";
 import { getOrderPref } from "~/lib/queries/order-pref";
 import { successToast } from "~/providers/toast";
+import { openReceiptModal } from "~/triggers/dialogs";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";
 import { OrderSchema } from "~/types-and-validation/orderSchema";
 import { getSessionSS } from "~/utils/auth";
@@ -34,7 +39,6 @@ export const useFormLoader = routeLoader$<InitialValues<OrderFormType>>(
     const session = getSessionSS(event);
 
     const pref = await getOrderPref(session.shopId, session.userId);
-    console.log("pref", pref);
 
     return {
       date: "",
@@ -87,9 +91,22 @@ export default component$(() => {
   if (action.status === 200) {
     successToast("Order created successfully");
   }
+
+  const handleSubmit = $<SubmitHandler<OrderFormType>>((values, event) => {
+    // Runs on client
+    console.log("values", values);
+    console.log("event", event);
+
+    openReceiptModal();
+  });
   return (
     <div class="h-full">
-      <OrderForm form={form} action={action} items={items} />
+      <OrderForm
+        form={form}
+        action={action}
+        items={items}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 });
