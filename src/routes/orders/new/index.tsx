@@ -30,12 +30,14 @@ export const useFormAction = formAction$<OrderFormType, ResponseData>(
       data: {
         currency: values.currency,
         date: new Date(),
-        customer: values.customer,
+        customerId: "6572dd392ce8dcf9b2347ac0", // TODO: get from customer
+        customerName: values.customer.name,
         discountAmount: values.discount.amount,
         discountType: values.discount.type,
         exchangeRate: values.exchangeRate,
         docNo: values.docNo,
         paymentMethod: values.payment.method,
+        items: { create: values.items },
         notes: values.notes,
         shopId: session.shopId,
         userId: session.userId,

@@ -212,7 +212,7 @@ model OrderItemsField {
   quantity         Float
   unitPrice        Float
   unitPriceWithTax Float
-  Order            Order  @relation(fields: [orderId], references: [id])
+  Order            Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId          String @db.ObjectId
 
   @@map("order_items_fields")
@@ -227,7 +227,8 @@ model Order {
   docNo          Int
   date           DateTime
   currency       String
-  customer       Json
+  customerId     String            @map("customer_id") @db.ObjectId @default("60f1f1b0e3b9f5b4e0f7c9a1")
+  customerName   String            @map("customer_name") @default("Walk-in")
   exchangeRate   Float
   paymentMethod  String
   discountAmount Float
