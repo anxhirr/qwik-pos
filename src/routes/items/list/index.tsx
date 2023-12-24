@@ -1,32 +1,20 @@
-import { component$, useStore } from "@builder.io/qwik";
+import { $, component$, useStore } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { Item } from "@prisma/client";
 import type { SortingState } from "@tanstack/table-core";
 import {
   createTable,
-  createColumnHelper,
   getCoreRowModel,
   getSortedRowModel,
 } from "@tanstack/table-core";
+import { IcRoundDelete, IcRoundModeEdit } from "~/components/icons";
+import { columnsItems } from "~/components/table/columns/items";
 import { getAllItems } from "~/lib/queries/items";
 import { getSessionSS } from "~/utils/auth";
 
-export const columnHelper = createColumnHelper<Item>();
-export const columns = [
-  columnHelper.accessor("name", {
-    header: "Name",
-  }),
-  columnHelper.accessor("unit", {
-    header: "Unit",
-  }),
-  columnHelper.accessor("description", {
-    header: "Description",
-  }),
-];
-
-export const useTable = (tableState: { sorting: SortingState }, data: Item[]) =>
+const useTable = (tableState: { sorting: SortingState }, data: Item[]) =>
   createTable({
-    columns,
+    columns: columnsItems,
     data,
     state: {
       columnPinning: { left: [], right: [] },
@@ -51,6 +39,19 @@ export default component$(() => {
   });
   const items = useItemsLoader();
   const table = useTable(state, items.value);
+
+  const ACTION_BUTTONS = [
+    {
+      Icon: IcRoundModeEdit,
+      id: "edit",
+      onClick$: $(() => console.log("edit")),
+    },
+    {
+      Icon: IcRoundDelete,
+      id: "delete",
+      onClick$: $(() => console.log("delete")),
+    },
+  ];
 
   return (
     <table class="table">
@@ -81,6 +82,25 @@ export default component$(() => {
             {row.getAllCells().map((cell) => (
               <td key={cell.id}>{cell.getValue<string>()}</td>
             ))}
+            <td>
+              <div class="flex gap-2">
+                {/* <button class="btn btn-neutral btn-sm">
+                  <IcRoundModeEdit />
+                </button>
+                <button class="btn btn-neutral btn-sm">
+                  <IcRoundDelete />
+                </button> */}
+                {ACTION_BUTTONS.map(({ Icon, onClick$, id }) => (
+                  <button
+                    key={id}
+                    class="btn btn-neutral btn-sm"
+                    onClick$={onClick$}
+                  >
+                    {<Icon />}
+                  </button>
+                ))}
+              </div>
+            </td>
           </tr>
         ))}
       </tbody>
