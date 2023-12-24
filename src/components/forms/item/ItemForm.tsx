@@ -10,10 +10,17 @@ import {
   Form,
   type ResponseData,
   type FormStore,
+  FieldArray,
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
 import { NewItemBActionBar } from "~/components/bottom-action-bar/items/new";
-import { CheckBoxInput, Select, TextInput } from "~/components/shared";
+import {
+  CheckBoxInput,
+  DateInput,
+  NumberInput,
+  Select,
+  TextInput,
+} from "~/components/shared";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
 
 type Props = {
@@ -66,6 +73,62 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
               />
             )}
           </Field>
+          <FieldArray of={form} name="priceRules">
+            {(fieldArray) => (
+              <>
+                <div class="flex flex-col gap-2">
+                  {fieldArray.items.map((item, index) => (
+                    <div key={item} class="grid grid-cols-2 gap-1">
+                      <Field
+                        of={form}
+                        type="Date"
+                        name={`priceRules.${index}.start`}
+                      >
+                        {(field, props) => (
+                          <DateInput
+                            value={field.value}
+                            error={field.error}
+                            placeholder="Start date"
+                            {...props}
+                          />
+                        )}
+                      </Field>
+                      <Field
+                        of={form}
+                        type="Date"
+                        name={`priceRules.${index}.end`}
+                      >
+                        {(field, props) => (
+                          <DateInput
+                            value={field.value}
+                            error={field.error}
+                            placeholder="Start date"
+                            {...props}
+                          />
+                        )}
+                      </Field>
+                      <div class="col-span-2">
+                        <Field
+                          of={form}
+                          type="number"
+                          name={`priceRules.${index}.price`}
+                        >
+                          {(field, props) => (
+                            <NumberInput
+                              value={field.value}
+                              error={field.error}
+                              placeholder="Price"
+                              {...props}
+                            />
+                          )}
+                        </Field>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </FieldArray>
         </div>
         <div class="flex flex-col gap-4">
           <Field of={form} name="barcode">

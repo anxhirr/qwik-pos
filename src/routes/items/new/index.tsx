@@ -1,7 +1,13 @@
 import { component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { InitialValues, ResponseData } from "@modular-forms/qwik";
-import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
+import {
+  formAction$,
+  getErrors,
+  getValues,
+  useFormStore,
+  valiForm$,
+} from "@modular-forms/qwik";
 import { ItemForm } from "~/components/forms/item/ItemForm";
 import { prisma } from "~/routes/plugin@auth";
 import {
@@ -19,10 +25,18 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => ({
   description: "",
   active: true,
   favorite: true,
+  priceRules: [
+    {
+      start: new Date(),
+      end: new Date("2222-12-31"),
+      price: 0,
+    },
+  ],
 }));
 
 export const useFormAction = formAction$<ItemFormType, ResponseData>(
   async (values, event) => {
+    console.log("values", values);
     const session = getSessionSS(event);
 
     const item = await prisma.item.create({
@@ -35,6 +49,9 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
         description: values.description,
         active: values.active,
         favorite: values.favorite,
+        priceRules: {
+          create: values.priceRules,
+        },
         shop: {
           connect: {
             id: session.shopId,
@@ -70,7 +87,12 @@ export default component$(() => {
   const form = useFormStore<ItemFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(ItemSchema),
+    fieldArrays: ["priceRules"],
   });
+
+  console.log("error", getErrors(form));
+  const values = getValues(form);
+  console.log("values", values);
 
   return <ItemForm form={form} action={action} categories={categories.value} />;
 });

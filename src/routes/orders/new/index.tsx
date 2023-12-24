@@ -15,14 +15,33 @@ import { OrderForm } from "~/components/forms/order";
 import { getAllItems } from "~/lib/queries/items";
 import { getOrderPref } from "~/lib/queries/order-pref";
 import { successToast } from "~/providers/toast";
-import { openReceiptModal } from "~/triggers/dialogs";
+import { prisma } from "~/routes/plugin@auth";
+// import { openReceiptModal } from "~/triggers/dialogs";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";
 import { OrderSchema } from "~/types-and-validation/orderSchema";
 import { getSessionSS } from "~/utils/auth";
 
 export const useFormAction = formAction$<OrderFormType, ResponseData>(
-  async (values) => {
+  async (values, event) => {
     console.log("values", values);
+    const session = getSessionSS(event);
+
+    const order = await prisma.order.create({
+      data: {
+        currency: values.currency,
+        date: new Date(),
+        customer: values.customer,
+        discountAmount: values.discount.amount,
+        discountType: values.discount.type,
+        exchangeRate: values.exchangeRate,
+        docNo: values.docNo,
+        paymentMethod: values.payment.method,
+        notes: values.notes,
+        shopId: session.shopId,
+        userId: session.userId,
+      },
+    });
+    console.log("order", order);
   },
   valiForm$(OrderSchema),
 );
@@ -97,7 +116,7 @@ export default component$(() => {
     console.log("values", values);
     console.log("event", event);
 
-    openReceiptModal();
+    // openReceiptModal();
   });
   return (
     <div class="h-full">

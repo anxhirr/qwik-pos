@@ -6,24 +6,24 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider  = "mongodb"
+  url       = env("DATABASE_URL")
   directUrl = env("MONGO_DB_URL")
 }
 
 model Account {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId             String  @map("user_id") @db.ObjectId
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.String
-  access_token       String? @db.String
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.String
-  session_state      String?
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @map("user_id") @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -32,7 +32,7 @@ model Account {
 }
 
 model Session {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id") @db.ObjectId
   expires      DateTime
@@ -42,30 +42,31 @@ model Session {
 }
 
 model Shop {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  address   String
+  address      String
   baseCurrency String
-  city     String
-  description String
-  email    String
-  name     String
-  ownerId  String @map("owner_id") @db.ObjectId
-  phone    String
+  city         String
+  description  String
+  email        String
+  name         String
+  ownerId      String @map("owner_id") @db.ObjectId
+  phone        String
 
-  users UserShop[]
-  roles Role[]
-  items Item[]
+  users      UserShop[]
+  roles      Role[]
+  items      Item[]
   orderPrefs OrderPref[]
+  Order      Order[]
 
   @@map("shops")
 }
 
 model User {
-  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
@@ -73,14 +74,15 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  shops         UserShop[]
-  orderPrefs    OrderPref[]
+  shops      UserShop[]
+  orderPrefs OrderPref[]
+  Order      Order[]
 
   @@map("users")
 }
 
 model VerificationToken {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
   token      String   @unique
   expires    DateTime
@@ -89,72 +91,88 @@ model VerificationToken {
   @@map("verificationtokens")
 }
 
-model Item {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+model PriceRule {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  name      String
-  unit      String
-  category  String
-  barcode   String
-  code      String
-  description String
-  active    Boolean
-  favorite  Boolean
+  start  DateTime
+  end    DateTime
+  price  Float
+  itemId String   @map("item_id") @db.ObjectId
 
-  shop      Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  shopId    String @map("shop_id") @db.ObjectId
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@map("price_rules")
+}
+
+model Item {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name        String
+  unit        String
+  category    String
+  barcode     String
+  code        String
+  description String
+  active      Boolean
+  favorite    Boolean
+  priceRules  PriceRule[]
+
+  shop   Shop   @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  shopId String @map("shop_id") @db.ObjectId
 
   @@map("items")
 }
 
-
 model Role {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  name      String
+  name        String
   description String
   permissions String[]
-  shopId    String @map("shop_id") @db.ObjectId
-  userId    String @map("user_id") @db.ObjectId
+  shopId      String   @map("shop_id") @db.ObjectId
+  userId      String   @map("user_id") @db.ObjectId
 
   users UserShop[]
-  shop  Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  
+  shop  Shop       @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
   @@map("roles")
 }
 
 model UserShop {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  role      Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  shop      Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
-  roleId    String @map("role_id") @db.ObjectId
-  userId    String @map("user_id") @db.ObjectId
-  shopId    String @map("shop_id") @db.ObjectId
+  roleId String @map("role_id") @db.ObjectId
+  userId String @map("user_id") @db.ObjectId
+  shopId String @map("shop_id") @db.ObjectId
 
   @@map("users_shops")
 }
 
 model Category {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  name      String
-  type      String
-  color     String
+  name  String
+  type  String
+  color String
   // shopId    String @map("shop_id") @db.ObjectId
 
   @@map("categories")
@@ -164,21 +182,63 @@ model Category {
 // customer
 // shouldPrint
 model OrderPref {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  currency  String
+  currency      String
   // customerId  String
   paymentMethod String
-  shouldPrint Boolean
-  printFormat String @default("80mm")
-  shopId    String @map("shop_id") @db.ObjectId
-  userId    String @map("user_id") @db.ObjectId
+  shouldPrint   Boolean
+  printFormat   String  @default("80mm")
+  shopId        String  @map("shop_id") @db.ObjectId
+  userId        String  @map("user_id") @db.ObjectId
 
-  shop      Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("order_prefs")
+}
+
+model OrderItemsField {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name             String
+  unit             String
+  quantity         Float
+  unitPrice        Float
+  unitPriceWithTax Float
+  Order            Order  @relation(fields: [orderId], references: [id])
+  orderId          String @db.ObjectId
+
+  @@map("order_items_fields")
+}
+
+model Order {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  docNo          Int
+  date           DateTime
+  currency       String
+  customer       Json
+  exchangeRate   Float
+  paymentMethod  String
+  discountAmount Float
+  discountType   String
+  notes          String
+  items          OrderItemsField[]
+  shopId         String            @map("shop_id") @db.ObjectId
+  userId         String            @map("user_id") @db.ObjectId
+
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("orders")
 }
