@@ -1,5 +1,5 @@
 import { $, component$, useStore } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { routeLoader$, useNavigate } from "@builder.io/qwik-city";
 import type { Item } from "@prisma/client";
 import type { SortingState } from "@tanstack/table-core";
 import {
@@ -37,6 +37,7 @@ export default component$(() => {
   const state = useStore<{ sorting: SortingState }>({
     sorting: [],
   });
+  const navigate = useNavigate();
   const items = useItemsLoader();
   const table = useTable(state, items.value);
 
@@ -44,12 +45,12 @@ export default component$(() => {
     {
       Icon: IcRoundModeEdit,
       id: "edit",
-      onClick$: $(() => console.log("edit")),
+      onClick$: $((data: Item) => navigate(`/items/${data.id}`)),
     },
     {
       Icon: IcRoundDelete,
       id: "delete",
-      onClick$: $(() => console.log("delete")),
+      onClick$: $((data: Item) => console.log("delete", data)),
     },
   ];
 
@@ -84,21 +85,18 @@ export default component$(() => {
             ))}
             <td>
               <div class="flex gap-2">
-                {/* <button class="btn btn-neutral btn-sm">
-                  <IcRoundModeEdit />
-                </button>
-                <button class="btn btn-neutral btn-sm">
-                  <IcRoundDelete />
-                </button> */}
-                {ACTION_BUTTONS.map(({ Icon, onClick$, id }) => (
-                  <button
-                    key={id}
-                    class="btn btn-neutral btn-sm"
-                    onClick$={onClick$}
-                  >
-                    {<Icon />}
-                  </button>
-                ))}
+                {ACTION_BUTTONS.map(({ Icon, onClick$, id }) => {
+                  const data = row.original;
+                  return (
+                    <button
+                      key={id}
+                      class="btn btn-neutral btn-sm"
+                      onClick$={() => onClick$(data)}
+                    >
+                      {<Icon />}
+                    </button>
+                  );
+                })}
               </div>
             </td>
           </tr>
