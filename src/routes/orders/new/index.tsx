@@ -14,7 +14,7 @@ import {
 import { OrderForm } from "~/components/forms/order";
 import { getAllItems } from "~/lib/queries/items";
 import { getOrderPref } from "~/lib/queries/order-pref";
-import { successToast } from "~/providers/toast";
+// import { successToast } from "~/providers/toast";
 import { prisma } from "~/routes/plugin@auth";
 // import { openReceiptModal } from "~/triggers/dialogs";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";
@@ -109,15 +109,10 @@ export default component$(() => {
   const errors = getErrors(form);
   console.log("errors", errors);
 
-  if (action.status === 200) {
-    successToast("Order created successfully");
-  }
-
-  const handleSubmit = $<SubmitHandler<OrderFormType>>((values, event) => {
-    // Runs on client
-    console.log("values", values);
-    console.log("event", event);
-
+  const handleSubmit = $<SubmitHandler<OrderFormType>>(() => {
+    // if (action.status === 200) {
+    //   successToast("Order created successfully");
+    // }
     // openReceiptModal();
   });
   return (
