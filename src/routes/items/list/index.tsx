@@ -1,4 +1,4 @@
-import { $, component$, useStore } from "@builder.io/qwik";
+import { $, component$, useSignal, useStore } from "@builder.io/qwik";
 import { routeLoader$, useNavigate } from "@builder.io/qwik-city";
 import type { Item } from "@prisma/client";
 import type { SortingState } from "@tanstack/table-core";
@@ -11,7 +11,7 @@ import { DeleteItemConfirmDialog } from "~/components/dialogs/DeleteItemConfirmD
 import { IcRoundDelete, IcRoundModeEdit } from "~/components/icons";
 import { columnsItems } from "~/components/table/columns/items";
 import { getAllItems } from "~/lib/queries/items";
-import { openDeleteItemConfirmModal } from "~/triggers/dialogs";
+// import { openDeleteItemConfirmModal } from "~/triggers/dialogs";
 import { getSessionSS } from "~/utils/auth";
 
 const useTable = (tableState: { sorting: SortingState }, data: Item[]) =>
@@ -42,6 +42,7 @@ export default component$(() => {
   const navigate = useNavigate();
   const items = useItemsLoader();
   const table = useTable(state, items.value);
+  const showConfirmDialog = useSignal(false);
 
   const ACTION_BUTTONS = [
     {
@@ -52,7 +53,8 @@ export default component$(() => {
     {
       Icon: IcRoundDelete,
       id: "delete",
-      onClick$: $(() => openDeleteItemConfirmModal()),
+      // onClick$: $(() => openDeleteItemConfirmModal()),
+      onClick$: $(() => (showConfirmDialog.value = true)),
     },
   ];
 
@@ -107,7 +109,19 @@ export default component$(() => {
         </tbody>
         <tfoot></tfoot>
       </table>
-      <DeleteItemConfirmDialog />
+      <DeleteItemConfirmDialog
+        show={showConfirmDialog}
+        hide={$(() => {
+          showConfirmDialog.value = false;
+        })}
+        onCancel$={() => {
+          showConfirmDialog.value = false;
+        }}
+        onConfirm$={() => {
+          // TODO: delete item
+          console.log("confirm");
+        }}
+      />
     </>
   );
 });

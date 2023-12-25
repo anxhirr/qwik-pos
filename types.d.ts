@@ -3,6 +3,7 @@ import type {
   PropFunction,
   QwikChangeEvent,
   QwikFocusEvent,
+  Signal,
 } from "@builder.io/qwik";
 
 export type OrderItemType = {
@@ -49,4 +50,14 @@ export interface ModularInputProps {
   class?: string;
   label?: string;
   error?: string;
+}
+
+interface DialogProps {
+  show: Signal<boolean>;
+  hide: () => void;
+}
+
+interface ConfirmDialogProps extends DialogProps {
+  onConfirm$: () => void;
+  onCancel$: () => void;
 }

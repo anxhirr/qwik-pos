@@ -4,19 +4,23 @@ import clsx from "clsx";
 
 type DialogProps = {
   id: string;
+  show: boolean;
+  hide: () => void;
+  title: string;
   closeOnOutsideClick?: boolean;
   useCloseButton?: boolean;
 };
 
 export const Dialog = component$<DialogProps>(
-  ({ id, closeOnOutsideClick = true }) => {
+  ({ id, hide, closeOnOutsideClick = true, show, title }) => {
     return (
-      <dialog id={id} class="modal">
+      <dialog id={id} class="modal" open={show}>
         <div class="modal-box">
+          <DialogHeader hide={hide} title={title} />
           <Slot />
         </div>
 
-        {closeOnOutsideClick && <DialogBackdrop />}
+        {closeOnOutsideClick && <DialogBackdrop hide={hide} />}
       </dialog>
     );
   },
@@ -25,10 +29,11 @@ export const Dialog = component$<DialogProps>(
 type DialogHeaderProps = {
   useCloseButton?: boolean;
   title: string;
+  hide: () => void;
 };
 
 export const DialogHeader = component$<DialogHeaderProps>(
-  ({ useCloseButton = true, title }) => {
+  ({ useCloseButton = true, hide, title }) => {
     return (
       <div
         class={clsx(
@@ -39,7 +44,7 @@ export const DialogHeader = component$<DialogHeaderProps>(
         <h3 class="text-lg font-bold">{title}</h3>
         {useCloseButton && (
           <form method="dialog">
-            <button class="btn btn-circle btn-ghost btn-sm">
+            <button class="btn btn-circle btn-ghost btn-sm" onClick$={hide}>
               <IcRoundClose />
             </button>
           </form>
@@ -76,10 +81,14 @@ export const DialogFooter = component$<DialogFooterProps>(
   },
 );
 
-const DialogBackdrop = component$(() => {
+type DialogBackdropProps = {
+  hide: () => void;
+};
+
+const DialogBackdrop = component$<DialogBackdropProps>(({ hide }) => {
   return (
     <form method="dialog" class="modal-backdrop">
-      <button />
+      <button onClick$={hide} />
     </form>
   );
 });

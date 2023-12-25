@@ -1,10 +1,10 @@
 import { CategoriesBActionBar } from "~/components/bottom-action-bar/categories";
 
-import { component$ } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
 import { prisma } from "../plugin@auth";
 import { CategoryCard } from "~/components/cards/CategoryCard";
-import { CategoryDialog } from "~/components/dialogs/CategoryDialog";
+import { CategoryDialog } from "~/components/dialogs";
 
 export const useCategoriesLoader = routeLoader$(async () => {
   const categories = await prisma.category.findMany();
@@ -32,6 +32,7 @@ export const useDeleteCategory = routeAction$(async (cat, { fail }) => {
 export default component$(() => {
   const data = useCategoriesLoader();
   const action = useDeleteCategory();
+  const showDialog = useSignal(false);
 
   return (
     <div>
@@ -56,7 +57,12 @@ export default component$(() => {
         ))}
       </ul>
 
-      <CategoryDialog />
+      <CategoryDialog
+        show={showDialog}
+        hide={$(() => {
+          showDialog.value = false;
+        })}
+      />
       <CategoriesBActionBar />
     </div>
   );

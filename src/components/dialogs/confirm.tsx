@@ -1,18 +1,17 @@
 import { component$ } from "@builder.io/qwik";
-import { Dialog, DialogBody, DialogFooter, DialogHeader } from "./base";
+import { Dialog, DialogBody, DialogFooter } from "./base";
+import type { ConfirmDialogProps } from "../../../types";
 
-type Props = {
+interface Props extends ConfirmDialogProps {
   id: string;
   title: string;
   confirmText: string;
-  onConfirm$: () => void;
-  onCancel$: () => void;
-};
+}
+
 export const ConfirmDialogBase = component$<Props>(
-  ({ id, title, confirmText, onConfirm$, onCancel$ }) => {
+  ({ id, show, hide, title, confirmText, onConfirm$, onCancel$ }) => {
     return (
-      <Dialog id={id}>
-        <DialogHeader title={title} />
+      <Dialog id={id} show={show.value} hide={hide} title={title}>
         <DialogBody>{confirmText}</DialogBody>
         <DialogFooter useCloseButton={false}>
           <button class="btn btn-warning" onClick$={onConfirm$}>

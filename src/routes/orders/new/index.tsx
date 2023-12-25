@@ -17,7 +17,6 @@ import { getOrderPref } from "~/lib/queries/order-pref";
 // import { successToast } from "~/providers/toast";
 import { prisma } from "~/routes/plugin@auth";
 import { openReceiptModal } from "~/triggers/dialogs";
-// import { openReceiptModal } from "~/triggers/dialogs";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";
 import { OrderSchema } from "~/types-and-validation/orderSchema";
 import { getSessionSS } from "~/utils/auth";

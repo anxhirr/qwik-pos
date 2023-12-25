@@ -1,12 +1,7 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import type { Category } from "@prisma/client";
 import { IcRoundDelete, IcRoundModeEdit } from "../icons";
-import {
-  closeDeleteCategoryConfirmModal,
-  openCategoryModal,
-  openDeleteCategoryConfirmModal,
-} from "~/triggers/dialogs";
-import { DeleteCategoryConfirmDialog } from "../dialogs/DeleteCategoryConfirmDialog";
+import { DeleteCategoryConfirmDialog } from "../dialogs";
 
 type Props = {
   data: Category;
@@ -14,6 +9,7 @@ type Props = {
 };
 
 export const CategoryCard = component$<Props>(({ data, handleDelete$ }) => {
+  const showConfirmDialog = useSignal(false);
   return (
     <div class="card h-full max-w-xs bg-base-100 shadow-xl">
       <div class="card-body">
@@ -23,18 +19,30 @@ export const CategoryCard = component$<Props>(({ data, handleDelete$ }) => {
         </h2>
       </div>
       <div class="card-actions justify-end">
-        <button class="btn btn-primary" onClick$={openCategoryModal}>
+        <button
+          class="btn btn-primary"
+          onClick$={() => (showConfirmDialog.value = true)}
+        >
           <IcRoundModeEdit />
           Edit
         </button>
-        <button class="btn btn-error" onClick$={openDeleteCategoryConfirmModal}>
+        <button
+          class="btn btn-error"
+          onClick$={() => (showConfirmDialog.value = true)}
+        >
           <IcRoundDelete />
           Delete
         </button>
       </div>
       <DeleteCategoryConfirmDialog
+        show={showConfirmDialog}
         onConfirm$={handleDelete$}
-        onCancel$={closeDeleteCategoryConfirmModal}
+        onCancel$={() => {
+          showConfirmDialog.value = false;
+        }}
+        hide={$(() => {
+          showConfirmDialog.value = false;
+        })}
       />
     </div>
   );

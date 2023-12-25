@@ -7,6 +7,7 @@ import { CategorySchema } from "~/types-and-validation/categorySchema";
 import { prisma } from "~/routes/plugin@auth";
 import { CATEGORY_DIALOG_ID, CATEGORY_FORM_ID } from "~/constants/enum";
 import { Dialog, DialogBody } from ".";
+import type { DialogProps } from "../../../types";
 
 export const useFormAction = formAction$<CategoryFormType>(async (values) => {
   const newCategory = await prisma.category.create({
@@ -29,7 +30,7 @@ export const useFormAction = formAction$<CategoryFormType>(async (values) => {
   };
 }, valiForm$(CategorySchema));
 
-export const CategoryDialog = component$(() => {
+export const CategoryDialog = component$<DialogProps>(({ show, hide }) => {
   const action = useFormAction();
   const form = useFormStore<CategoryFormType, ResponseData>({
     loader: {
@@ -43,7 +44,12 @@ export const CategoryDialog = component$(() => {
   });
 
   return (
-    <Dialog id={CATEGORY_DIALOG_ID}>
+    <Dialog
+      id={CATEGORY_DIALOG_ID}
+      show={show.value}
+      hide={hide}
+      title="Category"
+    >
       <DialogBody>
         <h3 class="text-lg font-bold">New Category</h3>
         <p class="py-4">Press ESC key or click the button below to close</p>

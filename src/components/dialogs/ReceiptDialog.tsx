@@ -1,10 +1,16 @@
 import { component$ } from "@builder.io/qwik";
 import { ORDER_RECEIPT_DIALOG_ID } from "~/constants/enum";
 import { Dialog, DialogBody } from ".";
+import type { DialogProps } from "../../../types";
 
-export const ReceiptDialog = component$(() => {
+export const ReceiptDialog = component$<DialogProps>(({ show, hide }) => {
   return (
-    <Dialog id={ORDER_RECEIPT_DIALOG_ID}>
+    <Dialog
+      id={ORDER_RECEIPT_DIALOG_ID}
+      show={show.value}
+      hide={hide}
+      title="Receipt"
+    >
       <DialogBody>
         <div class="print">
           <div class="text-center">
