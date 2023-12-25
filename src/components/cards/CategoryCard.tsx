@@ -2,6 +2,7 @@ import { component$ } from "@builder.io/qwik";
 import type { Category } from "@prisma/client";
 import { IcRoundDelete, IcRoundModeEdit } from "../icons";
 import {
+  closeDeleteCategoryConfirmModal,
   openCategoryModal,
   openDeleteCategoryConfirmModal,
 } from "~/triggers/dialogs";
@@ -9,8 +10,10 @@ import { DeleteCategoryConfirmDialog } from "../dialogs/DeleteCategoryConfirmDia
 
 type Props = {
   data: Category;
+  handleDelete$: () => void;
 };
-export const CategoryCard = component$<Props>(({ data }) => {
+
+export const CategoryCard = component$<Props>(({ data, handleDelete$ }) => {
   return (
     <div class="card h-full max-w-xs bg-base-100 shadow-xl">
       <div class="card-body">
@@ -29,7 +32,10 @@ export const CategoryCard = component$<Props>(({ data }) => {
           Delete
         </button>
       </div>
-      <DeleteCategoryConfirmDialog />
+      <DeleteCategoryConfirmDialog
+        onConfirm$={handleDelete$}
+        onCancel$={closeDeleteCategoryConfirmModal}
+      />
     </div>
   );
 });

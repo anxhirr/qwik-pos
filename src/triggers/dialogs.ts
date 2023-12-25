@@ -17,11 +17,11 @@ const open = (id: string, data?: object) => {
 
   if (data) setDataContent(id, data);
 };
-// const close = (id: string) => {
-//   const modal = document.getElementById(id);
-//   modal?.removeAttribute("open");
-// };
-
+const close = (id: string) => {
+  const modal = document.getElementById(id);
+  modal?.removeAttribute("open");
+};
+//////////////OPEN MODALS/////////////////////
 export const openCategoryModal = $((data?: object) =>
   open(CATEGORY_DIALOG_ID, data),
 );
@@ -49,3 +49,13 @@ export const openDeleteCategoryConfirmModal = $((data?: object) =>
 //   const data = dialog?.getAttribute("data-content");
 //   return data ? JSON.parse(data) : null;
 // });
+
+//////////////CLOSE MODALS/////////////////////
+export const closeCategoryModal = $(() => close(CATEGORY_DIALOG_ID));
+export const closeReceiptModal = $(() => close(ORDER_RECEIPT_DIALOG_ID));
+export const closeDeleteItemConfirmModal = $(() =>
+  close(DELETE_ITEM_CONFIRM_DIALOG_ID),
+);
+export const closeDeleteCategoryConfirmModal = $(() =>
+  close(DELETE_CATEGORY_CONFIRM_DIALOG_ID),
+);

@@ -79,7 +79,7 @@ export const DialogFooter = component$<DialogFooterProps>(
 const DialogBackdrop = component$(() => {
   return (
     <form method="dialog" class="modal-backdrop">
-      <button>close</button>
+      <button />
     </form>
   );
 });
