@@ -1,5 +1,5 @@
 import { Slot, component$ } from "@builder.io/qwik";
-import { IcRoundClose } from "../../icons";
+import { IcRoundClose } from "../icons";
 import clsx from "clsx";
 
 type DialogProps = {
