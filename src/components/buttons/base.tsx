@@ -9,7 +9,7 @@ type Props = {
   text?: string;
   form?: string;
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
-  variant?: "primary" | "secondary" | "success" | "danger" | "warning";
+  variant?: "primary" | "secondary" | "success" | "error" | "warning";
   disabled?: boolean;
   isLoading?: boolean;
   loadingText?: string;
