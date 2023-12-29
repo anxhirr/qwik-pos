@@ -1,6 +1,7 @@
 import { Slot, component$ } from "@builder.io/qwik";
 import { IcRoundClose } from "../icons";
 import clsx from "clsx";
+import { Button } from "../buttons/base";
 
 type DialogProps = {
   id: string;
@@ -72,7 +73,7 @@ export const DialogFooter = component$<DialogFooterProps>(
       <div class="modal-action">
         {useCloseButton && (
           <form method="dialog">
-            <button class="btn btn-warning">Close</button>
+            <Button text="Close" variant="warning" />
           </form>
         )}
         <Slot />

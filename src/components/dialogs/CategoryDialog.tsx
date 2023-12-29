@@ -1,13 +1,19 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useTask$ } from "@builder.io/qwik";
 import { CategoryForm } from "../forms/category/CategoryForm";
 import type { ResponseData } from "@modular-forms/qwik";
-import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
+import {
+  formAction$,
+  setValues,
+  useFormStore,
+  valiForm$,
+} from "@modular-forms/qwik";
 import type { CategoryFormType } from "~/types-and-validation/categorySchema";
 import { CategorySchema } from "~/types-and-validation/categorySchema";
 import { prisma } from "~/routes/plugin@auth";
 import { CATEGORY_DIALOG_ID, CATEGORY_FORM_ID } from "~/constants/enum";
-import { Dialog, DialogBody } from ".";
+import { Dialog, DialogBody, DialogFooter } from ".";
 import type { DialogProps } from "../../../types";
+import { Button } from "../buttons/base";
 
 export const useFormAction = formAction$<CategoryFormType>(async (values) => {
   const newCategory = await prisma.category.create({
@@ -30,46 +36,47 @@ export const useFormAction = formAction$<CategoryFormType>(async (values) => {
   };
 }, valiForm$(CategorySchema));
 
-export const CategoryDialog = component$<DialogProps>(({ show, hide }) => {
-  const action = useFormAction();
-  const form = useFormStore<CategoryFormType, ResponseData>({
-    loader: {
-      value: {
-        type: "",
-        name: "",
-        color: "",
-      },
-    },
-    validate: valiForm$(CategorySchema),
-  });
+interface CategoryDialogProps extends DialogProps {
+  formData: CategoryFormType;
+}
 
-  return (
-    <Dialog
-      id={CATEGORY_DIALOG_ID}
-      show={show.value}
-      hide={hide}
-      title="Category"
-    >
-      <DialogBody>
-        <h3 class="text-lg font-bold">New Category</h3>
-        <p class="py-4">Press ESC key or click the button below to close</p>
-        <CategoryForm form={form} action={action} />
-        <div class="modal-action">
-          <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
-            <div class="flex gap-2">
-              <button class="btn btn-warning">Close</button>
-              <button
-                class="btn btn-success"
-                form={CATEGORY_FORM_ID}
-                type="submit"
-              >
-                {form.submitting ? "Saving..." : "Save"}
-              </button>
-            </div>
-          </form>
-        </div>
-      </DialogBody>
-    </Dialog>
-  );
-});
+export const CategoryDialog = component$<CategoryDialogProps>(
+  ({ show, hide, formData }) => {
+    const action = useFormAction();
+    const form = useFormStore<CategoryFormType, ResponseData>({
+      loader: {
+        value: formData,
+      },
+      validate: valiForm$(CategorySchema),
+    });
+
+    useTask$(({ track }) => {
+      track(() => formData);
+
+      setValues(form, formData);
+    });
+
+    return (
+      <Dialog
+        id={CATEGORY_DIALOG_ID}
+        show={show.value}
+        hide={hide}
+        title="New Category"
+      >
+        <DialogBody>
+          <CategoryForm form={form} action={action} />
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            text="Save"
+            isLoading={form.submitting}
+            loadingText="Saving..."
+            form={CATEGORY_FORM_ID}
+            type="submit"
+            variant="success"
+          />
+        </DialogFooter>
+      </Dialog>
+    );
+  },
+);

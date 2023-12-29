@@ -1,7 +1,10 @@
-import type { IntrinsicHTMLElements, QwikMouseEvent } from "@builder.io/qwik";
+import type {
+  IntrinsicHTMLElements,
+  JSXNode,
+  QwikMouseEvent,
+} from "@builder.io/qwik";
 import { $, component$ } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
-import type { JSX } from "@builder.io/qwik/jsx-runtime";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import { IcBaselineCheckCircle, IcRoundPlus } from "~/components/icons";
 import { SHOP_FORM_ID } from "~/constants/enum";
@@ -14,7 +17,7 @@ type Props = {
 
 type BtnProps = {
   text: string;
-  Icon: (props: IconProps) => JSX.Element;
+  Icon: (props: IconProps) => JSXNode;
   submittingText?: string;
   type?: IntrinsicHTMLElements["button"]["type"];
   onClick$?: (
