@@ -22,13 +22,23 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(
 
     const item = await prisma.item.findUnique({
       where: { id, shopId: session.shopId },
+      include: {
+        priceRules: true,
+      },
     });
 
     if (!item) {
       throw new Error("Item not found");
     }
 
-    return item;
+    return {
+      ...item,
+      priceRules: item.priceRules.map((rule) => ({
+        ...rule,
+        start: new Date(rule.start).toISOString(),
+        end: new Date(rule.end).toISOString(),
+      })),
+    };
   },
 );
 
@@ -82,6 +92,7 @@ export default component$(() => {
   const form = useFormStore<ItemFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(ItemSchema),
+    fieldArrays: ["priceRules"],
   });
 
   return (

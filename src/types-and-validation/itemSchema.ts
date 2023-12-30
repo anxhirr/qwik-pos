@@ -5,8 +5,8 @@ import {
   object,
   string,
   array,
-  date,
   number,
+  isoTimestamp,
 } from "valibot";
 
 export const ItemSchema = object({
@@ -14,8 +14,8 @@ export const ItemSchema = object({
   unit: string([minLength(1, "Please enter unit.")]),
   priceRules: array(
     object({
-      start: date(),
-      end: date(),
+      start: string([isoTimestamp()]),
+      end: string([isoTimestamp()]),
       price: number(),
     }),
   ),

@@ -1,4 +1,4 @@
-import { $, component$ } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type {
   InitialValues,
@@ -11,12 +11,12 @@ import {
   useFormStore,
   valiForm$,
 } from "@modular-forms/qwik";
+import { ReceiptDialog } from "~/components/dialogs";
 import { OrderForm } from "~/components/forms/order";
 import { getAllItems } from "~/lib/queries/items";
 import { getOrderPref } from "~/lib/queries/order-pref";
 // import { successToast } from "~/providers/toast";
 import { prisma } from "~/routes/plugin@auth";
-import { openReceiptModal } from "~/triggers/dialogs";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";
 import { OrderSchema } from "~/types-and-validation/orderSchema";
 import { getSessionSS } from "~/utils/auth";
@@ -100,6 +100,9 @@ export default component$(() => {
   const action = useFormAction();
   const items = useItemsLoader();
 
+  const showReceiptDialog = useSignal(false);
+  const order = useSignal<OrderFormType>();
+
   const form = useFormStore<OrderFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(OrderSchema),
@@ -113,7 +116,8 @@ export default component$(() => {
     // if (action.status === 200) {
     //   successToast("Order created successfully");
     // }
-    openReceiptModal(values);
+    showReceiptDialog.value = true;
+    order.value = values;
   });
   return (
     <div class="h-full">
@@ -122,6 +126,14 @@ export default component$(() => {
         action={action}
         items={items}
         handleSubmit={handleSubmit}
+      />
+
+      <ReceiptDialog
+        show={showReceiptDialog}
+        order={order.value}
+        hide={$(() => {
+          showReceiptDialog.value = false;
+        })}
       />
     </div>
   );

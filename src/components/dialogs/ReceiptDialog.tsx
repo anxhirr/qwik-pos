@@ -1,15 +1,26 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useComputed$ } from "@builder.io/qwik";
 import { ORDER_RECEIPT_DIALOG_ID } from "~/constants/enum";
 import { Dialog, DialogBody } from ".";
 import type { DialogProps } from "../../../types";
+import type { OrderFormType } from "~/types-and-validation/orderSchema";
+import { calcOrderTotal } from "~/utils/order";
 
-export const ReceiptDialog = component$<DialogProps>(({ show, hide }) => {
+interface Props extends DialogProps {
+  order: OrderFormType | undefined;
+}
+
+export const ReceiptDialog = component$<Props>(({ show, order, hide }) => {
+  const total = useComputed$(() => {
+    if (!order) return 0;
+    return calcOrderTotal(order);
+  });
   return (
     <Dialog
       id={ORDER_RECEIPT_DIALOG_ID}
       show={show.value}
       hide={hide}
       title="Receipt"
+      closeOnOutsideClick={false}
     >
       <DialogBody>
         <div class="print">
@@ -24,15 +35,15 @@ export const ReceiptDialog = component$<DialogProps>(({ show, hide }) => {
             </div>
             <div class="flex justify-between">
               <p>Date/Time</p>
-              <p>date</p>
+              <p>{order?.date}</p>
             </div>
             <div class="flex justify-between">
               <p>Receipt No.</p>
-              <p>docNo</p>
+              <p>{order?.docNo}</p>
             </div>
             <div class="flex justify-between">
               <p>Customer Name</p>
-              <p>John Doe</p>
+              <p>{order?.customer.name}</p>
             </div>
             <div class="flex justify-between">
               <p>Business Unit</p>
@@ -40,36 +51,36 @@ export const ReceiptDialog = component$<DialogProps>(({ show, hide }) => {
             </div>
             <div class="flex justify-between">
               <p>Payment Method</p>
-              <p>paymentMethod</p>
+              <p>{order?.payment.method}</p>
             </div>
           </div>
 
           <div>
-            items
-            {/* {orderModel.getDetailedItems().map((item, i) => {
-          const { quantity, total, finalPrice, name, unit } = item
-          return (
-            <div key={i} class='border-b-2 border-dashed'>
-              <div>{name}</div>
-              <div class='flex justify-between'>
-                <div>
-                  {quantity} {unit} x {finalPrice}
+            {order?.items.map((item, i) => {
+              return (
+                <div key={i} class="border-b-2 border-dashed">
+                  <div>{item.name}</div>
+                  <div class="flex justify-between">
+                    <div>
+                      {item.quantity} {item.unit} x {item.unitPrice}
+                    </div>
+                    <div>111111 Lek</div>
+                  </div>
                 </div>
-                <div>{total} Lek</div>
-              </div>
-            </div>
-          )
-        })} */}
+              );
+            })}
           </div>
 
           <div class="border-b-2 border-dashed  py-2">
             <div class="flex justify-between">
               <h2 class="text-xl font-bold">Total</h2>
-              <div>total currency</div>
+              <div>
+                {total.value} {order?.currency}
+              </div>
             </div>
             <div class="flex justify-between">
               <h2>Payment amount</h2>
-              <div>paymentAmount currency</div>
+              <div>ssssss currency</div>
             </div>
           </div>
 

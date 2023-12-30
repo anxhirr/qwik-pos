@@ -9,6 +9,7 @@ import {
   valiForm$,
 } from "@modular-forms/qwik";
 import { ItemForm } from "~/components/forms/item/ItemForm";
+import { PRICE_END_ISO_DATE } from "~/constants/defaults";
 import { prisma } from "~/routes/plugin@auth";
 import {
   type ItemFormType,
@@ -16,27 +17,30 @@ import {
 } from "~/types-and-validation/itemSchema";
 import { getSessionSS } from "~/utils/auth";
 
-export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => ({
-  name: "",
-  unit: "",
-  category: "",
-  barcode: "",
-  code: "",
-  description: "",
-  active: true,
-  favorite: true,
-  priceRules: [
-    {
-      start: new Date(),
-      end: new Date("2222-12-31"),
-      price: 0,
-    },
-  ],
-}));
+export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => {
+  const loader = {
+    name: "",
+    unit: "",
+    category: "",
+    barcode: "",
+    code: "",
+    description: "",
+    active: true,
+    favorite: true,
+    priceRules: [
+      {
+        start: new Date().toISOString(),
+        end: new Date(PRICE_END_ISO_DATE).toISOString(),
+        price: 0,
+      },
+    ],
+  };
+  console.log("loader", loader);
+  return loader;
+});
 
 export const useFormAction = formAction$<ItemFormType, ResponseData>(
   async (values, event) => {
-    console.log("values", values);
     const session = getSessionSS(event);
 
     const item = await prisma.item.create({

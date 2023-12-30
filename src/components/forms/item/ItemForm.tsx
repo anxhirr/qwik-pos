@@ -16,11 +16,11 @@ import type { Category } from "@prisma/client";
 import { NewItemBActionBar } from "~/components/bottom-action-bar/items/new";
 import {
   CheckBoxInput,
-  DateInput,
   NumberInput,
   Select,
   TextInput,
 } from "~/components/shared";
+import { IsoDateTimeInput } from "~/components/shared/IsoDateTimeInput";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
 
 type Props = {
@@ -81,11 +81,11 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                     <div key={item} class="grid grid-cols-2 gap-1">
                       <Field
                         of={form}
-                        type="Date"
+                        type="string"
                         name={`priceRules.${index}.start`}
                       >
                         {(field, props) => (
-                          <DateInput
+                          <IsoDateTimeInput
                             value={field.value}
                             error={field.error}
                             placeholder="Start date"
@@ -95,11 +95,11 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                       </Field>
                       <Field
                         of={form}
-                        type="Date"
+                        type="string"
                         name={`priceRules.${index}.end`}
                       >
                         {(field, props) => (
-                          <DateInput
+                          <IsoDateTimeInput
                             value={field.value}
                             error={field.error}
                             placeholder="Start date"
