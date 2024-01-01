@@ -69,6 +69,19 @@ export const OrderForm = component$<Props>(
       });
     });
 
+    const addNewEmptyRow = $((index: number) => {
+      insert(form, "items", {
+        at: index,
+        value: {
+          name: "",
+          unit: "",
+          quantity: 0,
+          unitPrice: 0,
+          unitPriceWithTax: 0,
+        },
+      });
+    });
+
     return (
       <>
         <Form
@@ -225,9 +238,11 @@ export const OrderForm = component$<Props>(
                                 options={options.value}
                                 placeholder="Item"
                                 value={field.value}
-                                onSelect={$((option: CustomSelectOption) =>
-                                  handleItemSelect(option, index),
-                                )}
+                                onSelect={$((option: CustomSelectOption) => {
+                                  handleItemSelect(option, index);
+                                  addNewEmptyRow(fieldArray.items.length);
+                                  // TODO: focus on next row
+                                })}
                               />
                             )}
                           </Field>
@@ -296,16 +311,7 @@ export const OrderForm = component$<Props>(
                       type="button"
                       class="btn btn-secondary"
                       onClick$={() => {
-                        insert(form, "items", {
-                          at: fieldArray.items.length,
-                          value: {
-                            name: "",
-                            unit: "",
-                            quantity: 0,
-                            unitPrice: 0,
-                            unitPriceWithTax: 0,
-                          },
-                        });
+                        addNewEmptyRow(fieldArray.items.length);
                       }}
                     >
                       <IcRoundPlus />
