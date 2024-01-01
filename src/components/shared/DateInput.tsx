@@ -3,23 +3,22 @@ import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 import type { ModularInputProps } from "../../../types";
 import { InputLabel } from "./InputLabel";
 import { InputError } from "./InputError";
+import { createDateTimeLocalString } from "~/utils/date";
 
-type NumberInputProps = {
-  value: undefined | string | number | Date;
+type Props = {
+  value: undefined | string | Date | number;
+  type?: "date" | "datetime-local";
 } & ModularInputProps;
 
 export const DateInput = component$(
-  ({ value, error, name, label, required, ...props }: NumberInputProps) => {
+  ({ value, error, name, label, required, type = "date", ...props }: Props) => {
     const input = useSignal<string>();
 
     useTask$(({ track }) => {
       track(() => value);
-      // Transform date or number to string
-      typeof value === "number" || value instanceof Date
-        ? (input.value = new Date(value).toISOString().split("T", 1)[0])
-        : typeof value === "string"
-        ? (input.value = value)
-        : (input.value = undefined);
+      if (!value) return;
+      const date = new Date(value);
+      input.value = createDateTimeLocalString(date);
     });
     return (
       <div class={props.class}>
@@ -31,7 +30,7 @@ export const DateInput = component$(
             error ? "input-error" : "",
           )}
           id={name}
-          type="date"
+          type={type}
           value={input.value}
           aria-invalid={!!error}
           aria-errormessage={`${name}-error`}

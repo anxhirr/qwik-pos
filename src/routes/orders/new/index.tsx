@@ -62,7 +62,7 @@ export const useFormLoader = routeLoader$<InitialValues<OrderFormType>>(
     const pref = await getOrderPref(session.shopId, session.userId);
 
     return {
-      date: "",
+      date: new Date().toISOString(),
       currency: pref?.currency,
       // customerId: "",
       exchangeRate: 1,

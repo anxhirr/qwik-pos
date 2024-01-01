@@ -20,7 +20,7 @@ import {
   Select,
   TextInput,
 } from "~/components/shared";
-import { IsoDateTimeInput } from "~/components/shared/IsoDateTimeInput";
+import { DateInput } from "~/components/shared";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
 
 type Props = {
@@ -85,10 +85,11 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                         name={`priceRules.${index}.start`}
                       >
                         {(field, props) => (
-                          <IsoDateTimeInput
+                          <DateInput
                             value={field.value}
                             error={field.error}
                             placeholder="Start date"
+                            type="datetime-local"
                             {...props}
                           />
                         )}
@@ -99,10 +100,11 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                         name={`priceRules.${index}.end`}
                       >
                         {(field, props) => (
-                          <IsoDateTimeInput
+                          <DateInput
                             value={field.value}
                             error={field.error}
                             placeholder="Start date"
+                            type="datetime-local"
                             {...props}
                           />
                         )}

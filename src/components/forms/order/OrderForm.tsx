@@ -96,6 +96,7 @@ export const OrderForm = component$<Props>(
                   value={field.value}
                   error={field.error}
                   label="Date"
+                  type="datetime-local"
                 />
               )}
             </Field>

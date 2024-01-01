@@ -61,11 +61,11 @@ export default component$(() => {
   const data = useLoader();
   const deleteOrder = useDeleteAction();
   const table = useTable(data.value);
-  const { nextPage } = table;
+  // const { nextPage } = table;
   const showConfirmDialog = useSignal<boolean>(false);
   const confirmDialogEntityId = useSignal<string>("");
 
-  const goToNextPage = $(nextPage);
+  // const goToNextPage = $(nextPage);
 
   return (
     <>
@@ -107,7 +107,10 @@ export default component$(() => {
       <div class="join">
         <button class="btn join-item">«</button>
         <button class="btn join-item">Page 22</button>
-        <button class="btn join-item" onClick$={goToNextPage}>
+        <button
+          class="btn join-item"
+          //  onClick$={goToNextPage}
+        >
           »
         </button>
       </div>

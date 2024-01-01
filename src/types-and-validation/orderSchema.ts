@@ -1,12 +1,18 @@
-import { type Input, object, string, array, number, minLength } from "valibot";
+import {
+  type Input,
+  object,
+  string,
+  array,
+  number,
+  minLength,
+  isoTimestamp,
+} from "valibot";
 
 export const OrderSchema = object({
-  // shopId: string([minLength(1, "ShopId is missing.")]),
-  // userId: string([minLength(1, "UserId is missing.")]),
   // status: string(),
   // layout: string(),
   docNo: number(),
-  date: string(),
+  date: string([isoTimestamp()]),
   currency: string([minLength(1, "Choose a currency.")]),
   customer: object({
     name: string([minLength(1, "Customer is missing.")]),
