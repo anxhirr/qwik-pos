@@ -14,27 +14,38 @@ import { CATEGORY_DIALOG_ID, CATEGORY_FORM_ID } from "~/constants/enum";
 import { Dialog, DialogBody, DialogFooter } from ".";
 import type { DialogProps } from "../../../types";
 import { Button } from "../buttons/base";
+import { getSessionSS } from "~/utils/auth";
 
-export const useFormAction = formAction$<CategoryFormType>(async (values) => {
-  const newCategory = await prisma.category.create({
-    data: {
-      name: values.name,
-      color: values.color,
-      type: values.type,
-    },
-  });
+export const useFormAction = formAction$<CategoryFormType>(
+  async (values, event) => {
+    const session = getSessionSS(event);
 
-  if (!newCategory.id) {
+    const newCategory = await prisma.category.create({
+      data: {
+        name: values.name,
+        color: values.color,
+        type: values.type,
+        shop: {
+          connect: {
+            id: session.shopId,
+          },
+        },
+      },
+    });
+
+    if (!newCategory.id) {
+      return {
+        status: "error",
+        message: "Category not created",
+      };
+    }
     return {
-      status: "error",
-      message: "Category not created",
+      status: "success",
+      message: "Category created successfully",
     };
-  }
-  return {
-    status: "success",
-    message: "Category created successfully",
-  };
-}, valiForm$(CategorySchema));
+  },
+  valiForm$(CategorySchema),
+);
 
 interface CategoryDialogProps extends DialogProps {
   formData: CategoryFormType;

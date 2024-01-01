@@ -1,44 +1,37 @@
-import { $, component$, useSignal, useStore } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
-import type { Item } from "@prisma/client";
-import type { SortingState } from "@tanstack/table-core";
-import {
-  createTable,
-  getCoreRowModel,
-  getSortedRowModel,
-} from "@tanstack/table-core";
+import type { Order } from "@prisma/client";
+import { createTable, getCoreRowModel } from "@tanstack/table-core";
 import { DeleteEntityConfirmDialog } from "~/components/dialogs/shared/DeleteEntityConfirmDialog";
 import { TableRowActions } from "~/components/table/actions/base";
-import { columnsItems } from "~/components/table/columns/items";
+import { columnsOrder } from "~/components/table/columns/order";
 import { ENTITY } from "~/constants/enum";
-import { getAllItems } from "~/lib/queries/items";
+import { getAllOrders } from "~/lib/queries/orders";
 import { prisma } from "~/routes/plugin@auth";
 import { getSessionSS } from "~/utils/auth";
 
-const useTable = (tableState: { sorting: SortingState }, data: Item[]) =>
+const useTable = (data: Order[]) =>
   createTable({
-    columns: columnsItems,
+    columns: columnsOrder,
     data,
     state: {
       columnPinning: { left: [], right: [] },
-      sorting: tableState.sorting,
     },
     renderFallbackValue: "fallback",
     onStateChange: (newState) => console.log(newState),
-    getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
   });
 
-export const useItemsLoader = routeLoader$(async (event) => {
+export const useLoader = routeLoader$(async (event) => {
   const session = getSessionSS(event);
-  const items = await getAllItems(session.shopId);
+  const items = await getAllOrders(session.shopId);
 
   return items;
 });
 
 //TODO: maybe add types?
-export const useDeleteItem = routeAction$(async (item, { fail }) => {
-  const { id } = item;
+export const useDeleteAction = routeAction$(async (data, { fail }) => {
+  const { id } = data;
   if (!id || typeof id !== "string") {
     fail(500, {
       message: "id is missing",
@@ -46,7 +39,7 @@ export const useDeleteItem = routeAction$(async (item, { fail }) => {
     return;
   }
 
-  const result = await prisma.item.delete({ where: { id } });
+  const result = await prisma.order.delete({ where: { id } });
   console.log("result", result);
 
   return {
@@ -56,12 +49,9 @@ export const useDeleteItem = routeAction$(async (item, { fail }) => {
 });
 
 export default component$(() => {
-  const state = useStore<{ sorting: SortingState }>({
-    sorting: [],
-  });
-  const items = useItemsLoader();
-  const deleteItem = useDeleteItem();
-  const table = useTable(state, items.value);
+  const data = useLoader();
+  const deleteOrder = useDeleteAction();
+  const table = useTable(data.value);
   const showConfirmDialog = useSignal<boolean>(false);
   const confirmDialogEntityId = useSignal<string>("");
 
@@ -103,7 +93,7 @@ export default component$(() => {
         <tfoot></tfoot>
       </table>
       <DeleteEntityConfirmDialog
-        entity={ENTITY.ITEM}
+        entity={ENTITY.ORDER}
         show={showConfirmDialog}
         hide={$(() => {
           showConfirmDialog.value = false;
@@ -112,7 +102,7 @@ export default component$(() => {
           showConfirmDialog.value = false;
         }}
         onConfirm$={() => {
-          deleteItem.submit({ id: confirmDialogEntityId.value });
+          deleteOrder.submit({ id: confirmDialogEntityId.value });
           showConfirmDialog.value = false;
         }}
       />

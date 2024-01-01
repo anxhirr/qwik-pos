@@ -61,3 +61,5 @@ interface ConfirmDialogProps extends DialogProps {
   onConfirm$: () => void;
   onCancel$: () => void;
 }
+
+type Entity = "ITEM" | "CATEGORY" | "ORDER" | "CUSTOMER";

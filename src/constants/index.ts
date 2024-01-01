@@ -70,12 +70,12 @@ export const LIST_ITEMS = [
     route: "/items/list",
     suffix: 0,
   },
-  {
-    title: "Customers",
-    prefix: LuRocket,
-    route: "/customers",
-    suffix: 0,
-  },
+  // {
+  //   title: "Customers",
+  //   prefix: LuRocket,
+  //   route: "/customers",
+  //   suffix: 0,
+  // },
   {
     title: "New Order",
     prefix: LuRocket,
@@ -83,7 +83,7 @@ export const LIST_ITEMS = [
     suffix: 0,
   },
   {
-    title: "All Orders",
+    title: "Orders List",
     prefix: LuRocket,
     route: "/orders/list",
     suffix: 0,

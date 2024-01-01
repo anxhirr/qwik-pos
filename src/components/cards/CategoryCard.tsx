@@ -1,8 +1,9 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import type { Category } from "@prisma/client";
 import { IcRoundDelete } from "../icons";
-import { DeleteCategoryConfirmDialog } from "../dialogs";
 import { Button } from "../buttons/base";
+import { DeleteEntityConfirmDialog } from "../dialogs/shared/DeleteEntityConfirmDialog";
+import { ENTITY } from "~/constants/enum";
 
 type Props = {
   data: Category;
@@ -23,7 +24,7 @@ export const CategoryCard = component$<Props>(
         </div>
         <div class="card-actions justify-end">
           {/* <IcRoundModeEdit /> */}
-          <Button variant="primary" onClick$={handleEdit$} text="Edit" />
+          <Button variant="secondary" onClick$={handleEdit$} text="Edit" />
           <button
             class="btn btn-error"
             onClick$={() => (showConfirmDialog.value = true)}
@@ -32,7 +33,8 @@ export const CategoryCard = component$<Props>(
             Delete
           </button>
         </div>
-        <DeleteCategoryConfirmDialog
+        <DeleteEntityConfirmDialog
+          entity={ENTITY.CATEGORY}
           show={showConfirmDialog}
           onConfirm$={handleDelete$}
           onCancel$={() => {

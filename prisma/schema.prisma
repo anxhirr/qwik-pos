@@ -61,6 +61,7 @@ model Shop {
   items      Item[]
   orderPrefs OrderPref[]
   Order      Order[]
+  categories Category[]
 
   @@map("shops")
 }
@@ -173,7 +174,9 @@ model Category {
   name  String
   type  String
   color String
-  // shopId    String @map("shop_id") @db.ObjectId
+  shopId String @map("shop_id") @db.ObjectId
+
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@map("categories")
 }
