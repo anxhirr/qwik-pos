@@ -11,9 +11,11 @@ import {
   type ResponseData,
   type FormStore,
   FieldArray,
+  insert,
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
 import { NewItemBActionBar } from "~/components/bottom-action-bar/items/new";
+import { Button } from "~/components/buttons/base";
 import {
   CheckBoxInput,
   NumberInput,
@@ -21,6 +23,7 @@ import {
   TextInput,
 } from "~/components/shared";
 import { DateInput } from "~/components/shared";
+import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
 
 type Props = {
@@ -77,56 +80,73 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
             {(fieldArray) => (
               <>
                 <div class="flex flex-col gap-2">
-                  {fieldArray.items.map((item, index) => (
-                    <div key={item} class="grid grid-cols-2 gap-1">
-                      <Field
-                        of={form}
-                        type="string"
-                        name={`priceRules.${index}.start`}
-                      >
-                        {(field, props) => (
-                          <DateInput
-                            value={field.value}
-                            error={field.error}
-                            placeholder="Start date"
-                            type="datetime-local"
-                            {...props}
-                          />
-                        )}
-                      </Field>
-                      <Field
-                        of={form}
-                        type="string"
-                        name={`priceRules.${index}.end`}
-                      >
-                        {(field, props) => (
-                          <DateInput
-                            value={field.value}
-                            error={field.error}
-                            placeholder="Start date"
-                            type="datetime-local"
-                            {...props}
-                          />
-                        )}
-                      </Field>
-                      <div class="col-span-2">
+                  {fieldArray.items.map((item, index) => {
+                    const showAddButton = index === fieldArray.items.length - 1;
+                    return (
+                      <div key={item} class="grid grid-cols-2 gap-1">
                         <Field
                           of={form}
-                          type="number"
-                          name={`priceRules.${index}.price`}
+                          type="string"
+                          name={`priceRules.${index}.start`}
                         >
                           {(field, props) => (
-                            <NumberInput
+                            <DateInput
                               value={field.value}
                               error={field.error}
-                              placeholder="Price"
+                              placeholder="Start date"
+                              type="datetime-local"
                               {...props}
                             />
                           )}
                         </Field>
+                        <Field
+                          of={form}
+                          type="string"
+                          name={`priceRules.${index}.end`}
+                        >
+                          {(field, props) => (
+                            <DateInput
+                              value={field.value}
+                              error={field.error}
+                              placeholder="Start date"
+                              type="datetime-local"
+                              {...props}
+                            />
+                          )}
+                        </Field>
+                        <div class={!showAddButton ? "col-span-2" : ""}>
+                          <Field
+                            of={form}
+                            type="number"
+                            name={`priceRules.${index}.price`}
+                          >
+                            {(field, props) => (
+                              <NumberInput
+                                value={field.value}
+                                error={field.error}
+                                placeholder="Price"
+                                {...props}
+                              />
+                            )}
+                          </Field>
+                        </div>
+                        <Button
+                          show={showAddButton}
+                          text="Add Rule"
+                          onClick$={() => {
+                            insert(form, "priceRules", {
+                              value: {
+                                start: PRICE_START_DATE.toISOString(),
+                                end: PRICE_END_DATE.toISOString(),
+                                price: 0,
+                              },
+                              at: index + 1,
+                            });
+                          }}
+                        />
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </>
             )}

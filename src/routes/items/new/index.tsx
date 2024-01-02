@@ -9,7 +9,7 @@ import {
   valiForm$,
 } from "@modular-forms/qwik";
 import { ItemForm } from "~/components/forms/item/ItemForm";
-import { PRICE_END_ISO_DATE } from "~/constants/defaults";
+import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { prisma } from "~/routes/plugin@auth";
 import {
   type ItemFormType,
@@ -29,8 +29,8 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => {
     favorite: true,
     priceRules: [
       {
-        start: new Date().toISOString(),
-        end: new Date(PRICE_END_ISO_DATE).toISOString(),
+        start: PRICE_START_DATE.toISOString(),
+        end: PRICE_END_DATE.toISOString(),
         price: 0,
       },
     ],

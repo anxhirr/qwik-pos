@@ -2,6 +2,7 @@ import type { ButtonHTMLAttributes, QwikMouseEvent } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
 
 type Props = {
+  show?: boolean;
   onClick$?: (
     event: QwikMouseEvent<HTMLButtonElement, MouseEvent>,
     element: HTMLButtonElement,
@@ -17,6 +18,7 @@ type Props = {
 
 export const Button = component$<Props>(
   ({
+    show = true,
     text,
     onClick$,
     form,
@@ -27,6 +29,8 @@ export const Button = component$<Props>(
     loadingText,
     ...rest
   }) => {
+    if (!show) return null;
+
     return (
       <button
         class={`btn btn-${variant}`}

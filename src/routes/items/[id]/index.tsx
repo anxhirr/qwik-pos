@@ -63,6 +63,15 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
             id: session.shopId,
           },
         },
+        // TODO: check this
+        priceRules: {
+          deleteMany: {},
+          create: values.priceRules.map((rule) => ({
+            start: new Date(rule.start),
+            end: new Date(rule.end),
+            price: rule.price,
+          })),
+        },
       },
     });
 

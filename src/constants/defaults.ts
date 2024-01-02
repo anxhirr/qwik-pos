@@ -1,1 +1,2 @@
-export const PRICE_END_ISO_DATE = "9999-12-31T23:59:59.999Z";
+export const PRICE_START_DATE = new Date("1111-01-01T00:00");
+export const PRICE_END_DATE = new Date("2222-01-01T00:00");
