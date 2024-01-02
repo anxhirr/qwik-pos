@@ -1,5 +1,5 @@
 import type { Signal } from "@builder.io/qwik";
-import { $, component$, useComputed$ } from "@builder.io/qwik";
+import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
 import type { ActionStore } from "@builder.io/qwik-city";
 import type {
   FormActionStore,
@@ -31,6 +31,8 @@ import { type OrderFormType } from "~/types-and-validation/orderSchema";
 import type { CustomSelectOption } from "../../../../types";
 import { IcRoundPlus, IcRoundSwapVert } from "~/components/icons";
 import { NewOrderBottomNav } from "~/components/bottom-nav";
+import { Drawer } from "~/components/drawer";
+import { Button } from "~/components/buttons";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
@@ -46,6 +48,8 @@ type Props = {
 };
 export const OrderForm = component$<Props>(
   ({ form, action, items, handleSubmit }) => {
+    const showDrawer = useSignal(false);
+
     const options = useComputed$(() => {
       return items.value.map((item) => ({
         label: item.name,
@@ -69,6 +73,11 @@ export const OrderForm = component$<Props>(
       });
     });
 
+    const handleCloseDrawer = $(() => {
+      console.log("close drawer");
+      showDrawer.value = false;
+    });
+
     const addNewEmptyRow = $((index: number) => {
       insert(form, "items", {
         at: index,
@@ -90,29 +99,7 @@ export const OrderForm = component$<Props>(
           onSubmit$={handleSubmit}
           class="flex flex-col gap-2"
         >
-          <div class="flex gap-2">
-            <Field of={form} type="number" name="docNo">
-              {(field, props) => (
-                <NumberInput
-                  {...props}
-                  value={field.value}
-                  error={field.error}
-                  placeholder="Doc No"
-                  label="Doc No"
-                />
-              )}
-            </Field>
-            <Field of={form} type="string" name="date">
-              {(field, props) => (
-                <DateInput
-                  {...props}
-                  value={field.value}
-                  error={field.error}
-                  label="Date"
-                  type="datetime-local"
-                />
-              )}
-            </Field>
+          <div class="flex gap-4">
             <Field of={form} name="customer.name">
               {(field, props) => (
                 <TextInput
@@ -120,13 +107,9 @@ export const OrderForm = component$<Props>(
                   value={field.value}
                   error={field.error}
                   placeholder="Customer"
-                  label="Customer"
                 />
               )}
             </Field>
-          </div>
-
-          <div class="flex gap-4">
             <Field of={form} name="currency">
               {(field, props) => (
                 <Select
@@ -156,18 +139,6 @@ export const OrderForm = component$<Props>(
                 />
               )}
             </Field>
-            <Field of={form} name="discount.type">
-              {(field, props) => (
-                <Select
-                  {...props}
-                  options={DISCOUNT_TYPES.map((option) => ({
-                    label: option,
-                    value: option,
-                  }))}
-                  placeholder="Discount Type"
-                />
-              )}
-            </Field>
           </div>
           <div class="flex gap-2">
             <Field of={form} type="number" name="exchangeRate">
@@ -184,6 +155,18 @@ export const OrderForm = component$<Props>(
               )}
             </Field>
             <div class="flex items-end gap-1">
+              <Field of={form} name="discount.type">
+                {(field, props) => (
+                  <Select
+                    {...props}
+                    options={DISCOUNT_TYPES.map((option) => ({
+                      label: option,
+                      value: option,
+                    }))}
+                    placeholder="Discount Type"
+                  />
+                )}
+              </Field>
               <Field of={form} type="number" name="discount.amount">
                 {(field, props) => (
                   <div class="col-span-2">
@@ -197,7 +180,44 @@ export const OrderForm = component$<Props>(
                   </div>
                 )}
               </Field>
+              <Button
+                onClick$={() => {
+                  showDrawer.value = true;
+                }}
+                text="Extra Options"
+                type="button"
+              />
             </div>
+          </div>
+
+          <Drawer
+            show={showDrawer.value}
+            hide={handleCloseDrawer}
+            title="Drawer"
+            id="drawer"
+          >
+            <Field of={form} type="number" name="docNo">
+              {(field, props) => (
+                <NumberInput
+                  {...props}
+                  value={field.value}
+                  error={field.error}
+                  placeholder="Doc No"
+                  label="Doc No"
+                />
+              )}
+            </Field>
+            <Field of={form} type="string" name="date">
+              {(field, props) => (
+                <DateInput
+                  {...props}
+                  value={field.value}
+                  error={field.error}
+                  label="Date"
+                  type="datetime-local"
+                />
+              )}
+            </Field>
             <Field of={form} name="notes">
               {(field, props) => (
                 <TextInput
@@ -209,7 +229,7 @@ export const OrderForm = component$<Props>(
                 />
               )}
             </Field>
-          </div>
+          </Drawer>
 
           <div class="mt-6 flex flex-col gap-2">
             <div class="grid grid-cols-6 gap-1">

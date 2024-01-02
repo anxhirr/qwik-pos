@@ -27,34 +27,6 @@ export const Dialog = component$<DialogProps>(
   },
 );
 
-type DialogHeaderProps = {
-  useCloseButton?: boolean;
-  title: string;
-  hide: () => void;
-};
-
-export const DialogHeader = component$<DialogHeaderProps>(
-  ({ useCloseButton = true, hide, title }) => {
-    return (
-      <div
-        class={clsx(
-          "modal-header mb-6",
-          useCloseButton && "flex items-center justify-between",
-        )}
-      >
-        <h3 class="text-lg font-bold">{title}</h3>
-        {useCloseButton && (
-          <form method="dialog">
-            <button class="btn btn-circle btn-ghost btn-sm" onClick$={hide}>
-              <IcRoundClose />
-            </button>
-          </form>
-        )}
-      </div>
-    );
-  },
-);
-
 export const DialogBody = component$(() => {
   return (
     <div class="modal-body">
@@ -93,3 +65,31 @@ const DialogBackdrop = component$<DialogBackdropProps>(({ hide }) => {
     </form>
   );
 });
+
+type DialogHeaderProps = {
+  useCloseButton?: boolean;
+  title: string;
+  hide: () => void;
+};
+
+const DialogHeader = component$<DialogHeaderProps>(
+  ({ useCloseButton = true, hide, title }) => {
+    return (
+      <div
+        class={clsx(
+          "modal-header mb-6",
+          useCloseButton && "flex items-center justify-between",
+        )}
+      >
+        <h3 class="text-lg font-bold">{title}</h3>
+        {useCloseButton && (
+          <form method="dialog">
+            <button class="btn btn-circle btn-ghost btn-sm" onClick$={hide}>
+              <IcRoundClose />
+            </button>
+          </form>
+        )}
+      </div>
+    );
+  },
+);
