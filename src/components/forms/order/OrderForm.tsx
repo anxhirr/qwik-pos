@@ -223,7 +223,8 @@ export const OrderForm = component$<Props>(
                                 value={field.value}
                                 onSelect={$((option: CustomSelectOption) => {
                                   handleItemSelect(option, index);
-                                  addNewEmptyRow(fieldArray.items.length);
+                                  // TODO: add ux logic
+                                  // addNewEmptyRow(fieldArray.items.length);
                                   // TODO: focus on next row
                                 })}
                               />
