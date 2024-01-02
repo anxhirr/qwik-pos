@@ -31,3 +31,9 @@ export const ENTITY = {
   ORDER: "ORDER",
   CATEGORY: "CATEGORY",
 } as const;
+
+export const BOTTOM_NAVBAR_SLOTS = {
+  START: "START",
+  CENTER: "CENTER",
+  END: "END",
+} as const;

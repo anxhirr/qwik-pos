@@ -52,7 +52,7 @@ export default component$(() => {
           <Sidebar />
         </div>
       )}
-      <div class="w-full">
+      <div class="h-full overflow-y-auto">
         <Slot />
       </div>
     </main>

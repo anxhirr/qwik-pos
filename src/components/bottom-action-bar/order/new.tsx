@@ -5,16 +5,17 @@ import {
   IcRoundInsertDriveFile,
 } from "~/components/icons";
 import type { OrderFormType } from "~/types-and-validation/orderSchema";
+import { BottomNavbar } from "../base";
+import { BOTTOM_NAVBAR_SLOTS } from "~/constants/enum";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
 };
+
 export const NewOrderActBar = component$<Props>(({ form }) => {
   return (
-    <div class="navbar fixed bottom-0 right-0 bg-base-100">
-      <div class="navbar-start"></div>
-      <div class="navbar-center"></div>
-      <div class="navbar-end">
+    <BottomNavbar>
+      <div q:slot={BOTTOM_NAVBAR_SLOTS.END}>
         <div class="flex gap-3">
           {form.dirty && (
             <>
@@ -38,6 +39,6 @@ export const NewOrderActBar = component$<Props>(({ form }) => {
           )}
         </div>
       </div>
-    </div>
+    </BottomNavbar>
   );
 });
