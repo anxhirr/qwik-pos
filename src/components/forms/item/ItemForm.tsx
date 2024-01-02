@@ -12,9 +12,9 @@ import {
   type FormStore,
   FieldArray,
   insert,
+  remove,
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
-import { NewItemBottomNav } from "~/components/bottom-nav/item";
 import { Button } from "~/components/buttons/base";
 import {
   CheckBoxInput,
@@ -24,6 +24,7 @@ import {
 } from "~/components/shared";
 import { DateInput } from "~/components/shared";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
+import { ITEM_FORM_ID } from "~/constants/enum";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
 
 type Props = {
@@ -40,7 +41,7 @@ type Props = {
 
 export const ItemForm = component$<Props>(({ form, action, categories }) => {
   return (
-    <Form of={form} action={action}>
+    <Form of={form} action={action} id={ITEM_FORM_ID}>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div class="flex flex-col gap-4">
           <Field of={form} name="name">
@@ -114,36 +115,54 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                             />
                           )}
                         </Field>
-                        <div class={!showAddButton ? "col-span-2" : ""}>
-                          <Field
-                            of={form}
-                            type="number"
-                            name={`priceRules.${index}.price`}
-                          >
-                            {(field, props) => (
-                              <NumberInput
-                                value={field.value}
-                                error={field.error}
-                                placeholder="Price"
-                                {...props}
-                              />
-                            )}
-                          </Field>
-                        </div>
+                        <Field
+                          of={form}
+                          type="number"
+                          name={`priceRules.${index}.price`}
+                        >
+                          {(field, props) => (
+                            <NumberInput
+                              value={field.value}
+                              error={field.error}
+                              placeholder="Price"
+                              {...props}
+                            />
+                          )}
+                        </Field>
                         <Button
-                          show={showAddButton}
-                          text="Add Rule"
+                          show={!showAddButton}
+                          text="Remove Rule"
                           onClick$={() => {
-                            insert(form, "priceRules", {
-                              value: {
-                                start: PRICE_START_DATE.toISOString(),
-                                end: PRICE_END_DATE.toISOString(),
-                                price: 0,
-                              },
-                              at: index + 1,
+                            remove(form, "priceRules", {
+                              at: index,
                             });
                           }}
                         />
+                        <div class={!showAddButton ? "hidden" : "flex gap-1"}>
+                          <Button
+                            show={showAddButton}
+                            text="Add Rule"
+                            onClick$={() => {
+                              insert(form, "priceRules", {
+                                value: {
+                                  start: PRICE_START_DATE.toISOString(),
+                                  end: PRICE_END_DATE.toISOString(),
+                                  price: 0,
+                                },
+                                at: index + 1,
+                              });
+                            }}
+                          />
+                          <Button
+                            show={showAddButton}
+                            text="X"
+                            onClick$={() => {
+                              remove(form, "priceRules", {
+                                at: index,
+                              });
+                            }}
+                          />
+                        </div>
                       </div>
                     );
                   })}
@@ -213,7 +232,6 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
           </div>
         </div>
       </div>
-      <NewItemBottomNav form={form} />
     </Form>
   );
 });

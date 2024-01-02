@@ -8,6 +8,7 @@ import {
   useFormStore,
   valiForm$,
 } from "@modular-forms/qwik";
+import { NewItemBottomNav } from "~/components/bottom-nav/item";
 import { ItemForm } from "~/components/forms/item/ItemForm";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { prisma } from "~/routes/plugin@auth";
@@ -98,5 +99,12 @@ export default component$(() => {
   const values = getValues(form);
   console.log("values", values);
 
-  return <ItemForm form={form} action={action} categories={categories.value} />;
+  return (
+    <>
+      <div class="flex-1">
+        <ItemForm form={form} action={action} categories={categories.value} />
+      </div>
+      <NewItemBottomNav form={form} />
+    </>
+  );
 });

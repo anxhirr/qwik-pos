@@ -59,7 +59,6 @@
     "@auth/prisma-adapter": "^1.0.5",
     "@modular-forms/qwik": "^0.21.0",
     "@prisma/extension-accelerate": "^0.6.2",
-    "@qwikest/icons": "^0.0.13",
     "@tanstack/table-core": "^8.10.7",
     "clsx": "^2.0.0",
     "valibot": "^0.20.1"

@@ -46,7 +46,7 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
               <span class="badge indicator-item badge-primary badge-xs">9</span>
             </div>
           </button>
-          <div class="dropdown-end dropdown">
+          <div class="dropdown dropdown-end">
             <label tabIndex={0} class="avatar btn btn-circle btn-ghost">
               <IcRoundAccountCircle />
             </label>

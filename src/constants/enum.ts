@@ -16,6 +16,7 @@ export const DELETE_CATEGORY_CONFIRM_DIALOG_ID =
 //FORMS IDS
 export const CATEGORY_FORM_ID = "CATEGORY_FORM_ID";
 export const SHOP_FORM_ID = "SHOP_FORM_ID";
+export const ITEM_FORM_ID = "ITEM_FORM_ID";
 
 export const CURRENCIES = ["ALL", "EUR", "USD"] as const;
 
