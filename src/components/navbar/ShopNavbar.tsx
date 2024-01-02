@@ -1,4 +1,4 @@
-import { NavBar } from "./index";
+import { NavBar } from "./base";
 import { $, component$ } from "@builder.io/qwik";
 
 export interface Props {}

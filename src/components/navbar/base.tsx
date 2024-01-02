@@ -1,6 +1,10 @@
 import { $, component$, useContext } from "@builder.io/qwik";
 import { UiContext } from "~/routes/layout";
-import { IcRoundMenu, IcRoundNotifications } from "../icons";
+import {
+  IcRoundAccountCircle,
+  IcRoundMenu,
+  IcRoundNotifications,
+} from "../icons";
 
 type Props = {
   title: string;
@@ -35,18 +39,16 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
         </div>
       </div>
       <div class="navbar-end">
-        <div class="flex-none gap-2">
+        <div class="flex gap-2">
           <button class="btn btn-circle btn-ghost">
             <div class="indicator">
               <IcRoundNotifications />
-              <span class="badge indicator-item badge-primary badge-xs"></span>
+              <span class="badge indicator-item badge-primary badge-xs">9</span>
             </div>
           </button>
           <div class="dropdown-end dropdown">
             <label tabIndex={0} class="avatar btn btn-circle btn-ghost">
-              <div class="w-10 rounded-full">
-                {/* <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" /> */}
-              </div>
+              <IcRoundAccountCircle />
             </label>
             <ul
               tabIndex={0}
