@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { IcRoundClose } from "../icons";
 
 type DrawerProps = {
-  id: string;
   show: boolean;
   hide: () => void;
   title: string;
@@ -12,10 +11,10 @@ type DrawerProps = {
 };
 
 export const Drawer = component$<DrawerProps>(
-  ({ id, hide, closeOnOutsideClick = true, show, title, position = "end" }) => {
+  ({ hide, closeOnOutsideClick = true, show, title, position = "end" }) => {
     return (
       <div class={clsx("drawer", `drawer-${position}`)}>
-        <input id={id} type="checkbox" checked={show} class="drawer-toggle" />
+        <input type="checkbox" checked={show} class="drawer-toggle" />
         <div class="drawer-side">
           <DrawerBackdrop hide={hide} show={closeOnOutsideClick} />
 

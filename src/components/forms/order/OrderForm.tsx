@@ -19,20 +19,23 @@ import {
 } from "@modular-forms/qwik";
 import {
   CustomSelect,
-  DateInput,
   NumberInput,
   Select,
   TextInput,
 } from "~/components/shared";
 import type { Item } from "@prisma/client";
 
-import { CURRENCIES, DISCOUNT_TYPES, PAYMENT_METHODS } from "~/constants/enum";
+import {
+  CURRENCIES,
+  DISCOUNT_TYPES,
+  ORDER_FORM_ID,
+  PAYMENT_METHODS,
+} from "~/constants/enum";
 import { type OrderFormType } from "~/types-and-validation/orderSchema";
 import type { CustomSelectOption } from "../../../../types";
 import { IcRoundPlus, IcRoundSwapVert } from "~/components/icons";
-import { NewOrderBottomNav } from "~/components/bottom-nav";
-import { Drawer } from "~/components/drawer";
 import { Button } from "~/components/buttons";
+import { OrderOptionsDrawer } from "~/components/drawer";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
@@ -98,6 +101,7 @@ export const OrderForm = component$<Props>(
           action={action}
           onSubmit$={handleSubmit}
           class="flex flex-col gap-2"
+          id={ORDER_FORM_ID}
         >
           <div class="flex gap-4">
             <Field of={form} name="customer.name">
@@ -189,47 +193,6 @@ export const OrderForm = component$<Props>(
               />
             </div>
           </div>
-
-          <Drawer
-            show={showDrawer.value}
-            hide={handleCloseDrawer}
-            title="Drawer"
-            id="drawer"
-          >
-            <Field of={form} type="number" name="docNo">
-              {(field, props) => (
-                <NumberInput
-                  {...props}
-                  value={field.value}
-                  error={field.error}
-                  placeholder="Doc No"
-                  label="Doc No"
-                />
-              )}
-            </Field>
-            <Field of={form} type="string" name="date">
-              {(field, props) => (
-                <DateInput
-                  {...props}
-                  value={field.value}
-                  error={field.error}
-                  label="Date"
-                  type="datetime-local"
-                />
-              )}
-            </Field>
-            <Field of={form} name="notes">
-              {(field, props) => (
-                <TextInput
-                  value={field.value}
-                  error={field.error}
-                  placeholder="Notes"
-                  label="Notes"
-                  {...props}
-                />
-              )}
-            </Field>
-          </Drawer>
 
           <div class="mt-6 flex flex-col gap-2">
             <div class="grid grid-cols-6 gap-1">
@@ -356,7 +319,11 @@ export const OrderForm = component$<Props>(
             </FieldArray>
           </div>
 
-          <NewOrderBottomNav form={form} />
+          <OrderOptionsDrawer
+            show={showDrawer.value}
+            form={form}
+            hide={handleCloseDrawer}
+          />
         </Form>
       </>
     );

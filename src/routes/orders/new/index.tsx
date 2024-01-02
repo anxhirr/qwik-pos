@@ -11,6 +11,7 @@ import {
   useFormStore,
   valiForm$,
 } from "@modular-forms/qwik";
+import { NewOrderBottomNav } from "~/components/bottom-nav";
 import { ReceiptDialog } from "~/components/dialogs";
 import { OrderForm } from "~/components/forms/order";
 import { getAllItems } from "~/lib/queries/items";
@@ -120,13 +121,17 @@ export default component$(() => {
     order.value = values;
   });
   return (
-    <div class="h-full">
-      <OrderForm
-        form={form}
-        action={action}
-        items={items}
-        handleSubmit={handleSubmit}
-      />
+    <>
+      <div class="flex-1 overflow-y-auto">
+        <OrderForm
+          form={form}
+          action={action}
+          items={items}
+          handleSubmit={handleSubmit}
+        />
+      </div>
+
+      <NewOrderBottomNav form={form} />
 
       <ReceiptDialog
         show={showReceiptDialog}
@@ -135,6 +140,6 @@ export default component$(() => {
           showReceiptDialog.value = false;
         })}
       />
-    </div>
+    </>
   );
 });
