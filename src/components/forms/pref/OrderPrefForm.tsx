@@ -11,7 +11,7 @@ import {
   type ResponseData,
   type FormStore,
 } from "@modular-forms/qwik";
-import { OrderPrefActionBar } from "~/components/bottom-action-bar/pref/order";
+import { OrderPrefActionBar } from "~/components/bottom-nav/pref/order";
 import { CheckBoxInput, Select } from "~/components/shared";
 import {
   CURRENCIES,

@@ -11,7 +11,7 @@ import {
   type ResponseData,
   type FormStore,
 } from "@modular-forms/qwik";
-import { ShopUpdateActionBar } from "~/components/bottom-action-bar/shop/update";
+import { ShopUpdateActionBar } from "~/components/bottom-nav/shop/update";
 import { Select, TextInput } from "~/components/shared";
 import { CURRENCIES, SHOP_FORM_ID } from "~/constants/enum";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";

@@ -30,7 +30,7 @@ import { CURRENCIES, DISCOUNT_TYPES, PAYMENT_METHODS } from "~/constants/enum";
 import { type OrderFormType } from "~/types-and-validation/orderSchema";
 import type { CustomSelectOption } from "../../../../types";
 import { IcRoundPlus, IcRoundSwapVert } from "~/components/icons";
-import { NewOrderBottomNav } from "~/components/bottom-action-bar";
+import { NewOrderBottomNav } from "~/components/bottom-nav";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;

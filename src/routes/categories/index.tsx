@@ -1,4 +1,4 @@
-import { CategoriesBActionBar } from "~/components/bottom-action-bar/categories";
+import { CategoriesBActionBar } from "~/components/bottom-nav/categories";
 
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";

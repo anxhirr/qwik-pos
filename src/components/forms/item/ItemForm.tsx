@@ -14,7 +14,7 @@ import {
   insert,
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
-import { NewItemBottomNav } from "~/components/bottom-action-bar/item";
+import { NewItemBottomNav } from "~/components/bottom-nav/item";
 import { Button } from "~/components/buttons/base";
 import {
   CheckBoxInput,
