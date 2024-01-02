@@ -3,7 +3,7 @@ import { BOTTOM_NAVBAR_SLOTS } from "~/constants/enum";
 
 type Props = {};
 
-export const BottomNavbar = component$<Props>(() => {
+export const BottomNav = component$<Props>(() => {
   return (
     <div class="navbar bg-base-100">
       <div class="navbar-start">

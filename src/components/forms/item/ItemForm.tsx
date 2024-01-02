@@ -14,7 +14,7 @@ import {
   insert,
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
-import { NewItemBActionBar } from "~/components/bottom-action-bar/items/new";
+import { NewItemBottomNav } from "~/components/bottom-action-bar/item";
 import { Button } from "~/components/buttons/base";
 import {
   CheckBoxInput,
@@ -213,7 +213,7 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
           </div>
         </div>
       </div>
-      <NewItemBActionBar form={form} />
+      <NewItemBottomNav form={form} />
     </Form>
   );
 });

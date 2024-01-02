@@ -28,9 +28,9 @@ import type { Item } from "@prisma/client";
 
 import { CURRENCIES, DISCOUNT_TYPES, PAYMENT_METHODS } from "~/constants/enum";
 import { type OrderFormType } from "~/types-and-validation/orderSchema";
-import { NewOrderActBar } from "~/components/bottom-action-bar/order/new";
 import type { CustomSelectOption } from "../../../../types";
 import { IcRoundPlus, IcRoundSwapVert } from "~/components/icons";
+import { NewOrderBottomNav } from "~/components/bottom-action-bar";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
@@ -336,7 +336,7 @@ export const OrderForm = component$<Props>(
             </FieldArray>
           </div>
 
-          <NewOrderActBar form={form} />
+          <NewOrderBottomNav form={form} />
         </Form>
       </>
     );

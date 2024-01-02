@@ -1,9 +1,9 @@
 import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
-import { ItemsBActionBar } from "~/components/bottom-action-bar/items/index";
 import { ItemCard } from "~/components/cards/ItemCard";
 import { getSessionSS } from "~/utils/auth";
 import { getAllItems } from "~/lib/queries/items";
+import { ItemsBottomNav } from "~/components/bottom-action-bar/item";
 
 export const useItemsLoader = routeLoader$(async (event) => {
   const session = getSessionSS(event);
@@ -25,7 +25,7 @@ export default component$(() => {
           </Link>
         ))}
       </ul>
-      <ItemsBActionBar />
+      <ItemsBottomNav />
     </div>
   );
 });
