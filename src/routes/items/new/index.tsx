@@ -23,6 +23,7 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => {
     name: "",
     unit: "",
     category: "",
+    categoryIDs: ["1234567890"],
     barcode: "",
     code: "",
     description: "",
@@ -36,7 +37,6 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => {
       },
     ],
   };
-  console.log("loader", loader);
   return loader;
 });
 
@@ -92,7 +92,7 @@ export default component$(() => {
   const form = useFormStore<ItemFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(ItemSchema),
-    fieldArrays: ["priceRules"],
+    fieldArrays: ["priceRules", "categoryIDs"],
   });
 
   console.log("error", getErrors(form));

@@ -77,6 +77,31 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
               />
             )}
           </Field>
+          <FieldArray of={form} name="categoryIDs">
+            {(fieldArray) => (
+              <>
+                <div class="flex flex-col gap-2">
+                  {fieldArray.items.map((item, index) => {
+                    return (
+                      <Field key={item} of={form} name={`categoryIDs.${index}`}>
+                        {(field, props) => (
+                          <Select
+                            {...props}
+                            error={field.error}
+                            options={categories.map((category) => ({
+                              label: category.name,
+                              value: category.id,
+                            }))}
+                            placeholder="Category"
+                          />
+                        )}
+                      </Field>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+          </FieldArray>
           <FieldArray of={form} name="priceRules">
             {(fieldArray) => (
               <>

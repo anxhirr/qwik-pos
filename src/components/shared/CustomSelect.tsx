@@ -39,11 +39,11 @@ export const CustomSelect = component$<Props>(
           onBlur$={() => setTimeout(() => (showMenu.value = false), 100)}
         />
         {showMenu.value && (
-          <div class="absolute top-14 z-50 w-full bg-secondary-content">
+          <div class="absolute top-14 z-50 w-full bg-secondary">
             <ul>
               {options.map((item) => (
                 <li
-                  class="cursor-pointer rounded-md p-2 hover:bg-primary"
+                  class="cursor-pointer rounded-md p-2 hover:bg-info"
                   key={item.value}
                   onClick$={() => handleSelect(item)}
                 >

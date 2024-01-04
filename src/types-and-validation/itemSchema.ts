@@ -20,6 +20,7 @@ export const ItemSchema = object({
     }),
   ),
   category: string(),
+  categoryIDs: array(string()),
   barcode: string(),
   code: string(),
   description: string(),
