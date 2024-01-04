@@ -1,50 +1,50 @@
-import { LuRocket } from "@qwikest/icons/lucide";
+import { IcRoundPlus } from "~/components/icons";
 
 export const ACCORDIONS = [
   {
     name: "Settings",
-    prefix: LuRocket,
+    prefix: IcRoundPlus,
     items: [
       {
         title: "Shop",
-        prefix: LuRocket,
+        prefix: IcRoundPlus,
         route: "/settings/shop",
       },
       {
         title: "Users",
-        prefix: LuRocket,
+        prefix: IcRoundPlus,
         route: "/settings/users",
       },
       {
         title: "Roles",
-        prefix: LuRocket,
+        prefix: IcRoundPlus,
         route: "/settings/roles",
       },
     ],
   },
   {
     name: "Preferences",
-    prefix: LuRocket,
+    prefix: IcRoundPlus,
     items: [
       {
         title: "Order",
-        prefix: LuRocket,
+        prefix: IcRoundPlus,
         route: "/pref/order",
       },
       {
         title: "General",
-        prefix: LuRocket,
+        prefix: IcRoundPlus,
         route: "/pref/general",
       },
     ],
   },
   {
     name: "Entities",
-    prefix: LuRocket,
+    prefix: IcRoundPlus,
     items: [
       {
         title: "Categories",
-        prefix: LuRocket,
+        prefix: IcRoundPlus,
         route: "/categories",
       },
     ],
@@ -54,19 +54,19 @@ export const ACCORDIONS = [
 export const LIST_ITEMS = [
   {
     title: "Home",
-    prefix: LuRocket,
+    prefix: IcRoundPlus,
     route: "/",
     suffix: 0,
   },
   {
     title: "Items",
-    prefix: LuRocket,
+    prefix: IcRoundPlus,
     route: "/items",
     suffix: 0,
   },
   {
     title: "Items List",
-    prefix: LuRocket,
+    prefix: IcRoundPlus,
     route: "/items/list",
     suffix: 0,
   },
@@ -78,19 +78,19 @@ export const LIST_ITEMS = [
   // },
   {
     title: "New Order",
-    prefix: LuRocket,
+    prefix: IcRoundPlus,
     route: "/orders/new",
     suffix: 0,
   },
   {
     title: "Orders List",
-    prefix: LuRocket,
+    prefix: IcRoundPlus,
     route: "/orders/list",
     suffix: 0,
   },
   {
     title: "Help",
-    prefix: LuRocket,
+    prefix: IcRoundPlus,
     route: "/help",
     suffix: 0,
   },

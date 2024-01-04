@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$, useComputed$ } from "@builder.io/qwik";
 import type { ActionStore } from "@builder.io/qwik-city";
 import type {
   FormActionStore,
@@ -18,6 +18,7 @@ import type { Category } from "@prisma/client";
 import { Button } from "~/components/buttons/base";
 import {
   CheckBoxInput,
+  CustomSelect,
   NumberInput,
   Select,
   TextInput,
@@ -26,6 +27,7 @@ import { DateInput } from "~/components/shared";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { ITEM_FORM_ID } from "~/constants/enum";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
+import type { CustomSelectOption } from "../../../../types";
 
 type Props = {
   form: FormStore<ItemFormType, ResponseData>;
@@ -40,6 +42,31 @@ type Props = {
 };
 
 export const ItemForm = component$<Props>(({ form, action, categories }) => {
+  const options = useComputed$(() => {
+    return categories.map((cat) => ({
+      label: cat.name,
+      value: cat.id,
+    }));
+  });
+
+  const handleCatSelect = $((option: CustomSelectOption, index: number) => {
+    console.log("option", option);
+    console.log("index", index);
+    // const item = items.value.find((item) => item.id === option.value);
+    // if (!item) return;
+    // replace(form, "items", {
+    //   at: index,
+    //   value: {
+    //     // id: item.id,
+    //     name: item.name,
+    //     unit: item.unit,
+    //     quantity: 10,
+    //     unitPrice: 10,
+    //     unitPriceWithTax: 10,
+    //   },
+    // });
+  });
+
   return (
     <Form of={form} action={action} id={ITEM_FORM_ID}>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -85,14 +112,25 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                     return (
                       <Field key={item} of={form} name={`categoryIDs.${index}`}>
                         {(field, props) => (
-                          <Select
+                          // <Select
+                          //   {...props}
+                          //   error={field.error}
+                          //   options={categories.map((category) => ({
+                          //     label: category.name,
+                          //     value: category.id,
+                          //   }))}
+                          //   placeholder="Category"
+                          // />
+                          <CustomSelect
                             {...props}
-                            error={field.error}
-                            options={categories.map((category) => ({
-                              label: category.name,
-                              value: category.id,
-                            }))}
-                            placeholder="Category"
+                            isMulti={true}
+                            options={options.value}
+                            placeholder="Item"
+                            value={field.value}
+                            onSelect={$((option: CustomSelectOption) => {
+                              console.log("option", option);
+                              handleCatSelect(option, index);
+                            })}
                           />
                         )}
                       </Field>
