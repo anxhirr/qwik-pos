@@ -43,7 +43,7 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
           <button class="btn btn-circle btn-ghost">
             <div class="indicator">
               <IcRoundNotifications />
-              <span class="badge indicator-item badge-primary badge-xs">9</span>
+              <span class="badge indicator-item badge-accent badge-xs">9</span>
             </div>
           </button>
           <div class="dropdown dropdown-end">

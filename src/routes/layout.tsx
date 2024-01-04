@@ -41,7 +41,7 @@ export default component$(() => {
   useContextProvider(UiContext, uiStore);
 
   return (
-    <main data-theme="business" class="flex h-full">
+    <main data-theme="pos" class="flex h-full">
       <div class="hidden md:block">
         <Sidebar />
       </div>

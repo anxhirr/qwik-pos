@@ -6,17 +6,16 @@ type Props = {
 };
 export const ItemCard = component$<Props>(({ data }) => {
   return (
-    <div class="card h-full bg-base-100 shadow-xl">
+    <div class="card h-full rounded-xl bg-secondary shadow-xl">
       <figure></figure>
-      <div class="card-body">
+      <div class="card-body p-4">
         <h2 class="card-title">
           {data.name}
-          <div class="badge badge-secondary">{data.unit}</div>
+          <div class="badge badge-accent">{data.unit}</div>
         </h2>
         <p>{data.description}</p>
         <div class="card-actions justify-end">
-          <div class="badge badge-outline">Fashion</div>
-          <div class="badge badge-outline">Products</div>
+          <div class="badge badge-outline">{data.category}</div>
         </div>
       </div>
     </div>

@@ -126,6 +126,8 @@ model Item {
 
   shop   Shop   @relation(fields: [shopId], references: [id], onDelete: Cascade)
   shopId String @map("shop_id") @db.ObjectId
+  categories Category[] @relation(fields: [categoryIDs], references: [id])
+  categoryIDs String[]   @db.ObjectId
 
   @@map("items")
 }
@@ -177,6 +179,8 @@ model Category {
   shopId String @map("shop_id") @db.ObjectId
 
   shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  itemIDs String[] @db.ObjectId
+  items Item[] @relation(fields: [itemIDs], references: [id])
 
   @@map("categories")
 }
