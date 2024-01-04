@@ -11,73 +11,88 @@ export interface Props {
   isMulti?: boolean;
 }
 
-export const CustomSelect = component$<Props>(
-  ({ onSelect, placeholder = "Select", options, value, isMulti }) => {
-    const input = useSignal("");
-    const showMenu = useSignal(false);
+export const CustomSelect = component$<Props>((props) => {
+  const {
+    onSelect,
+    placeholder = "Select",
+    options,
+    value,
+    isMulti,
+    onClear,
+  } = props;
+  const input = useSignal("");
+  const showMenu = useSignal(false);
 
-    const selectedOptions = useSignal<CustomSelectOption[]>([
-      { label: "test", value: "test" },
-      { label: "test2", value: "test2" },
-    ]);
+  const selectedOptions = useSignal<CustomSelectOption[]>([
+    { label: "test", value: "test" },
+    { label: "test2", value: "test2" },
+  ]);
 
-    const visibleOptions = useSignal<CustomSelectOption[]>([]);
+  const visibleOptions = useSignal<CustomSelectOption[]>([]);
 
-    const handleSelect = $((option: CustomSelectOption) => {
-      console.log("handleSelect", option);
+  const clearSelectedOptions = $(() => (selectedOptions.value = []));
+  const clearInput = $(() => (input.value = ""));
 
-      onSelect(option); // emit event
+  const handleSelect = $((option: CustomSelectOption) => {
+    onSelect(option); // emit event
 
-      if (isMulti) {
-        selectedOptions.value = [...selectedOptions.value, option];
-        input.value = "";
-        return;
-      }
+    if (isMulti) {
+      selectedOptions.value = [...selectedOptions.value, option];
+      clearInput();
+      return;
+    }
 
-      input.value = option.label;
-    });
+    input.value = option.label;
+  });
 
-    useTask$(({ track }) => {
-      track(() => options);
+  useTask$(({ track }) => {
+    track(() => options);
+    visibleOptions.value = options;
+  });
+
+  useTask$(({ track }) => {
+    track(() => value);
+
+    if (!value) return;
+
+    input.value = value;
+  });
+
+  const onUnselect = $((opt: CustomSelectOption) => {
+    selectedOptions.value = selectedOptions.value.filter(
+      (item) => item.value !== opt.value,
+    );
+  });
+
+  const handleChange = $((ev: Event) => {
+    const value = (ev.target as HTMLInputElement).value;
+    console.log("handleChange", value);
+    input.value = value;
+
+    // filter options
+    if (!value) {
       visibleOptions.value = options;
-    });
+      return;
+    }
 
-    useTask$(({ track }) => {
-      track(() => value);
+    const filteredOptions = options.filter((item) =>
+      item.label.toLowerCase().includes(value.toLowerCase()),
+    );
 
-      if (!value) return;
+    visibleOptions.value = filteredOptions;
+  });
 
-      input.value = value;
-    });
+  const handleClear = $(() => {
+    console.log("handleClear");
+    clearInput();
+    clearSelectedOptions();
+    onClear?.();
+  });
 
-    const onUnselect = $((opt: CustomSelectOption) => {
-      console.log("onClear", opt);
-      selectedOptions.value = selectedOptions.value.filter(
-        (item) => item.value !== opt.value,
-      );
-    });
-
-    const handleChange = $((ev: Event) => {
-      const value = (ev.target as HTMLInputElement).value;
-      console.log("handleChange", value);
-      input.value = value;
-
-      // filter options
-      if (!value) {
-        visibleOptions.value = options;
-        return;
-      }
-
-      const filteredOptions = options.filter((item) =>
-        item.label.toLowerCase().includes(value.toLowerCase()),
-      );
-
-      visibleOptions.value = filteredOptions;
-    });
-
-    return (
-      <div class="relative">
-        <div class="flex flex-wrap items-center overflow-hidden rounded-lg border border-base-content border-opacity-20">
+  return (
+    <div class="relative">
+      <div class="min-h-12 flex h-full rounded-lg border border-base-content border-opacity-20 py-2 ps-4">
+        <div class="flex flex-1 flex-wrap items-center gap-1 overflow-hidden">
           {isMulti && (
             <>
               {selectedOptions.value.map((opt) => (
@@ -98,32 +113,40 @@ export const CustomSelect = component$<Props>(
             onFocus$={() => (showMenu.value = true)}
             onBlur$={() => setTimeout(() => (showMenu.value = false), 100)}
           />
-
-          {showMenu.value && (
-            <div class="absolute top-[100%] z-50 w-full">
-              <div class="mt-1 rounded-lg bg-secondary">
-                <ul>
-                  {visibleOptions.value.map((opt) => (
-                    <Option
-                      key={opt.value}
-                      label={opt.label}
-                      onSelect={$(() => handleSelect(opt))}
-                    />
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
+        </div>
+        <div class="mx-1 flex items-center">
+          <button
+            type="button"
+            class="btn btn-ghost btn-sm px-1"
+            onClick$={handleClear}
+          >
+            <IcRoundClose />
+          </button>
         </div>
       </div>
-    );
-  },
-);
+      {showMenu.value && (
+        <div class="absolute top-[100%] z-50 w-full">
+          <div class="mt-1 rounded-lg bg-secondary">
+            <ul>
+              {visibleOptions.value.map((opt) => (
+                <Option
+                  key={opt.value}
+                  label={opt.label}
+                  onSelect={$(() => handleSelect(opt))}
+                />
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+});
 
 const MultiValue = component$<{ label: string; onClear: () => void }>(
   ({ label, onClear }) => {
     return (
-      <div class="m-1 flex max-w-min items-center justify-between gap-2 rounded-lg bg-secondary text-sm">
+      <div class="flex max-w-min items-center justify-between gap-2 rounded-lg bg-secondary text-sm">
         <span class="p-1 ps-2">{label}</span>
         <button type="button" class="btn btn-ghost btn-xs" onClick$={onClear}>
           <IcRoundClose />
