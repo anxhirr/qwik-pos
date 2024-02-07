@@ -37,16 +37,14 @@ export const DialogBody = component$(() => {
 
 type DialogFooterProps = {
   useCloseButton?: boolean;
+  hide: () => void;
 };
-
 export const DialogFooter = component$<DialogFooterProps>(
-  ({ useCloseButton = true }) => {
+  ({ useCloseButton = true, hide }) => {
     return (
       <div class="modal-action">
         {useCloseButton && (
-          <form method="dialog">
-            <Button text="Close" variant="warning" />
-          </form>
+          <Button text="Close" variant="warning" onClick$={hide} />
         )}
         <Slot />
       </div>

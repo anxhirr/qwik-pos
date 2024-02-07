@@ -15,7 +15,7 @@ export const CategoryCard = component$<Props>(
   ({ data, handleDelete$, handleEdit$ }) => {
     const showConfirmDialog = useSignal(false);
     return (
-      <div class="card h-full max-w-xs bg-base-100 shadow-xl">
+      <div class="card h-full max-w-xs bg-secondary shadow-xl">
         <div class="card-body">
           <h2 class="card-title">
             {data.name}

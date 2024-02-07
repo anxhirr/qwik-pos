@@ -1,3 +1,4 @@
+import type { Signal } from "@builder.io/qwik";
 import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
 import type { CustomSelectOption } from "../../../types";
 import { IcRoundClose } from "../icons";
@@ -115,13 +116,7 @@ export const CustomSelect = component$<Props>((props) => {
           />
         </div>
         <div class="mx-1 flex items-center">
-          <button
-            type="button"
-            class="btn btn-ghost btn-sm px-1"
-            onClick$={handleClear}
-          >
-            <IcRoundClose />
-          </button>
+          <ClearButton input={input} onClear={handleClear} />
         </div>
       </div>
       {showMenu.value && (
@@ -140,6 +135,18 @@ export const CustomSelect = component$<Props>((props) => {
         </div>
       )}
     </div>
+  );
+});
+
+const ClearButton = component$<{
+  onClear: () => void;
+  input: Signal<string>;
+}>((props) => {
+  if (!props.input.value) return null; // nothing to clear
+  return (
+    <button type="button" class="btn btn-ghost btn-xs" onClick$={props.onClear}>
+      <IcRoundClose />
+    </button>
   );
 });
 

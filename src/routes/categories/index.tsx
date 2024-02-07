@@ -1,4 +1,4 @@
-import { CategoriesBActionBar } from "~/components/bottom-nav/categories";
+import { CategoriesBottomNav } from "~/components/bottom-nav/categories";
 
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
@@ -41,47 +41,54 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      <ul class="3xl:grid-cols-5 grid grid-cols-1 gap-4  sm:grid-cols-3 xl:grid-cols-4">
-        {data.value.map((cat) => {
-          const { id, name, color, type } = cat;
-          return (
-            <li key={id} class="h-full">
-              <CategoryCard
-                data={cat}
-                handleDelete$={async () => {
-                  try {
-                    const res = await action.submit(cat);
-                    console.log("res", res);
-                    if (res.status === 200) {
-                      console.log("success");
+    <>
+      <div class="flex-1">
+        <ul class="3xl:grid-cols-5 grid grid-cols-1 gap-4  sm:grid-cols-3 xl:grid-cols-4">
+          {data.value.map((cat) => {
+            const { id, name, color, type } = cat;
+            return (
+              <li key={id} class="h-full">
+                <CategoryCard
+                  data={cat}
+                  handleDelete$={async () => {
+                    try {
+                      const res = await action.submit(cat);
+                      console.log("res", res);
+                      if (res.status === 200) {
+                        console.log("success");
+                      }
+                    } catch (error) {
+                      console.log("error", error);
                     }
-                  } catch (error) {
-                    console.log("error", error);
-                  }
-                }}
-                handleEdit$={() => {
-                  showDialog.value = true;
-                  dialogFormData.value = {
-                    name,
-                    color,
-                    type,
-                  };
-                }}
-              />
-            </li>
-          );
-        })}
-      </ul>
+                  }}
+                  handleEdit$={() => {
+                    showDialog.value = true;
+                    dialogFormData.value = {
+                      name,
+                      color,
+                      type,
+                    };
+                  }}
+                />
+              </li>
+            );
+          })}
+        </ul>
 
-      <CategoryDialog
-        show={showDialog}
-        hide={$(() => {
-          showDialog.value = false;
+        <CategoryDialog
+          show={showDialog}
+          hide={$(() => {
+            console.log("hide");
+            showDialog.value = false;
+          })}
+          formData={dialogFormData.value}
+        />
+      </div>
+      <CategoriesBottomNav
+        onCreateNew={$(() => {
+          showDialog.value = true;
         })}
-        formData={dialogFormData.value}
       />
-      <CategoriesBActionBar />
-    </div>
+    </>
   );
 });

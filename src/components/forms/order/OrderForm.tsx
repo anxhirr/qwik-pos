@@ -16,6 +16,7 @@ import {
   replace,
   insert,
   move,
+  remove,
 } from "@modular-forms/qwik";
 import {
   CustomSelect,
@@ -195,12 +196,13 @@ export const OrderForm = component$<Props>(
           </div>
 
           <div class="mt-6 flex flex-col gap-2">
-            <div class="grid grid-cols-6 gap-1">
+            <div class="grid grid-cols-7 gap-1">
               <div class="col-span-2">Item</div>
               <div>Unit</div>
               <div>Quantity</div>
               <div>Unit Price</div>
               <div>Unit Price With Tax</div>
+              <div>Actions</div>
             </div>
 
             <FieldArray of={form} name="items">
@@ -208,7 +210,7 @@ export const OrderForm = component$<Props>(
                 <>
                   <div class="flex flex-col gap-2">
                     {fieldArray.items.map((item, index) => (
-                      <div key={item} class="grid grid-cols-6 gap-1">
+                      <div key={item} class="grid grid-cols-7 gap-1">
                         <div class="col-span-2">
                           <Field
                             of={form}
@@ -287,6 +289,28 @@ export const OrderForm = component$<Props>(
                             />
                           )}
                         </Field>
+
+                        <div>
+                          <Button
+                            onClick$={() => {
+                              // TODO:
+                              console.log("clear", index);
+                            }}
+                            text="Clear"
+                            type="button"
+                            variant="secondary"
+                          />
+                          <Button
+                            onClick$={() => {
+                              console.log("remove", index);
+                              remove(form, "items", { at: index });
+                            }}
+                            text="Remove"
+                            type="button"
+                            variant="secondary"
+                            disabled={fieldArray.items.length === 1}
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>

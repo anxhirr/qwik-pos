@@ -77,7 +77,7 @@ export const CategoryDialog = component$<CategoryDialogProps>(
         <DialogBody>
           <CategoryForm form={form} action={action} />
         </DialogBody>
-        <DialogFooter>
+        <DialogFooter hide={hide}>
           <Button
             text="Save"
             isLoading={form.submitting}

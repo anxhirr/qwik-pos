@@ -15,7 +15,7 @@ export const ItemCard = component$<Props>(({ data }) => {
         </h2>
         <p>{data.description}</p>
         <div class="card-actions justify-end">
-          <div class="badge badge-outline">{data.category}</div>
+          <div class="badge badge-outline">category</div>
         </div>
       </div>
     </div>

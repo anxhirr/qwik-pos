@@ -1,18 +1,18 @@
 import { component$ } from "@builder.io/qwik";
-import { IcRoundPlus } from "~/components/icons";
-import { openCategoryModal } from "~/triggers/dialogs";
+import { BottomNav } from "../base";
+import { BOTTOM_NAVBAR_SLOTS } from "~/constants/enum";
+import { Button } from "~/components/buttons";
 
-export const CategoriesBActionBar = component$(() => {
+type Props = {
+  onCreateNew: () => void;
+};
+
+export const CategoriesBottomNav = component$<Props>(({ onCreateNew }) => {
   return (
-    <div class="navbar fixed bottom-0 right-0 bg-base-100">
-      <div class="navbar-start"></div>
-      <div class="navbar-center"></div>
-      <div class="navbar-end">
-        <button class="btn btn-secondary" onClick$={openCategoryModal}>
-          <IcRoundPlus />
-          New Category
-        </button>
+    <BottomNav>
+      <div q:slot={BOTTOM_NAVBAR_SLOTS.END}>
+        <Button text="New Category" onClick$={onCreateNew} />
       </div>
-    </div>
+    </BottomNav>
   );
 });

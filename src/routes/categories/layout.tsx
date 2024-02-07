@@ -5,7 +5,7 @@ export interface LayoutProps {}
 
 export default component$<LayoutProps>(() => {
   return (
-    <div>
+    <div class="flex h-full flex-col">
       <CategoriesNavbar />
       <Slot />
     </div>
