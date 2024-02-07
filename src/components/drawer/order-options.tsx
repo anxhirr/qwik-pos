@@ -36,6 +36,19 @@ export const OrderOptionsDrawer = component$<Props>(({ show, hide, form }) => {
           />
         )}
       </Field>
+      <Field of={form} type="number" name="exchangeRate">
+        {(field, props) => (
+          <div class="col-span-2">
+            <NumberInput
+              {...props}
+              value={field.value}
+              error={field.error}
+              placeholder="Exchange Rate"
+              label="Exchange Rate"
+            />
+          </div>
+        )}
+      </Field>
       <Field of={form} name="notes">
         {(field, props) => (
           <TextInput

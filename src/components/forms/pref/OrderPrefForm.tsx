@@ -15,8 +15,8 @@ import { CheckBoxInput, Select } from "~/components/shared";
 import {
   CURRENCIES,
   PAYMENT_METHODS,
+  PREF_ORDER_FORM_ID,
   PRINT_FORMATS,
-  SHOP_FORM_ID,
 } from "~/constants/enum";
 import type { OrderPrefFormType } from "~/types-and-validation/orderPrefSchema";
 
@@ -36,7 +36,7 @@ export const OrderPrefForm = component$<Props>(({ form, action }) => {
     <Form
       of={form}
       action={action}
-      id={SHOP_FORM_ID}
+      id={PREF_ORDER_FORM_ID}
       class="flex flex-col gap-4"
     >
       <Field of={form} name="currency">

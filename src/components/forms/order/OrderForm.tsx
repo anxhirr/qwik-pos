@@ -146,19 +146,6 @@ export const OrderForm = component$<Props>(
             </Field>
           </div>
           <div class="flex gap-2">
-            <Field of={form} type="number" name="exchangeRate">
-              {(field, props) => (
-                <div class="col-span-2">
-                  <NumberInput
-                    {...props}
-                    value={field.value}
-                    error={field.error}
-                    placeholder="Exchange Rate"
-                    label="Exchange Rate"
-                  />
-                </div>
-              )}
-            </Field>
             <div class="flex items-end gap-1">
               <Field of={form} name="discount.type">
                 {(field, props) => (
@@ -180,7 +167,6 @@ export const OrderForm = component$<Props>(
                       value={field.value}
                       error={field.error}
                       placeholder="Discount Amount"
-                      label="Discount"
                     />
                   </div>
                 )}
