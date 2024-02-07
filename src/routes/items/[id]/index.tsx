@@ -52,7 +52,6 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
       data: {
         name: values.name,
         unit: values.unit,
-        category: values.category,
         barcode: values.barcode,
         code: values.code,
         description: values.description,
@@ -101,7 +100,7 @@ export default component$(() => {
   const form = useFormStore<ItemFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(ItemSchema),
-    fieldArrays: ["priceRules"],
+    fieldArrays: ["priceRules", "categoryIDs"],
   });
 
   return (

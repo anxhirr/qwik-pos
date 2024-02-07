@@ -19,7 +19,6 @@ export const ItemSchema = object({
       price: number(),
     }),
   ),
-  category: string(),
   categoryIDs: array(string()),
   barcode: string(),
   code: string(),

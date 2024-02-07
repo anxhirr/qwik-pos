@@ -24,8 +24,8 @@ export const CustomSelect = component$<Props>((props) => {
   const showMenu = useSignal(false);
 
   const selectedOptions = useSignal<CustomSelectOption[]>([
-    { label: "test", value: "test" },
-    { label: "test2", value: "test2" },
+    // { label: "test", value: "test" },
+    // { label: "test2", value: "test2" },
   ]);
 
   const visibleOptions = useSignal<CustomSelectOption[]>([]);
@@ -160,7 +160,7 @@ const Option = component$<{ label: string; onSelect: () => void }>(
   ({ label, onSelect }) => {
     return (
       <li
-        class="cursor-pointer rounded-md p-2 hover:bg-info"
+        class="cursor-pointer rounded-md p-2 ps-4 hover:bg-info-content hover:text-primary"
         onClick$={onSelect}
       >
         {label}

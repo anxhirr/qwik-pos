@@ -116,7 +116,6 @@ model Item {
 
   name        String
   unit        String
-  category    String
   barcode     String
   code        String
   description String

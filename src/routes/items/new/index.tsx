@@ -48,7 +48,6 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
       data: {
         name: values.name,
         unit: values.unit,
-        category: values.category,
         barcode: values.barcode,
         code: values.code,
         description: values.description,

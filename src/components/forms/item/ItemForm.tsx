@@ -20,7 +20,6 @@ import {
   CheckBoxInput,
   CustomSelect,
   NumberInput,
-  Select,
   TextInput,
 } from "~/components/shared";
 import { DateInput } from "~/components/shared";
@@ -88,19 +87,6 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                 value={field.value}
                 error={field.error}
                 placeholder="Unit"
-              />
-            )}
-          </Field>
-          <Field of={form} name="category">
-            {(field, props) => (
-              <Select
-                {...props}
-                error={field.error}
-                options={categories.map((category) => ({
-                  label: category.name,
-                  value: category.id,
-                }))}
-                placeholder="Category"
               />
             )}
           </Field>
