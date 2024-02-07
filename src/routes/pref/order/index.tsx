@@ -2,6 +2,7 @@ import { component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { InitialValues, ResponseData } from "@modular-forms/qwik";
 import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
+import { OrderPrefBottomNav } from "~/components/bottom-nav/pref/order";
 import { OrderPrefForm } from "~/components/forms/pref/OrderPrefForm";
 import { getOrderPref } from "~/lib/queries/order-pref";
 import { prisma } from "~/routes/plugin@auth";
@@ -83,8 +84,12 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      <OrderPrefForm form={form} action={action} />
-    </div>
+    <>
+      <div class="flex-1">
+        <OrderPrefForm form={form} action={action} />
+      </div>
+
+      <OrderPrefBottomNav form={form} />
+    </>
   );
 });

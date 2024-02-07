@@ -9,7 +9,7 @@ type Props = {
   form: FormStore<OrderFormType, ResponseData>;
 };
 
-export const NewOrderBottomNav = component$<Props>(({ form }) => {
+export const CreateOrderBottomNav = component$<Props>(({ form }) => {
   return (
     <BottomNav>
       <div q:slot={BOTTOM_NAVBAR_SLOTS.END}>
@@ -25,10 +25,10 @@ export const NewOrderBottomNav = component$<Props>(({ form }) => {
             form={ORDER_FORM_ID}
           />
           <Button
-            text="Save"
+            text="Create"
             isLoading={form.submitting}
             disabled={form.submitting}
-            loadingText="Saving..."
+            loadingText="Creating..."
             show={form.dirty}
             type="submit"
             variant="success"

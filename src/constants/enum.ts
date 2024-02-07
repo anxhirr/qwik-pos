@@ -14,10 +14,11 @@ export const DELETE_CATEGORY_CONFIRM_DIALOG_ID =
   "DELETE_CATEGORY_CONFIRM_DIALOG_ID";
 
 //FORMS IDS
-export const CATEGORY_FORM_ID = "CATEGORY_FORM_ID";
-export const SHOP_FORM_ID = "SHOP_FORM_ID";
-export const ITEM_FORM_ID = "ITEM_FORM_ID";
-export const ORDER_FORM_ID = "ORDER_FORM_ID";
+export const CATEGORY_FORM_ID = "CATEGORY_FORM_ID" as const;
+export const SHOP_FORM_ID = "SHOP_FORM_ID" as const;
+export const ITEM_FORM_ID = "ITEM_FORM_ID" as const;
+export const ORDER_FORM_ID = "ORDER_FORM_ID" as const;
+export const PREF_ORDER_FORM_ID = "PREF_ORDER_FORM_ID" as const;
 
 export const CURRENCIES = ["ALL", "EUR", "USD"] as const;
 
@@ -34,6 +35,7 @@ export const ENTITY = {
   CATEGORY: "CATEGORY",
 } as const;
 
+export const BOTTOM_NAVBAR_SLOT = "BOTTOM_NAVBAR_SLOT" as const;
 export const BOTTOM_NAVBAR_SLOTS = {
   START: "START",
   CENTER: "CENTER",

@@ -11,7 +11,6 @@ import {
   type ResponseData,
   type FormStore,
 } from "@modular-forms/qwik";
-import { OrderPrefActionBar } from "~/components/bottom-nav/pref/order";
 import { CheckBoxInput, Select } from "~/components/shared";
 import {
   CURRENCIES,
@@ -92,8 +91,6 @@ export const OrderPrefForm = component$<Props>(({ form, action }) => {
           />
         )}
       </Field>
-
-      <OrderPrefActionBar form={form} />
     </Form>
   );
 });

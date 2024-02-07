@@ -7,11 +7,15 @@ import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import type { ItemFormType } from "~/types-and-validation/itemSchema";
 import { Button } from "../buttons";
 
+type Props = {
+  form?: FormStore<ItemFormType, ResponseData>;
+};
+
 export const ItemsBottomNav = component$(() => {
   return (
     <BottomNav>
       <div q:slot={BOTTOM_NAVBAR_SLOTS.END}>
-        <Link href="/items/new">
+        <Link href="/items/create">
           <button class="btn btn-secondary" type="submit">
             <IcRoundPlus />
             New Item
@@ -22,19 +26,34 @@ export const ItemsBottomNav = component$(() => {
   );
 });
 
-type Props = {
-  form?: FormStore<ItemFormType, ResponseData>;
-};
-
-export const NewItemBottomNav = component$<Props>(({ form }) => {
+export const CreateItemBottomNav = component$<Props>(({ form }) => {
   return (
     <BottomNav>
       <div q:slot={BOTTOM_NAVBAR_SLOTS.END}>
         <Button
-          text="Save"
+          text="Create"
           isLoading={form?.submitting}
           disabled={form?.submitting}
-          loadingText="Saving..."
+          loadingText="Creating..."
+          show={form?.dirty}
+          type="submit"
+          variant="success"
+          form={ITEM_FORM_ID}
+        />
+      </div>
+    </BottomNav>
+  );
+});
+
+export const UpdateItemBottomNav = component$<Props>(({ form }) => {
+  return (
+    <BottomNav>
+      <div q:slot={BOTTOM_NAVBAR_SLOTS.END}>
+        <Button
+          text="Update"
+          isLoading={form?.submitting}
+          disabled={form?.submitting}
+          loadingText="Updating..."
           show={form?.dirty}
           type="submit"
           variant="success"

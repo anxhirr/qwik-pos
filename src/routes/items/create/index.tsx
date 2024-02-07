@@ -1,14 +1,8 @@
 import { component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { InitialValues, ResponseData } from "@modular-forms/qwik";
-import {
-  formAction$,
-  getErrors,
-  getValues,
-  useFormStore,
-  valiForm$,
-} from "@modular-forms/qwik";
-import { NewItemBottomNav } from "~/components/bottom-nav/item";
+import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
+import { CreateItemBottomNav } from "~/components/bottom-nav/item";
 import { ItemForm } from "~/components/forms/item/ItemForm";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { prisma } from "~/routes/plugin@auth";
@@ -94,16 +88,12 @@ export default component$(() => {
     fieldArrays: ["priceRules", "categoryIDs"],
   });
 
-  console.log("error", getErrors(form));
-  const values = getValues(form);
-  console.log("values", values);
-
   return (
     <>
       <div class="flex-1">
         <ItemForm form={form} action={action} categories={categories.value} />
       </div>
-      <NewItemBottomNav form={form} />
+      <CreateItemBottomNav form={form} />
     </>
   );
 });

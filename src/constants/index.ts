@@ -77,9 +77,9 @@ export const LIST_ITEMS = [
   //   suffix: 0,
   // },
   {
-    title: "New Order",
+    title: "Create Order",
     prefix: IcRoundPlus,
-    route: "/orders/new",
+    route: "/orders/create",
     suffix: 0,
   },
   {

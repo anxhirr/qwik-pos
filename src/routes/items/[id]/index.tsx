@@ -7,6 +7,7 @@ import {
   formAction$,
   type ResponseData,
 } from "@modular-forms/qwik";
+import { UpdateItemBottomNav } from "~/components/bottom-nav";
 import { ItemForm } from "~/components/forms/item/ItemForm";
 import { prisma } from "~/routes/plugin@auth";
 import {
@@ -104,8 +105,11 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      <ItemForm form={form} action={action} categories={categories.value} />
-    </div>
+    <>
+      <div class="flex-1">
+        <ItemForm form={form} action={action} categories={categories.value} />
+      </div>
+      <UpdateItemBottomNav form={form} />
+    </>
   );
 });

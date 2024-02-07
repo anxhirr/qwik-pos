@@ -11,7 +11,7 @@ import {
   useFormStore,
   valiForm$,
 } from "@modular-forms/qwik";
-import { NewOrderBottomNav } from "~/components/bottom-nav";
+import { CreateOrderBottomNav } from "~/components/bottom-nav";
 import { ReceiptDialog } from "~/components/dialogs";
 import { OrderForm } from "~/components/forms/order";
 import { getAllItems } from "~/lib/queries/items";
@@ -131,7 +131,7 @@ export default component$(() => {
         />
       </div>
 
-      <NewOrderBottomNav form={form} />
+      <CreateOrderBottomNav form={form} />
 
       <ReceiptDialog
         show={showReceiptDialog}
