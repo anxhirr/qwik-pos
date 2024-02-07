@@ -3,6 +3,7 @@ import type {
   PropFunction,
   QwikChangeEvent,
   QwikFocusEvent,
+  QwikIntrinsicElements,
   Signal,
 } from "@builder.io/qwik";
 
@@ -63,3 +64,8 @@ interface ConfirmDialogProps extends DialogProps {
 }
 
 type Entity = "ITEM" | "CATEGORY" | "ORDER" | "CUSTOMER";
+
+type IconProps = {
+  props?: QwikIntrinsicElements["svg"];
+  key?: string;
+};

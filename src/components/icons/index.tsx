@@ -1,9 +1,4 @@
-import type { QwikIntrinsicElements } from "@builder.io/qwik";
-
-type IconProps = {
-  props?: QwikIntrinsicElements["svg"];
-  key?: string;
-};
+import type { IconProps } from "../../../types";
 
 export function IcBaselineCheckCircle({ props, key }: IconProps) {
   return (
