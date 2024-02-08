@@ -34,7 +34,6 @@ import {
 } from "~/constants/enum";
 import { type OrderFormType } from "~/types-and-validation/orderSchema";
 import type { CustomSelectOption } from "../../../../types";
-import { IcRoundPlus, IcRoundSwapVert } from "~/components/icons";
 import { Button } from "~/components/buttons";
 import { OrderOptionsDrawer } from "~/components/drawer";
 
@@ -301,29 +300,28 @@ export const OrderForm = component$<Props>(
                     ))}
                   </div>
                   <div class="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
+                    {/* <IcRoundPlus /> */}
+                    <Button
                       onClick$={() => {
                         addNewEmptyRow(fieldArray.items.length);
                       }}
-                    >
-                      <IcRoundPlus />
-                      Add row
-                    </button>
-                    <button
+                      text="Add Row"
                       type="button"
-                      class="btn btn-secondary"
+                      variant="secondary"
+                    />
+                    {/* <IcRoundSwapVert /> */}
+                    <Button
                       onClick$={() => {
                         move(form, "items", {
                           from: 0,
                           to: fieldArray.items.length - 1,
                         });
                       }}
-                    >
-                      <IcRoundSwapVert />
-                      Move First To Last
-                    </button>
+                      text="Move First To Last"
+                      type="button"
+                      variant="secondary"
+                      disabled={fieldArray.items.length < 2}
+                    />
                   </div>
                 </>
               )}
