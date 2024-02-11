@@ -122,7 +122,7 @@ export default component$(() => {
   });
   return (
     <>
-      <div class="flex-1 overflow-y-auto">
+      <div class="main-content">
         <OrderForm
           form={form}
           action={action}
