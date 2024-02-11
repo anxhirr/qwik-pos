@@ -9,28 +9,22 @@ import {
 } from "@modular-forms/qwik";
 import type { CategoryFormType } from "~/types-and-validation/categorySchema";
 import { CategorySchema } from "~/types-and-validation/categorySchema";
-import { prisma } from "~/routes/plugin@auth";
 import { CATEGORY_DIALOG_ID, CATEGORY_FORM_ID } from "~/constants/enum";
 import { Dialog, DialogBody, DialogFooter } from ".";
 import type { DialogProps } from "../../../types";
 import { Button } from "../buttons/base";
 import { getSessionSS } from "~/utils/auth";
+import { createCategory } from "~/lib/queries/categories";
 
 export const useFormAction = formAction$<CategoryFormType>(
   async (values, event) => {
     const session = getSessionSS(event);
 
-    const newCategory = await prisma.category.create({
-      data: {
-        name: values.name,
-        color: values.color,
-        type: values.type,
-        shop: {
-          connect: {
-            id: session.shopId,
-          },
-        },
-      },
+    const newCategory = await createCategory({
+      name: values.name,
+      color: values.color,
+      type: values.type,
+      shopId: session.shopId,
     });
 
     if (!newCategory.id) {

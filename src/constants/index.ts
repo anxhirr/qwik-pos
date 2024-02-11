@@ -1,50 +1,50 @@
-import { IcRoundPlus } from "~/components/icons";
+import { PlusIcon } from "~/components/icons";
 
 export const ACCORDIONS = [
   {
     name: "Settings",
-    prefix: IcRoundPlus,
+    prefix: PlusIcon,
     items: [
       {
         title: "Shop",
-        prefix: IcRoundPlus,
+        prefix: PlusIcon,
         route: "/settings/shop",
       },
       {
         title: "Users",
-        prefix: IcRoundPlus,
+        prefix: PlusIcon,
         route: "/settings/users",
       },
       {
         title: "Roles",
-        prefix: IcRoundPlus,
+        prefix: PlusIcon,
         route: "/settings/roles",
       },
     ],
   },
   {
     name: "Preferences",
-    prefix: IcRoundPlus,
+    prefix: PlusIcon,
     items: [
       {
         title: "Order",
-        prefix: IcRoundPlus,
+        prefix: PlusIcon,
         route: "/pref/order",
       },
       {
         title: "General",
-        prefix: IcRoundPlus,
+        prefix: PlusIcon,
         route: "/pref/general",
       },
     ],
   },
   {
     name: "Entities",
-    prefix: IcRoundPlus,
+    prefix: PlusIcon,
     items: [
       {
         title: "Categories",
-        prefix: IcRoundPlus,
+        prefix: PlusIcon,
         route: "/categories",
       },
     ],
@@ -54,19 +54,19 @@ export const ACCORDIONS = [
 export const LIST_ITEMS = [
   {
     title: "Home",
-    prefix: IcRoundPlus,
+    prefix: PlusIcon,
     route: "/",
     suffix: 0,
   },
   {
     title: "Items",
-    prefix: IcRoundPlus,
+    prefix: PlusIcon,
     route: "/items",
     suffix: 0,
   },
   {
     title: "Items List",
-    prefix: IcRoundPlus,
+    prefix: PlusIcon,
     route: "/items/list",
     suffix: 0,
   },
@@ -78,19 +78,19 @@ export const LIST_ITEMS = [
   // },
   {
     title: "Create Order",
-    prefix: IcRoundPlus,
+    prefix: PlusIcon,
     route: "/orders/create",
     suffix: 0,
   },
   {
     title: "Orders List",
-    prefix: IcRoundPlus,
+    prefix: PlusIcon,
     route: "/orders/list",
     suffix: 0,
   },
   {
     title: "Help",
-    prefix: IcRoundPlus,
+    prefix: PlusIcon,
     route: "/help",
     suffix: 0,
   },

@@ -11,17 +11,15 @@ export interface Props {
   onClear?: () => void;
   isMulti?: boolean;
   isCreatable?: true;
-  onCreate: (option: CustomSelectOption) => void;
+  onCreate?: (option: CustomSelectOption) => void;
 }
-
-type FinalProps = Props["isCreatable"] extends true ? Required<Props> : Props;
 
 type selectHandler = {
   option: CustomSelectOption;
   parentEmitFn: (option: CustomSelectOption) => void;
 };
 
-export const CustomSelect = component$<FinalProps>((props) => {
+export const CustomSelect = component$<Props>((props) => {
   const {
     onSelect,
     placeholder = "Select",
@@ -80,7 +78,6 @@ export const CustomSelect = component$<FinalProps>((props) => {
 
   const handleChange = $((ev: Event) => {
     const value = (ev.target as HTMLInputElement).value;
-    console.log("handleChange", value);
     input.value = value;
 
     // filter options
@@ -97,7 +94,6 @@ export const CustomSelect = component$<FinalProps>((props) => {
   });
 
   const handleClear = $(() => {
-    console.log("handleClear");
     clearInput();
     clearSelectedOptions();
     onClear?.();
@@ -158,7 +154,7 @@ export const CustomSelect = component$<FinalProps>((props) => {
                   onClick$={() =>
                     handleSelect({
                       option: { label: input.value, value: input.value },
-                      parentEmitFn: onCreate,
+                      parentEmitFn: onCreate, // TODO: remove warning
                     })
                   }
                 >

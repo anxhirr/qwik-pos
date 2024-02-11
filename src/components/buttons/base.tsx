@@ -1,5 +1,10 @@
-import type { ButtonHTMLAttributes, QwikMouseEvent } from "@builder.io/qwik";
+import type {
+  ButtonHTMLAttributes,
+  Component,
+  QwikMouseEvent,
+} from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
+import type { IconProps } from "../../../types";
 
 type Props = {
   show?: boolean;
@@ -8,6 +13,7 @@ type Props = {
     element: HTMLButtonElement,
   ) => any;
   text?: string;
+  Icon?: Component<IconProps>;
   form?: string;
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   variant?: "primary" | "secondary" | "success" | "error" | "warning";
@@ -23,6 +29,7 @@ export const Button = component$<Props>(
     onClick$,
     form,
     type = "button",
+    Icon,
     variant = "primary",
     disabled,
     isLoading,
@@ -40,6 +47,7 @@ export const Button = component$<Props>(
         disabled={disabled}
         {...rest}
       >
+        {Icon && <Icon />} {/* TODO: remove warning*/}
         {isLoading ? loadingText : text}
       </button>
     );

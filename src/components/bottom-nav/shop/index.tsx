@@ -6,10 +6,10 @@ import type {
 import { $, component$ } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
-import { IcBaselineCheckCircle, IcRoundPlus } from "~/components/icons";
+import { IcBaselineCheckCircle } from "~/components/icons";
 import { SHOP_FORM_ID } from "~/constants/enum";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";
-import type { IconProps } from "@qwikest/icons/*";
+import type { IconProps } from "../../../../types";
 
 type Props = {
   form?: FormStore<ShopFormType, ResponseData>;
@@ -44,7 +44,7 @@ export const ShopActionBar = component$<Props>(({ form }) => {
         },
         {
           text: "Create New",
-          Icon: IcRoundPlus,
+          Icon: IcBaselineCheckCircle,
           type: "button",
           onClick$: $(() => nav("/settings/shop/new/")),
         },

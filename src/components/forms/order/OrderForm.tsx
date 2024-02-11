@@ -36,6 +36,7 @@ import { type OrderFormType } from "~/types-and-validation/orderSchema";
 import type { CustomSelectOption } from "../../../../types";
 import { Button } from "~/components/buttons";
 import { OrderOptionsDrawer } from "~/components/drawer";
+import { SwapVertIcon, PlusIcon } from "~/components/icons";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
@@ -300,7 +301,6 @@ export const OrderForm = component$<Props>(
                     ))}
                   </div>
                   <div class="grid grid-cols-2 gap-2">
-                    {/* <IcRoundPlus /> */}
                     <Button
                       onClick$={() => {
                         addNewEmptyRow(fieldArray.items.length);
@@ -308,8 +308,8 @@ export const OrderForm = component$<Props>(
                       text="Add Row"
                       type="button"
                       variant="secondary"
+                      Icon={PlusIcon}
                     />
-                    {/* <IcRoundSwapVert /> */}
                     <Button
                       onClick$={() => {
                         move(form, "items", {
@@ -321,6 +321,7 @@ export const OrderForm = component$<Props>(
                       type="button"
                       variant="secondary"
                       disabled={fieldArray.items.length < 2}
+                      Icon={SwapVertIcon}
                     />
                   </div>
                 </>

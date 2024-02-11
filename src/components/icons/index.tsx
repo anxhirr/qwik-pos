@@ -1,3 +1,4 @@
+import { component$ } from "@builder.io/qwik";
 import type { IconProps } from "../../../types";
 
 export function IcBaselineCheckCircle({ props, key }: IconProps) {
@@ -18,7 +19,7 @@ export function IcBaselineCheckCircle({ props, key }: IconProps) {
   );
 }
 
-export function IcRoundPlus({ props, key }: IconProps) {
+export const PlusIcon = component$<IconProps>(({ props, key }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +35,7 @@ export function IcRoundPlus({ props, key }: IconProps) {
       ></path>
     </svg>
   );
-}
+});
 
 export function IcRoundModeEdit({ props, key }: IconProps) {
   return (
@@ -108,7 +109,7 @@ export function IcRoundNotifications({ props, key }: IconProps) {
   );
 }
 
-export function IcRoundSwapVert({ props, key }: IconProps) {
+export const SwapVertIcon = component$<IconProps>(({ props, key }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -124,7 +125,7 @@ export function IcRoundSwapVert({ props, key }: IconProps) {
       ></path>
     </svg>
   );
-}
+});
 
 export function IcRoundInsertDriveFile({ props, key }: IconProps) {
   return (
