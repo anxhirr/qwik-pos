@@ -10,15 +10,26 @@ export interface Props {
   onSelect: (option: CustomSelectOption) => void;
   onClear?: () => void;
   isMulti?: boolean;
+  isCreatable?: true;
+  onCreate: (option: CustomSelectOption) => void;
 }
 
-export const CustomSelect = component$<Props>((props) => {
+type FinalProps = Props["isCreatable"] extends true ? Required<Props> : Props;
+
+type selectHandler = {
+  option: CustomSelectOption;
+  parentEmitFn: (option: CustomSelectOption) => void;
+};
+
+export const CustomSelect = component$<FinalProps>((props) => {
   const {
     onSelect,
     placeholder = "Select",
     options,
     value,
-    isMulti,
+    isMulti = false,
+    isCreatable = false,
+    onCreate,
     onClear,
   } = props;
   const input = useSignal("");
@@ -31,11 +42,13 @@ export const CustomSelect = component$<Props>((props) => {
 
   const visibleOptions = useSignal<CustomSelectOption[]>([]);
 
+  const noResultsFound = !visibleOptions.value.length;
+
   const clearSelectedOptions = $(() => (selectedOptions.value = []));
   const clearInput = $(() => (input.value = ""));
 
-  const handleSelect = $((option: CustomSelectOption) => {
-    onSelect(option); // emit event
+  const handleSelect = $(({ option, parentEmitFn }: selectHandler) => {
+    parentEmitFn(option); // emit event
 
     if (isMulti) {
       selectedOptions.value = [...selectedOptions.value, option];
@@ -109,7 +122,7 @@ export const CustomSelect = component$<Props>((props) => {
             type="text"
             placeholder={placeholder}
             value={input.value}
-            class="input max-h-8 min-w-[10px] flex-1 p-0 !outline-none"
+            class="input max-h-8 min-w-[10px] flex-1 !border-none p-0 !outline-none"
             onInput$={handleChange}
             onFocus$={() => (showMenu.value = true)}
             onBlur$={() => setTimeout(() => (showMenu.value = false), 100)}
@@ -127,9 +140,31 @@ export const CustomSelect = component$<Props>((props) => {
                 <Option
                   key={opt.value}
                   label={opt.label}
-                  onSelect={$(() => handleSelect(opt))}
+                  onSelect={$(() =>
+                    handleSelect({ option: opt, parentEmitFn: onSelect }),
+                  )}
                 />
               ))}
+
+              {noResultsFound && !isCreatable && (
+                <li class="p-2 ps-4 text-sm text-base-content">
+                  No results found
+                </li>
+              )}
+
+              {isCreatable && noResultsFound && (
+                <li
+                  class="cursor-pointer rounded-md p-2 ps-4 hover:bg-info-content hover:text-primary"
+                  onClick$={() =>
+                    handleSelect({
+                      option: { label: input.value, value: input.value },
+                      parentEmitFn: onCreate,
+                    })
+                  }
+                >
+                  Create "{input.value}"
+                </li>
+              )}
             </ul>
           </div>
         </div>

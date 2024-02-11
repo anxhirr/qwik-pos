@@ -98,24 +98,21 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                     return (
                       <Field key={item} of={form} name={`categoryIDs.${index}`}>
                         {(field, props) => (
-                          // <Select
-                          //   {...props}
-                          //   error={field.error}
-                          //   options={categories.map((category) => ({
-                          //     label: category.name,
-                          //     value: category.id,
-                          //   }))}
-                          //   placeholder="Category"
-                          // />
                           <CustomSelect
                             {...props}
-                            isMulti={true}
+                            isMulti
+                            isCreatable
                             options={options.value}
-                            placeholder="Item"
+                            placeholder="Categories"
                             value={field.value}
                             onSelect={$((option: CustomSelectOption) => {
-                              console.log("option", option);
+                              console.log("onSelect option", option);
                               handleCatSelect(option, index);
+                            })}
+                            onCreate={$((option: CustomSelectOption) => {
+                              console.log("onCreate option", option);
+                              handleCatSelect(option, index);
+                              // TODO: create category
                             })}
                           />
                         )}
