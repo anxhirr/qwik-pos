@@ -16,7 +16,7 @@ export const ItemsBottomNav = component$(() => {
     <BottomNav>
       <div q:slot={BOTTOM_NAVBAR_SLOTS.END}>
         <Link href="/items/create">
-          <Button text="New Item" Icon={PlusIcon} variant="secondary" />
+          <Button text="Create Item" Icon={PlusIcon} variant="secondary" />
         </Link>
       </div>
     </BottomNav>

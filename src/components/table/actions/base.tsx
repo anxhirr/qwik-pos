@@ -1,7 +1,7 @@
 import { $, component$ } from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
 import { Button } from "~/components/buttons";
-import { IcRoundDelete, IcRoundModeEdit } from "~/components/icons";
+import { DeleteIcon, EditIcon } from "~/components/icons";
 type Props = {
   entity: "items" | "categories";
   entityId: string;
@@ -14,28 +14,33 @@ export const TableRowActions = component$<Props>(
 
     const ACTION_BUTTONS = [
       {
-        Icon: IcRoundModeEdit,
+        Icon: EditIcon,
         text: "Edit",
         id: "edit",
         onClick$: $((id: string) => navigate(`/${entity}/${id}`)),
+        tooltipText: "Edit",
       },
       {
-        Icon: IcRoundDelete,
+        Icon: DeleteIcon,
         text: "Delete",
         id: "delete",
         onClick$: onDelete$,
+        tooltipText: "Delete",
       },
     ];
 
     return (
       <>
         <div class="flex gap-2">
-          {ACTION_BUTTONS.map(({ onClick$, id, text }) => {
+          {ACTION_BUTTONS.map(({ onClick$, id, Icon, text }) => {
             return (
               <Button
                 key={id}
                 onClick$={() => onClick$(entityId)}
                 text={text}
+                variant="secondary"
+                Icon={Icon}
+                tooltipText={text}
               />
             );
           })}
