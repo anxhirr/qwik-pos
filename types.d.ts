@@ -68,4 +68,8 @@ type Entity = "ITEM" | "CATEGORY" | "ORDER" | "CUSTOMER";
 type IconProps = {
   props?: QwikIntrinsicElements["svg"];
   key?: string;
+  size?: Size;
 };
+
+type Size = "sm" | "md" | "lg";
+type Position = "top" | "bottom" | "left" | "right";

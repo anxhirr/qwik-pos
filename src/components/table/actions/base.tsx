@@ -15,14 +15,12 @@ export const TableRowActions = component$<Props>(
     const ACTION_BUTTONS = [
       {
         Icon: EditIcon,
-        text: "Edit",
         id: "edit",
         onClick$: $((id: string) => navigate(`/${entity}/${id}`)),
         tooltipText: "Edit",
       },
       {
         Icon: DeleteIcon,
-        text: "Delete",
         id: "delete",
         onClick$: onDelete$,
         tooltipText: "Delete",
@@ -32,15 +30,15 @@ export const TableRowActions = component$<Props>(
     return (
       <>
         <div class="flex gap-2">
-          {ACTION_BUTTONS.map(({ onClick$, id, Icon, text }) => {
+          {ACTION_BUTTONS.map(({ onClick$, id, Icon, tooltipText }) => {
             return (
               <Button
                 key={id}
                 onClick$={() => onClick$(entityId)}
-                text={text}
                 variant="secondary"
                 Icon={Icon}
-                tooltipText={text}
+                size="sm"
+                tooltipText={tooltipText}
               />
             );
           })}

@@ -4,13 +4,14 @@ import type {
   QwikMouseEvent,
 } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
-import type { IconProps } from "../../../types";
+import type { IconProps, Size } from "../../../types";
 import clsx from "clsx";
 import { Indicator } from "../indicator/base";
 import { Tooltip } from "../tooltip/base";
 
 type Props = {
   show?: boolean;
+  size?: Size;
   onClick$?: (
     event: QwikMouseEvent<HTMLButtonElement, MouseEvent>,
     element: HTMLButtonElement,
@@ -32,6 +33,7 @@ export const Button = component$<Props>(
   ({
     show = true,
     text,
+    size,
     onClick$,
     form,
     type = "button",
@@ -50,7 +52,11 @@ export const Button = component$<Props>(
     return (
       <Tooltip text={tooltipText}>
         <button
-          class={clsx("btn", `btn-${variant}`, isCircle && "btn-circle")}
+          class={clsx(
+            `btn btn-${variant}`,
+            isCircle && "btn-circle",
+            size && `btn-${size}`,
+          )}
           form={form}
           onClick$={onClick$}
           type={type}
