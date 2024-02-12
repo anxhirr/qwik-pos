@@ -10,7 +10,7 @@ export default function Sidebar() {
             return (
               <div
                 key={i}
-                class="collapse-arrow collapse join-item border border-base-300"
+                class="collapse join-item collapse-arrow border border-base-300"
               >
                 <input type="radio" name="my-accordion-4" />
                 <div class="collapse-title text-xl font-medium">
@@ -32,7 +32,7 @@ export default function Sidebar() {
             return (
               <li key={i}>
                 <Link href={route}>
-                  <button class="btn w-full justify-start">
+                  <button class="btn btn-secondary w-full justify-start">
                     <Icon />
                     {title}
                     {suffix ? suffix : null}

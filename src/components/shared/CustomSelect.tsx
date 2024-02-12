@@ -198,7 +198,7 @@ const Option = component$<{ label: string; onSelect: () => void }>(
   ({ label, onSelect }) => {
     return (
       <li
-        class="cursor-pointer rounded-md p-2 ps-4 hover:bg-info-content hover:text-primary"
+        class="cursor-pointer rounded-md p-2 ps-4 hover:bg-accent hover:text-primary"
         onClick$={onSelect}
       >
         {label}

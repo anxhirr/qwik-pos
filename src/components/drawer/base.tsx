@@ -11,7 +11,7 @@ type DrawerProps = {
 };
 
 export const Drawer = component$<DrawerProps>(
-  ({ hide, closeOnOutsideClick = true, show, title, position = "end" }) => {
+  ({ hide, closeOnOutsideClick = true, show, title, position = "start" }) => {
     return (
       <div class={clsx("drawer", `drawer-${position}`)}>
         <input type="checkbox" checked={show} class="drawer-toggle" />
