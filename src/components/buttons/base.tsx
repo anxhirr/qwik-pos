@@ -27,6 +27,9 @@ type Props = {
   isCircle?: boolean;
   indicatorText?: string;
   tooltipText?: string;
+  fullWidth?: boolean;
+  justify?: "start" | "end" | "center";
+  class?: string;
 };
 
 export const Button = component$<Props>(
@@ -45,6 +48,8 @@ export const Button = component$<Props>(
     isCircle,
     indicatorText,
     tooltipText,
+    fullWidth,
+    justify,
     ...rest
   }) => {
     if (!show) return null;
@@ -56,6 +61,8 @@ export const Button = component$<Props>(
             `btn btn-${variant}`,
             isCircle && "btn-circle",
             size && `btn-${size}`,
+            fullWidth && "w-full",
+            justify && `justify-${justify}`,
           )}
           form={form}
           onClick$={onClick$}

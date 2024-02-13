@@ -1,5 +1,5 @@
 import { Slot, component$ } from "@builder.io/qwik";
-import { IcRoundClose } from "../icons";
+import { CloseIcon } from "../icons";
 import clsx from "clsx";
 import { Button } from "../buttons/base";
 
@@ -44,7 +44,12 @@ export const DialogFooter = component$<DialogFooterProps>(
     return (
       <div class="modal-action">
         {useCloseButton && (
-          <Button text="Close" variant="warning" onClick$={hide} />
+          <Button
+            text="Close"
+            variant="warning"
+            onClick$={hide}
+            Icon={CloseIcon}
+          />
         )}
         <Slot />
       </div>
@@ -82,9 +87,13 @@ const DialogHeader = component$<DialogHeaderProps>(
         <h3 class="text-lg font-bold">{title}</h3>
         {useCloseButton && (
           <form method="dialog">
-            <button class="btn btn-circle btn-ghost btn-sm" onClick$={hide}>
-              <IcRoundClose />
-            </button>
+            <Button
+              variant="ghost"
+              isCircle
+              size="sm"
+              onClick$={hide}
+              Icon={CloseIcon}
+            />
           </form>
         )}
       </div>

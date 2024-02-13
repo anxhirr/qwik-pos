@@ -15,6 +15,7 @@ import type { DialogProps } from "../../../types";
 import { Button } from "../buttons/base";
 import { getSessionSS } from "~/utils/auth";
 import { createCategory } from "~/lib/queries/categories";
+import { CheckIcon } from "../icons";
 
 export const useFormAction = formAction$<CategoryFormType>(
   async (values, event) => {
@@ -66,7 +67,7 @@ export const CategoryDialog = component$<CategoryDialogProps>(
         id={CATEGORY_DIALOG_ID}
         show={show.value}
         hide={hide}
-        title="New Category"
+        title="Create Category"
       >
         <DialogBody>
           <CategoryForm form={form} action={action} />
@@ -79,6 +80,7 @@ export const CategoryDialog = component$<CategoryDialogProps>(
             form={CATEGORY_FORM_ID}
             type="submit"
             variant="success"
+            Icon={CheckIcon}
           />
         </DialogFooter>
       </Dialog>

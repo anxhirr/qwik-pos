@@ -71,5 +71,5 @@ type IconProps = {
   size?: Size;
 };
 
-type Size = "sm" | "md" | "lg";
+type Size = "xs" | "sm" | "md" | "lg";
 type Position = "top" | "bottom" | "left" | "right";

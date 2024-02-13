@@ -1,7 +1,8 @@
 import type { Signal } from "@builder.io/qwik";
 import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
 import type { CustomSelectOption } from "../../../types";
-import { IcRoundClose } from "../icons";
+import { CloseIcon } from "../icons";
+import { Button } from "../buttons";
 
 export interface Props {
   value: string | undefined;
@@ -175,9 +176,13 @@ const ClearButton = component$<{
 }>((props) => {
   if (!props.input.value) return null; // nothing to clear
   return (
-    <button type="button" class="btn btn-ghost btn-xs" onClick$={props.onClear}>
-      <IcRoundClose />
-    </button>
+    <Button
+      isCircle
+      variant="ghost"
+      size="sm"
+      Icon={CloseIcon}
+      onClick$={props.onClear}
+    />
   );
 });
 
@@ -186,9 +191,13 @@ const MultiValue = component$<{ label: string; onClear: () => void }>(
     return (
       <div class="flex max-w-min items-center justify-between gap-2 rounded-lg bg-secondary text-sm">
         <span class="p-1 ps-2">{label}</span>
-        <button type="button" class="btn btn-ghost btn-xs" onClick$={onClear}>
-          <IcRoundClose />
-        </button>
+        <Button
+          isCircle
+          variant="ghost"
+          size="xs"
+          Icon={CloseIcon}
+          onClick$={onClear}
+        />
       </div>
     );
   },

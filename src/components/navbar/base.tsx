@@ -1,7 +1,13 @@
 import { $, component$, useContext } from "@builder.io/qwik";
 import { UiContext } from "~/routes/layout";
-import { IcRoundAccountCircle, IcRoundMenu, NotificationsIcon } from "../icons";
+import {
+  AccountCircleIcon,
+  ArrowBackIcon,
+  MenuIcon,
+  NotificationsIcon,
+} from "../icons";
 import { Button } from "../buttons";
+import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
 type Props = {
   title: string;
@@ -9,6 +15,8 @@ type Props = {
 };
 export const NavBar = component$<Props>(({ title, onSearch }) => {
   const uiStore = useContext(UiContext);
+  const nav = useNavigate();
+  const loc = useLocation();
 
   const toggleSidebar = $(() => {
     uiStore.isSidebarOpen = !uiStore.isSidebarOpen;
@@ -17,9 +25,21 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
     <div class="navbar bg-base-100">
       <div class="navbar-start">
         <div class="flex-none md:hidden">
-          <button class="btn btn-square btn-ghost" onClick$={toggleSidebar}>
-            <IcRoundMenu />
-          </button>
+          <Button
+            isCircle
+            variant="ghost"
+            Icon={MenuIcon}
+            onClick$={toggleSidebar}
+          />
+        </div>
+        <div class="hidden md:flex">
+          <Button
+            isCircle
+            size="sm"
+            variant="ghost"
+            Icon={ArrowBackIcon}
+            onClick$={() => nav(loc.prevUrl?.toString())}
+          />
         </div>
         <div class="flex-1">
           <p class="btn btn-ghost text-xl normal-case">{title}</p>
@@ -43,9 +63,9 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
             variant="ghost"
             Icon={NotificationsIcon}
           />
-          <div class="dropdown dropdown-end">
-            <label tabIndex={0} class="avatar btn btn-circle btn-ghost">
-              <IcRoundAccountCircle />
+          <div class="dropdown-end dropdown">
+            <label tabIndex={0}>
+              <Button isCircle variant="ghost" Icon={AccountCircleIcon} />
             </label>
             <ul
               tabIndex={0}

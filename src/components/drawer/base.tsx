@@ -1,6 +1,7 @@
 import { Slot, component$ } from "@builder.io/qwik";
 import clsx from "clsx";
-import { IcRoundClose } from "../icons";
+import { CloseIcon } from "../icons";
+import { Button } from "../buttons";
 
 type DrawerProps = {
   show: boolean;
@@ -56,14 +57,13 @@ const DrawerHeader = component$<DrawerHeaderProps>(
       >
         <h3 class="text-lg font-bold">{title}</h3>
         {useCloseButton && (
-          <button
-            type="button"
-            aria-label="close sidebar"
-            class="btn btn-circle btn-ghost btn-sm"
+          <Button
+            isCircle
+            size="sm"
+            variant="ghost"
+            Icon={CloseIcon}
             onClick$={hide}
-          >
-            <IcRoundClose />
-          </button>
+          />
         )}
       </div>
     );

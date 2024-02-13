@@ -1,6 +1,6 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import type { Category } from "@prisma/client";
-import { IcRoundDelete } from "../icons";
+import { DeleteIcon, EditIcon } from "../icons";
 import { Button } from "../buttons/base";
 import { DeleteEntityConfirmDialog } from "../dialogs/shared/DeleteEntityConfirmDialog";
 import { ENTITY } from "~/constants/enum";
@@ -19,19 +19,22 @@ export const CategoryCard = component$<Props>(
         <div class="card-body">
           <h2 class="card-title">
             {data.name}
-            <div class="badge badge-secondary">{data.type}</div>
+            <div class="badge badge-accent">{data.type}</div>
           </h2>
         </div>
         <div class="card-actions justify-end">
-          {/* <IcRoundModeEdit /> */}
-          <Button variant="secondary" onClick$={handleEdit$} text="Edit" />
-          <button
-            class="btn btn-error"
-            onClick$={() => (showConfirmDialog.value = true)}
-          >
-            <IcRoundDelete />
-            Delete
-          </button>
+          <Button
+            variant="ghost"
+            onClick$={handleEdit$}
+            text="Edit"
+            Icon={EditIcon}
+          />
+          <Button
+            variant="ghost"
+            onClick$={handleEdit$}
+            text="Delete"
+            Icon={DeleteIcon}
+          />
         </div>
         <DeleteEntityConfirmDialog
           entity={ENTITY.CATEGORY}
