@@ -6,6 +6,7 @@ import {
   valiForm$,
   formAction$,
   type ResponseData,
+  getErrors,
 } from "@modular-forms/qwik";
 import { UpdateItemBottomNav } from "~/components/bottom-nav";
 import { ItemForm } from "~/components/forms/item/ItemForm";
@@ -103,6 +104,8 @@ export default component$(() => {
     validate: valiForm$(ItemSchema),
     fieldArrays: ["priceRules", "categoryIDs"],
   });
+
+  console.log("getErrors", getErrors(form));
 
   return (
     <>

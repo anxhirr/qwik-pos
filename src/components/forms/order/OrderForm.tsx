@@ -17,6 +17,7 @@ import {
   insert,
   move,
   remove,
+  swap,
 } from "@modular-forms/qwik";
 import {
   CustomSelect,
@@ -41,6 +42,7 @@ import {
   PlusIcon,
   BackspaceFillIcon,
   DeleteIcon,
+  ReplayFillIcon,
 } from "~/components/icons";
 
 type ItemWithPriceRules = Item & { priceRules: PriceRule[] };
@@ -312,7 +314,7 @@ export const OrderForm = component$<Props>(
                         </div>
                       ))}
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
+                    <div class="grid grid-cols-3 gap-2">
                       <Button
                         onClick$={() => {
                           addNewEmptyRow(fieldArray.items.length);
@@ -334,6 +336,19 @@ export const OrderForm = component$<Props>(
                         variant="secondary"
                         disabled={fieldArray.items.length < 2}
                         Icon={SwapVertIcon}
+                      />
+                      <Button
+                        onClick$={() => {
+                          swap(form, "items", {
+                            at: 0,
+                            and: 1,
+                          });
+                        }}
+                        text="Swap First two"
+                        type="button"
+                        variant="secondary"
+                        disabled={fieldArray.items.length < 2}
+                        Icon={ReplayFillIcon}
                       />
                     </div>
                   </>

@@ -14,6 +14,7 @@ import {
 import { CreateOrderBottomNav } from "~/components/bottom-nav";
 import { ReceiptDialog } from "~/components/dialogs";
 import { OrderForm } from "~/components/forms/order";
+import { ORDER_EMPTY_ROW } from "~/constants/defaults";
 import { getAllItems } from "~/lib/queries/items";
 import { getOrderPref } from "~/lib/queries/order-pref";
 // import { successToast } from "~/providers/toast";
@@ -76,16 +77,7 @@ export const useFormLoader = routeLoader$<InitialValues<OrderFormType>>(
         amount: 0,
         type: "",
       },
-      items: [
-        {
-          // id: "",
-          name: "",
-          unit: "",
-          quantity: 0,
-          unitPrice: 0,
-          unitPriceWithTax: 0,
-        },
-      ],
+      items: [ORDER_EMPTY_ROW],
       customer: {
         name: "",
         // id: "",
