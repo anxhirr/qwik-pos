@@ -27,6 +27,7 @@ import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { ITEM_FORM_ID } from "~/constants/enum";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
 import type { CustomSelectOption } from "../../../../types";
+import { BackspaceFillIcon, PlusIcon } from "~/components/icons";
 
 type Props = {
   form: FormStore<ItemFormType, ResponseData>;
@@ -126,7 +127,7 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
           <FieldArray of={form} name="priceRules">
             {(fieldArray) => (
               <>
-                <div class="flex flex-col gap-2">
+                <div class="flex max-w-xs flex-col gap-2">
                   {fieldArray.items.map((item, index) => {
                     const showAddButton = index === fieldArray.items.length - 1;
                     return (
@@ -178,6 +179,8 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                         <Button
                           show={!showAddButton}
                           text="Remove Rule"
+                          variant="secondary"
+                          Icon={BackspaceFillIcon}
                           onClick$={() => {
                             remove(form, "priceRules", {
                               at: index,
@@ -187,7 +190,9 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                         <div class={!showAddButton ? "hidden" : "flex gap-1"}>
                           <Button
                             show={showAddButton}
-                            text="Add Rule"
+                            tooltipText="Add New Price Rule"
+                            Icon={PlusIcon}
+                            variant="secondary"
                             onClick$={() => {
                               insert(form, "priceRules", {
                                 value: {
@@ -201,7 +206,10 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
                           />
                           <Button
                             show={showAddButton}
-                            text="X"
+                            Icon={BackspaceFillIcon}
+                            tooltipText="Remove Rule"
+                            variant="secondary"
+                            disabled={fieldArray.items.length === 1}
                             onClick$={() => {
                               remove(form, "priceRules", {
                                 at: index,

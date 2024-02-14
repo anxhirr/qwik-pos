@@ -24,7 +24,7 @@ import {
   Select,
   TextInput,
 } from "~/components/shared";
-import type { Item } from "@prisma/client";
+import type { Item, PriceRule } from "@prisma/client";
 
 import {
   CURRENCIES,
@@ -43,6 +43,8 @@ import {
   DeleteIcon,
 } from "~/components/icons";
 
+type ItemWithPriceRules = Item & { priceRules: PriceRule[] };
+
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
   action: Maybe<
@@ -52,7 +54,7 @@ type Props = {
       true
     >
   >;
-  items: Readonly<Signal<Item[]>>;
+  items: Readonly<Signal<ItemWithPriceRules[]>>;
   handleSubmit: SubmitHandler<OrderFormType>;
 };
 export const OrderForm = component$<Props>(
@@ -75,8 +77,8 @@ export const OrderForm = component$<Props>(
           // id: item.id,
           name: item.name,
           unit: item.unit,
-          quantity: 10,
-          unitPrice: 10,
+          quantity: 1,
+          unitPrice: item.priceRules[0].price,
           unitPriceWithTax: 10,
         },
       });
@@ -182,6 +184,7 @@ export const OrderForm = component$<Props>(
                 }}
                 text="Extra Options"
                 type="button"
+                variant="secondary"
               />
             </div>
           </div>
@@ -283,7 +286,7 @@ export const OrderForm = component$<Props>(
                             )}
                           </Field>
 
-                          <div>
+                          <div class="flex gap-1">
                             <Button
                               onClick$={() => {
                                 // TODO:

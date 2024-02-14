@@ -7,19 +7,19 @@ export default function Sidebar() {
     <div class="h-full max-h-screen w-full max-w-[15rem] overflow-auto p-4">
       <ul class="flex min-w-full flex-col gap-2">
         <div class="join join-vertical w-full">
-          {ACCORDIONS.map((accordion, i) => {
+          {ACCORDIONS.map(({ name, items }, i) => {
             return (
               <div
                 key={i}
                 class="collapse-arrow collapse join-item border-2 border-secondary"
               >
                 <input type="radio" name="my-accordion-4" />
-                <div class="collapse-title text-xl font-medium">
-                  {accordion.name}
+                <div class="collapse-title flex text-xl font-medium">
+                  {name}
                 </div>
                 <div class="collapse-content">
                   <ul class="flex flex-col gap-1">
-                    {accordion.items.map(({ route, Icon, title }, j) => (
+                    {items.map(({ route, Icon, title }, j) => (
                       <Link href={route} key={j}>
                         <Button
                           text={title}

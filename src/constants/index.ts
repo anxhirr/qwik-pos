@@ -77,11 +77,11 @@ export const LIST_ITEMS = [
     Icon: ItemsIcon,
     route: "/items",
   },
-  // {
-  //   title: "Items List",
-  //   Icon: ItemsIcon,
-  //   route: "/items/list",
-  // },
+  {
+    title: "Items List",
+    Icon: ItemsIcon,
+    route: "/items/list",
+  },
   // {
   //   title: "Customers",
   //   Icon: LuRocket,

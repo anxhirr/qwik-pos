@@ -5,5 +5,8 @@ export const getAllItems = async (shopId: string) => {
     where: {
       shopId,
     },
+    include: {
+      priceRules: true,
+    },
   });
 }

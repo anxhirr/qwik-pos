@@ -101,7 +101,7 @@ export const CustomSelect = component$<Props>((props) => {
   });
 
   return (
-    <div class="relative">
+    <div class="relative max-w-xs">
       <div class="min-h-12 flex h-full rounded-lg border border-base-content border-opacity-20 py-2 ps-4">
         <div class="flex flex-1 flex-wrap items-center gap-1 overflow-hidden">
           {isMulti && (
@@ -150,17 +150,15 @@ export const CustomSelect = component$<Props>((props) => {
               )}
 
               {isCreatable && noResultsFound && (
-                <li
-                  class="cursor-pointer rounded-md p-2 ps-4 hover:bg-info-content hover:text-primary"
-                  onClick$={() =>
+                <Option
+                  label={`Create "${input.value}"`}
+                  onSelect={$(() =>
                     handleSelect({
                       option: { label: input.value, value: input.value },
                       parentEmitFn: onCreate, // TODO: remove warning
-                    })
-                  }
-                >
-                  Create "{input.value}"
-                </li>
+                    }),
+                  )}
+                />
               )}
             </ul>
           </div>

@@ -5,7 +5,7 @@ import { BOTTOM_NAVBAR_SLOTS, ITEM_FORM_ID } from "~/constants/enum";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import type { ItemFormType } from "~/types-and-validation/itemSchema";
 import { Button } from "../buttons";
-import { PlusIcon } from "../icons";
+import { CheckCircleIcon, PlusIcon } from "../icons";
 
 type Props = {
   form?: FormStore<ItemFormType, ResponseData>;
@@ -16,7 +16,7 @@ export const ItemsBottomNav = component$(() => {
     <BottomNav>
       <div q:slot={BOTTOM_NAVBAR_SLOTS.END}>
         <Link href="/items/create">
-          <Button text="Create Item" Icon={PlusIcon} variant="secondary" />
+          <Button text="Create Item" Icon={PlusIcon} variant="success" />
         </Link>
       </div>
     </BottomNav>
@@ -36,6 +36,7 @@ export const CreateItemBottomNav = component$<Props>(({ form }) => {
           type="submit"
           variant="success"
           form={ITEM_FORM_ID}
+          Icon={CheckCircleIcon}
         />
       </div>
     </BottomNav>
