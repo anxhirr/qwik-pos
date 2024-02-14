@@ -35,8 +35,8 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
         <div class="hidden md:flex">
           <Button
             isCircle
-            size="sm"
             variant="ghost"
+            tooltipText="Back"
             Icon={ArrowBackIcon}
             onClick$={() => nav(loc.prevUrl?.toString())}
           />
@@ -63,7 +63,7 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
             variant="ghost"
             Icon={NotificationsIcon}
           />
-          <div class="dropdown-end dropdown">
+          <div class="dropdown dropdown-end">
             <label tabIndex={0}>
               <Button isCircle variant="ghost" Icon={AccountCircleIcon} />
             </label>

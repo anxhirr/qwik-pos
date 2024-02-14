@@ -4,6 +4,7 @@ import type { OrderFormType } from "~/types-and-validation/orderSchema";
 import { BottomNav } from ".";
 import { BOTTOM_NAVBAR_SLOTS, ORDER_FORM_ID } from "~/constants/enum";
 import { Button } from "~/components/buttons";
+import { CheckCircleIcon } from "../icons";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
@@ -33,6 +34,7 @@ export const CreateOrderBottomNav = component$<Props>(({ form }) => {
             type="submit"
             variant="success"
             form={ORDER_FORM_ID}
+            Icon={CheckCircleIcon}
           />
         </div>
       </div>

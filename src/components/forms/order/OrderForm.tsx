@@ -36,7 +36,12 @@ import { type OrderFormType } from "~/types-and-validation/orderSchema";
 import type { CustomSelectOption } from "../../../../types";
 import { Button } from "~/components/buttons";
 import { OrderOptionsDrawer } from "~/components/drawer";
-import { SwapVertIcon, PlusIcon } from "~/components/icons";
+import {
+  SwapVertIcon,
+  PlusIcon,
+  BackspaceFillIcon,
+  DeleteIcon,
+} from "~/components/icons";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
@@ -192,140 +197,145 @@ export const OrderForm = component$<Props>(
             </div>
 
             <FieldArray of={form} name="items">
-              {(fieldArray) => (
-                <>
-                  <div class="flex flex-col gap-2">
-                    {fieldArray.items.map((item, index) => (
-                      <div key={item} class="grid grid-cols-7 gap-1">
-                        <div class="col-span-2">
+              {(fieldArray) => {
+                const isOnlyOneRow = fieldArray.items.length === 1;
+                return (
+                  <>
+                    <div class="flex flex-col gap-2">
+                      {fieldArray.items.map((item, index) => (
+                        <div key={item} class="grid grid-cols-7 gap-1">
+                          <div class="col-span-2">
+                            <Field
+                              of={form}
+                              type="string"
+                              name={`items.${index}.name`}
+                            >
+                              {(field, props) => (
+                                <CustomSelect
+                                  {...props}
+                                  options={options.value}
+                                  placeholder="Item"
+                                  value={field.value}
+                                  onSelect={$((option: CustomSelectOption) => {
+                                    handleItemSelect(option, index);
+                                    // TODO: add ux logic
+                                    // addNewEmptyRow(fieldArray.items.length);
+                                    // TODO: focus on next row
+                                  })}
+                                />
+                              )}
+                            </Field>
+                          </div>
                           <Field
                             of={form}
                             type="string"
-                            name={`items.${index}.name`}
+                            name={`items.${index}.unit`}
                           >
                             {(field, props) => (
-                              <CustomSelect
-                                {...props}
-                                options={options.value}
-                                placeholder="Item"
+                              <TextInput
                                 value={field.value}
-                                onSelect={$((option: CustomSelectOption) => {
-                                  handleItemSelect(option, index);
-                                  // TODO: add ux logic
-                                  // addNewEmptyRow(fieldArray.items.length);
-                                  // TODO: focus on next row
-                                })}
+                                error={field.error}
+                                placeholder="Unit"
+                                {...props}
                               />
                             )}
                           </Field>
-                        </div>
-                        <Field
-                          of={form}
-                          type="string"
-                          name={`items.${index}.unit`}
-                        >
-                          {(field, props) => (
-                            <TextInput
-                              value={field.value}
-                              error={field.error}
-                              placeholder="Unit"
-                              {...props}
-                            />
-                          )}
-                        </Field>
-                        <Field
-                          of={form}
-                          type="number"
-                          name={`items.${index}.quantity`}
-                        >
-                          {(field, props) => (
-                            <NumberInput
-                              value={field.value}
-                              error={field.error}
-                              placeholder="Quantity"
-                              {...props}
-                            />
-                          )}
-                        </Field>
-                        <Field
-                          of={form}
-                          type="number"
-                          name={`items.${index}.unitPrice`}
-                        >
-                          {(field, props) => (
-                            <NumberInput
-                              value={field.value}
-                              error={field.error}
-                              placeholder="Unit Price"
-                              {...props}
-                            />
-                          )}
-                        </Field>
-                        <Field
-                          of={form}
-                          type="number"
-                          name={`items.${index}.unitPriceWithTax`}
-                        >
-                          {(field, props) => (
-                            <NumberInput
-                              value={field.value}
-                              error={field.error}
-                              placeholder="Unit Price With Tax"
-                              {...props}
-                            />
-                          )}
-                        </Field>
+                          <Field
+                            of={form}
+                            type="number"
+                            name={`items.${index}.quantity`}
+                          >
+                            {(field, props) => (
+                              <NumberInput
+                                value={field.value}
+                                error={field.error}
+                                placeholder="Quantity"
+                                {...props}
+                              />
+                            )}
+                          </Field>
+                          <Field
+                            of={form}
+                            type="number"
+                            name={`items.${index}.unitPrice`}
+                          >
+                            {(field, props) => (
+                              <NumberInput
+                                value={field.value}
+                                error={field.error}
+                                placeholder="Unit Price"
+                                {...props}
+                              />
+                            )}
+                          </Field>
+                          <Field
+                            of={form}
+                            type="number"
+                            name={`items.${index}.unitPriceWithTax`}
+                          >
+                            {(field, props) => (
+                              <NumberInput
+                                value={field.value}
+                                error={field.error}
+                                placeholder="Unit Price With Tax"
+                                {...props}
+                              />
+                            )}
+                          </Field>
 
-                        <div>
-                          <Button
-                            onClick$={() => {
-                              // TODO:
-                              console.log("clear", index);
-                            }}
-                            text="Clear"
-                            type="button"
-                            variant="secondary"
-                          />
-                          <Button
-                            onClick$={() => {
-                              console.log("remove", index);
-                              remove(form, "items", { at: index });
-                            }}
-                            text="Remove"
-                            type="button"
-                            variant="secondary"
-                            disabled={fieldArray.items.length === 1}
-                          />
+                          <div>
+                            <Button
+                              onClick$={() => {
+                                // TODO:
+                                console.log("clear", index);
+                              }}
+                              tooltipText="Clear row fields"
+                              type="button"
+                              variant="secondary"
+                              Icon={BackspaceFillIcon}
+                            />
+                            <Button
+                              onClick$={() => {
+                                console.log("remove", index);
+                                remove(form, "items", { at: index });
+                              }}
+                              tooltipText="Remove row"
+                              Icon={DeleteIcon}
+                              type="button"
+                              variant="secondary"
+                              disabled={isOnlyOneRow}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div class="grid grid-cols-2 gap-2">
-                    <Button
-                      onClick$={() => {
-                        addNewEmptyRow(fieldArray.items.length);
-                      }}
-                      text="Add Row"
-                      type="button"
-                      variant="secondary"
-                      Icon={PlusIcon}
-                    />
-                    <Button
-                      onClick$={() => {
-                        move(form, "items", {
-                          from: 0,
-                          to: fieldArray.items.length - 1,
-                        });
-                      }}
-                      text="Move First To Last"
-                      type="button"
-                      variant="secondary"
-                      disabled={fieldArray.items.length < 2}
-                      Icon={SwapVertIcon}
-                    />
-                  </div>
-                </>
-              )}
+                      ))}
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                      <Button
+                        onClick$={() => {
+                          addNewEmptyRow(fieldArray.items.length);
+                        }}
+                        text="Add Row"
+                        type="button"
+                        variant="secondary"
+                        Icon={PlusIcon}
+                      />
+                      <Button
+                        onClick$={() => {
+                          move(form, "items", {
+                            from: 0,
+                            to: fieldArray.items.length - 1,
+                          });
+                        }}
+                        text="Move First To Last"
+                        type="button"
+                        variant="secondary"
+                        disabled={fieldArray.items.length < 2}
+                        Icon={SwapVertIcon}
+                      />
+                    </div>
+                  </>
+                );
+              }}
             </FieldArray>
           </div>
 

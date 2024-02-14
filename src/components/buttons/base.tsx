@@ -4,7 +4,7 @@ import type {
   QwikMouseEvent,
 } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
-import type { IconProps, Size } from "../../../types";
+import type { IconProps, Position, Size } from "../../../types";
 import clsx from "clsx";
 import { Indicator } from "../indicator/base";
 import { Tooltip } from "../tooltip/base";
@@ -27,6 +27,7 @@ type Props = {
   isCircle?: boolean;
   indicatorText?: string;
   tooltipText?: string;
+  tooltipPosition?: Position;
   fullWidth?: boolean;
   justify?: "start" | "end" | "center";
   class?: string;
@@ -48,6 +49,7 @@ export const Button = component$<Props>(
     isCircle,
     indicatorText,
     tooltipText,
+    tooltipPosition,
     fullWidth,
     justify,
     ...rest
@@ -55,7 +57,7 @@ export const Button = component$<Props>(
     if (!show) return null;
 
     return (
-      <Tooltip text={tooltipText}>
+      <Tooltip text={tooltipText} position={tooltipPosition}>
         <button
           class={clsx(
             `btn btn-${variant}`,
@@ -70,9 +72,9 @@ export const Button = component$<Props>(
           disabled={disabled}
           {...rest}
         >
-          {/* TODO: remove  || "" make the types dynamic*/}
+          {/* TODO: remove  || "" make the types dynamic + remove warning*/}
           <Indicator text={indicatorText}>
-            {Icon && <Icon />} {/* TODO: remove warning*/}
+            {Icon && <Icon />}
             {isLoading ? loadingText : text}
           </Indicator>
         </button>

@@ -11,19 +11,23 @@ export default function Sidebar() {
             return (
               <div
                 key={i}
-                class="collapse join-item collapse-arrow border border-2 border-secondary"
+                class="collapse-arrow collapse join-item border-2 border-secondary"
               >
                 <input type="radio" name="my-accordion-4" />
                 <div class="collapse-title text-xl font-medium">
                   {accordion.name}
                 </div>
                 <div class="collapse-content">
-                  <ul>
-                    {accordion.items.map((item, j) => (
-                      <Link href={item.route} key={j}>
-                        <li class="cursor-pointer rounded-md p-2 ps-4 hover:bg-secondary">
-                          <p>{item.title}</p>
-                        </li>
+                  <ul class="flex flex-col gap-1">
+                    {accordion.items.map(({ route, Icon, title }, j) => (
+                      <Link href={route} key={j}>
+                        <Button
+                          text={title}
+                          Icon={Icon}
+                          variant="secondary"
+                          fullWidth
+                          justify="start"
+                        />
                       </Link>
                     ))}
                   </ul>
@@ -33,7 +37,7 @@ export default function Sidebar() {
           })}
         </div>
         <ul class="flex flex-col gap-2">
-          {LIST_ITEMS.map(({ title, prefix: Icon, route }, i) => {
+          {LIST_ITEMS.map(({ title, Icon, route }, i) => {
             return (
               <li key={i}>
                 <Link href={route}>

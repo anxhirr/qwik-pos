@@ -1,50 +1,60 @@
-import { PlusIcon } from "~/components/icons";
+import {
+  CategoryIcon,
+  HomeIcon,
+  ItemsIcon,
+  PlusIcon,
+  ReceiptIcon,
+  SettingsIcon,
+  ShopIcon,
+  SupportAgentIcon,
+  UsersIcon,
+} from "~/components/icons";
 
 export const ACCORDIONS = [
   {
     name: "Settings",
-    prefix: PlusIcon,
+    Icon: PlusIcon,
     items: [
       {
         title: "Shop",
-        prefix: PlusIcon,
+        Icon: ShopIcon,
         route: "/settings/shop",
       },
       {
         title: "Users",
-        prefix: PlusIcon,
+        Icon: UsersIcon,
         route: "/settings/users",
       },
       {
         title: "Roles",
-        prefix: PlusIcon,
+        Icon: PlusIcon,
         route: "/settings/roles",
       },
     ],
   },
   {
     name: "Preferences",
-    prefix: PlusIcon,
+    Icon: PlusIcon,
     items: [
       {
         title: "Order",
-        prefix: PlusIcon,
+        Icon: PlusIcon,
         route: "/pref/order",
       },
       {
         title: "General",
-        prefix: PlusIcon,
+        Icon: SettingsIcon,
         route: "/pref/general",
       },
     ],
   },
   {
     name: "Entities",
-    prefix: PlusIcon,
+    Icon: PlusIcon,
     items: [
       {
         title: "Categories",
-        prefix: PlusIcon,
+        Icon: CategoryIcon,
         route: "/categories",
       },
     ],
@@ -54,44 +64,42 @@ export const ACCORDIONS = [
 export const LIST_ITEMS = [
   {
     title: "Home",
-    prefix: PlusIcon,
+    Icon: HomeIcon,
     route: "/",
-    suffix: 0,
+  },
+  {
+    title: "Create Item",
+    Icon: PlusIcon,
+    route: "/items/create",
   },
   {
     title: "Items",
-    prefix: PlusIcon,
+    Icon: ItemsIcon,
     route: "/items",
-    suffix: 0,
-  },
-  {
-    title: "Items List",
-    prefix: PlusIcon,
-    route: "/items/list",
-    suffix: 0,
   },
   // {
+  //   title: "Items List",
+  //   Icon: ItemsIcon,
+  //   route: "/items/list",
+  // },
+  // {
   //   title: "Customers",
-  //   prefix: LuRocket,
+  //   Icon: LuRocket,
   //   route: "/customers",
-  //   suffix: 0,
   // },
   {
     title: "Create Order",
-    prefix: PlusIcon,
+    Icon: PlusIcon,
     route: "/orders/create",
-    suffix: 0,
   },
   {
     title: "Orders List",
-    prefix: PlusIcon,
+    Icon: ReceiptIcon,
     route: "/orders/list",
-    suffix: 0,
   },
   {
     title: "Help",
-    prefix: PlusIcon,
+    Icon: SupportAgentIcon,
     route: "/help",
-    suffix: 0,
   },
 ] as const;
