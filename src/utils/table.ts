@@ -5,3 +5,5 @@ export const tableFlexRender = (comp: any, attrs: any) => {
 
   return comp;
 };
+
+export const renderBoolean = (value: boolean) => (value ? "Yes" : "No");

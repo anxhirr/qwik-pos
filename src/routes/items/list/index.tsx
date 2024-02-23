@@ -14,6 +14,7 @@ import { ENTITY } from "~/constants/enum";
 import { getAllItems } from "~/lib/queries/items";
 import { prisma } from "~/routes/plugin@auth";
 import { getSessionSS } from "~/utils/auth";
+import { tableFlexRender } from "~/utils/table";
 
 const useTable = (tableState: { sorting: SortingState }, data: Item[]) =>
   createTable({
@@ -84,7 +85,12 @@ export default component$(() => {
             return (
               <tr key={row.id} class="hover">
                 {row.getAllCells().map((cell) => (
-                  <td key={cell.id}>{cell.getValue<string>()}</td>
+                  <td key={cell.id}>
+                    {tableFlexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext(),
+                    )}
+                  </td>
                 ))}
                 <td>
                   <TableRowActions
