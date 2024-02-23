@@ -1,6 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import { UpdateBtn } from "~/components/buttons/common";
+import { SHOP_FORM_ID } from "~/constants/enum";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";
 
 type Props = {
@@ -16,7 +17,7 @@ export const ShopUpdateActionBar = component$<Props>(({ form }) => {
           <UpdateBtn
             submitting={form?.submitting}
             dirty={form?.dirty}
-            // formId="shop-form" // TODO:
+            formId={SHOP_FORM_ID}
           />
         </div>
       </div>

@@ -6,10 +6,9 @@ export interface LayoutProps {}
 
 export default component$<LayoutProps>(() => {
   return (
-    <div>
+    <div class="flex h-full flex-col">
       <ShopNavbar />
       <Slot />
-      {/* <ShopActionBar /> */}
     </div>
   );
 });

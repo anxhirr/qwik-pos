@@ -2,6 +2,7 @@ import { component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { InitialValues, ResponseData } from "@modular-forms/qwik";
 import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
+import { ShopUpdateActionBar } from "~/components/bottom-nav/shop/update";
 import { ShopForm } from "~/components/forms/shop/ShopForm";
 import { prisma } from "~/routes/plugin@auth";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";
@@ -88,8 +89,11 @@ export default component$(() => {
   });
 
   return (
-    <div>
-      <ShopForm form={form} action={action} />
-    </div>
+    <>
+      <div class="main-content">
+        <ShopForm form={form} action={action} />
+      </div>
+      <ShopUpdateActionBar form={form} />
+    </>
   );
 });
