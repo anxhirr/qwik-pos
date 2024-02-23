@@ -4,6 +4,7 @@ import type { InitialValues, ResponseData } from "@modular-forms/qwik";
 import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
 import { OrderPrefBottomNav } from "~/components/bottom-nav/pref/order";
 import { OrderPrefForm } from "~/components/forms/pref/OrderPrefForm";
+import { fakeMongoDbId } from "~/constants/fake";
 import { getOrderPref } from "~/lib/queries/order-pref";
 import { prisma } from "~/routes/plugin@auth";
 import type { OrderPrefFormType } from "~/types-and-validation/orderPrefSchema";
@@ -41,23 +42,23 @@ export const useFormAction = formAction$<OrderPrefFormType, ResponseData>(
 
     const pref = await getOrderPref(session.shopId, session.userId);
 
-    if (!pref?.id) {
-      // TODO: create pref maybe?
-      return {
-        status: "error",
-        message: "Error updating pref",
-      };
-    }
-
-    const updated = await prisma.orderPref.update({
+    const updated = await prisma.orderPref.upsert({
       where: {
-        id: pref.id,
+        id: pref?.id || fakeMongoDbId,
       },
-      data: {
+      update: {
         currency: values.currency,
         shouldPrint: values.shouldPrint,
         paymentMethod: values.paymentMethod,
         printFormat: values.printFormat,
+      },
+      create: {
+        currency: values.currency,
+        shouldPrint: values.shouldPrint,
+        paymentMethod: values.paymentMethod,
+        printFormat: values.printFormat,
+        shopId: session.shopId,
+        userId: session.userId,
       },
     });
 

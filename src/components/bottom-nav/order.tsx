@@ -4,7 +4,7 @@ import type { OrderFormType } from "~/types-and-validation/orderSchema";
 import { BottomNav } from ".";
 import { BOTTOM_NAVBAR_SLOTS, ORDER_FORM_ID } from "~/constants/enum";
 import { Button } from "~/components/buttons";
-import { CheckCircleIcon } from "../icons";
+import { CreateBtn } from "../buttons/common";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
@@ -25,16 +25,10 @@ export const CreateOrderBottomNav = component$<Props>(({ form }) => {
             variant="warning"
             form={ORDER_FORM_ID}
           />
-          <Button
-            text="Create"
-            isLoading={form.submitting}
-            disabled={form.submitting}
-            loadingText="Creating..."
-            show={form.dirty}
-            type="submit"
-            variant="success"
-            form={ORDER_FORM_ID}
-            Icon={CheckCircleIcon}
+          <CreateBtn
+            submitting={form.submitting}
+            dirty={form.dirty}
+            formId={ORDER_FORM_ID}
           />
         </div>
       </div>

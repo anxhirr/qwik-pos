@@ -19,7 +19,7 @@ export default component$(() => {
       <div class="flex-1 overflow-y-auto">
         <ul class="3xl:grid-cols-4 grid grid-cols-1 gap-4  sm:grid-cols-2 xl:grid-cols-3">
           {items.value.map((item) => (
-            <Link key={item.id} href={`/items/${item.id}`}>
+            <Link key={item.id} href={`/items/update/${item.id}`}>
               <li class="h-full">
                 <ItemCard data={item} />
               </li>
