@@ -1,19 +1,16 @@
 import type { NoSerialize } from "@builder.io/qwik";
 import { noSerialize, useStore, useVisibleTask$ } from "@builder.io/qwik";
-import type { Order } from "@prisma/client";
+import type { ColumnDef, Table } from "@tanstack/table-core";
 import {
   createTable,
   getCoreRowModel,
   getPaginationRowModel,
 } from "@tanstack/table-core";
-import { columnsOrder } from "../table/columns/order";
-import type { AvailableTables } from "../../../types";
 
-// TODO: make this a generic hook, not only for orders
-const createUnSeralizedTable = (data: Order[]) =>
+const createUnSeralizedTable = <T>(data: T[], columns: ColumnDef<T, any>[]) =>
   noSerialize(
     createTable({
-      columns: columnsOrder,
+      columns,
       data,
       state: {
         columnPinning: { left: [], right: [] },
@@ -29,15 +26,15 @@ const createUnSeralizedTable = (data: Order[]) =>
     }),
   );
 
-export const useTable = (data: Order[]) => {
+export const useTable = <T>(data: T[], columns: ColumnDef<T, any>[]) => {
   const table = useStore<{
-    instance: NoSerialize<AvailableTables>;
+    instance: NoSerialize<Table<T>>;
   }>({
-    instance: createUnSeralizedTable(data),
+    instance: createUnSeralizedTable<T>(data, columns),
   });
 
   useVisibleTask$(() => {
-    table.instance = createUnSeralizedTable(data);
+    table.instance = createUnSeralizedTable<T>(data, columns);
   });
 
   return table;

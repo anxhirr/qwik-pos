@@ -1,8 +1,8 @@
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
 import { DeleteEntityConfirmDialog } from "~/components/dialogs/shared/DeleteEntityConfirmDialog";
-import { useTable } from "~/components/hooks/useTable";
 import { TableBase } from "~/components/table/base";
+import { useOrderTable } from "~/components/table/common";
 import { ENTITY } from "~/constants/enum";
 import { getAllOrders } from "~/lib/queries/orders";
 import { prisma } from "~/routes/plugin@auth";
@@ -37,7 +37,7 @@ export const useDeleteAction = routeAction$(async (data, { fail }) => {
 export default component$(() => {
   const data = useLoader();
   const deleteOrder = useDeleteAction();
-  const table = useTable(data.value);
+  const table = useOrderTable(data.value);
   const showConfirmDialog = useSignal<boolean>(false);
   const confirmDialogEntityId = useSignal<string>("");
 
