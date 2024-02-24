@@ -60,6 +60,7 @@ model Shop {
   roles      Role[]
   items      Item[]
   orderPrefs OrderPref[]
+  generalPref GeneralPref[]
   Order      Order[]
   categories Category[]
 
@@ -77,6 +78,7 @@ model User {
 
   shops      UserShop[]
   orderPrefs OrderPref[]
+  generalPref GeneralPref[]
   Order      Order[]
 
   @@map("users")
@@ -205,6 +207,22 @@ model OrderPref {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("order_prefs")
+}
+
+model GeneralPref {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  language String
+  shopId String @map("shop_id") @db.ObjectId
+  userId String @map("user_id") @db.ObjectId
+
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("general_prevs")
 }
 
 model OrderItemsField {

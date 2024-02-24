@@ -21,6 +21,7 @@ export const ORDER_FORM_ID = "ORDER_FORM_ID" as const;
 export const PREF_ORDER_FORM_ID = "PREF_ORDER_FORM_ID" as const;
 
 export const CURRENCIES = ["ALL", "EUR", "USD"] as const;
+export const LANGUAGES = ["AL", "EN"] as const;
 
 export const PAYMENT_METHODS = ["CASH", "CARD", "BANK"] as const;
 
