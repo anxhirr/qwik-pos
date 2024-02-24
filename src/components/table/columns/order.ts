@@ -15,4 +15,8 @@ export const columnsOrder = [
   columnHelper.accessor("paymentMethod", {
     header: "Payment Method",
   }),
+  columnHelper.accessor("date", {
+    header: "Date",
+    cell: (order) => order.getValue().toDateString(),
+  }),
 ];

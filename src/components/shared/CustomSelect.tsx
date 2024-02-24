@@ -35,6 +35,7 @@ export const CustomSelect = component$<Props>((props) => {
   } = props;
   const input = useSignal("");
   const showMenu = useSignal(false);
+  const menuRef = useSignal<Element>();
 
   // const selectedOptions = useSignal<CustomSelectOption[]>([
   //   // { label: "test", value: "test" },
@@ -127,7 +128,12 @@ export const CustomSelect = component$<Props>((props) => {
             class="input max-h-8 min-w-[10px] flex-1 !border-none p-0 !outline-none"
             onInput$={handleChange}
             onFocus$={() => (showMenu.value = true)}
-            onBlur$={() => setTimeout(() => (showMenu.value = false), 100)}
+            onBlur$={() => {
+              // close menu if focus is outside of menu and input
+              const isAtMenu = !menuRef.value?.contains(document.activeElement);
+              if (isAtMenu) return;
+              showMenu.value = false;
+            }}
           />
         </div>
         <div class="mx-1 flex items-center">
@@ -135,7 +141,7 @@ export const CustomSelect = component$<Props>((props) => {
         </div>
       </div>
       {showMenu.value && (
-        <div class="absolute top-[100%] z-50 w-full">
+        <div ref={menuRef} class="absolute top-[100%] z-50 w-full">
           <div class="mt-1 rounded-lg bg-secondary">
             <ul>
               {visibleOptions.value.map((opt) => (

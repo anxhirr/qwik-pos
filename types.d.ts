@@ -6,6 +6,9 @@ import type {
   QwikIntrinsicElements,
   Signal,
 } from "@builder.io/qwik";
+import type { Order } from "@prisma/client";
+import type { Table } from "@tanstack/table-core";
+import type { PrismaItemWithPrice } from "~/types-and-validation/itemSchema";
 
 export type OrderItemType = {
   id: string;
@@ -73,3 +76,6 @@ type IconProps = {
 
 type Size = "xs" | "sm" | "md" | "lg";
 type Position = "top" | "bottom" | "left" | "right";
+
+// type AvailableTableData = Order[] | PrismaItemWithPrice[];
+type AvailableTables = Table<Order> | Table<PrismaItemWithPrice>;

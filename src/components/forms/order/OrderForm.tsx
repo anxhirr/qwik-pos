@@ -44,6 +44,7 @@ import {
   DeleteIcon,
   ReplayFillIcon,
 } from "~/components/icons";
+import { ORDER_EMPTY_ROW } from "~/constants/defaults";
 
 type ItemWithPriceRules = Item & { priceRules: PriceRule[] };
 
@@ -291,8 +292,10 @@ export const OrderForm = component$<Props>(
                           <div class="flex gap-1">
                             <Button
                               onClick$={() => {
-                                // TODO:
-                                console.log("clear", index);
+                                replace(form, "items", {
+                                  at: index,
+                                  value: ORDER_EMPTY_ROW,
+                                });
                               }}
                               tooltipText="Clear row fields"
                               type="button"

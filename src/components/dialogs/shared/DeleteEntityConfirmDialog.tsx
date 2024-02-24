@@ -12,8 +12,8 @@ export const DeleteEntityConfirmDialog = component$<Props>(
     return (
       <ConfirmDialogBase
         id={DELETE_ITEM_CONFIRM_DIALOG_ID}
-        title={`Delete ${entity}`}
-        confirmText={`Are you sure you want to delete this ${entity}?`}
+        title={`Delete ${entity.toLowerCase()}`}
+        confirmText={`Are you sure you want to delete this ${entity.toLowerCase()}?`}
         onConfirm$={onConfirm$}
         onCancel$={onCancel$}
         show={show}

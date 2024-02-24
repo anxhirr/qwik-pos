@@ -97,7 +97,7 @@ export default component$(() => {
                 ))}
                 <td>
                   <TableRowActions
-                    entity="items"
+                    entity="ITEM"
                     entityId={row.original.id}
                     onDelete$={(entityId) => {
                       showConfirmDialog.value = true;

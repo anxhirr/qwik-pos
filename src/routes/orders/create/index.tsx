@@ -67,6 +67,7 @@ export const useFormAction = formAction$<OrderFormType, ResponseData>(
         },
       }),
     ]);
+    console.log("orderTrans, orderPrefTrans", orderTrans, orderPrefTrans);
   },
   valiForm$(OrderSchema),
 );
