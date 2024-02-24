@@ -4,6 +4,7 @@ import type { InitialValues, ResponseData } from "@modular-forms/qwik";
 import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
 import { OrderPrefBottomNav } from "~/components/bottom-nav/pref/order";
 import { OrderPrefForm } from "~/components/forms/pref/OrderPrefForm";
+import { INITIAL_ORDER_DOC_NO } from "~/constants/defaults";
 import { fakeMongoDbId } from "~/constants/fake";
 import { getOrderPref } from "~/lib/queries/order-pref";
 import { prisma } from "~/routes/plugin@auth";
@@ -16,7 +17,8 @@ export const useFormLoader = routeLoader$<InitialValues<OrderPrefFormType>>(
     const session = getSessionSS(event);
 
     const pref = await getOrderPref(session.shopId, session.userId);
-    const { currency, shouldPrint, paymentMethod, printFormat } = pref || {};
+    const { currency, shouldPrint, paymentMethod, printFormat, docNo } =
+      pref || {};
 
     if (!pref) {
       return {
@@ -24,6 +26,7 @@ export const useFormLoader = routeLoader$<InitialValues<OrderPrefFormType>>(
         shouldPrint: false,
         paymentMethod: "",
         printFormat: "",
+        docNo: INITIAL_ORDER_DOC_NO,
       };
     }
 
@@ -32,6 +35,7 @@ export const useFormLoader = routeLoader$<InitialValues<OrderPrefFormType>>(
       shouldPrint,
       paymentMethod,
       printFormat,
+      docNo,
     };
   },
 );
@@ -51,12 +55,14 @@ export const useFormAction = formAction$<OrderPrefFormType, ResponseData>(
         shouldPrint: values.shouldPrint,
         paymentMethod: values.paymentMethod,
         printFormat: values.printFormat,
+        docNo: values.docNo,
       },
       create: {
         currency: values.currency,
         shouldPrint: values.shouldPrint,
         paymentMethod: values.paymentMethod,
         printFormat: values.printFormat,
+        docNo: values.docNo,
         shopId: session.shopId,
         userId: session.userId,
       },

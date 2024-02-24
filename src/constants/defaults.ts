@@ -8,3 +8,5 @@ export const ORDER_EMPTY_ROW = {
   unitPrice: 0,
   unitPriceWithTax: 0,
 } as const;
+
+export const INITIAL_ORDER_DOC_NO = 1;

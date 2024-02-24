@@ -42,7 +42,7 @@ export const GeneralPrefForm = component$<Props>(({ form, action }) => {
               label: option,
               value: option,
             }))}
-            placeholder="Currency"
+            placeholder="Language"
             value={field.value}
             error={field.error}
           />

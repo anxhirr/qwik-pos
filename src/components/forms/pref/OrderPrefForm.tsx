@@ -11,7 +11,7 @@ import {
   type ResponseData,
   type FormStore,
 } from "@modular-forms/qwik";
-import { CheckBoxInput, Select } from "~/components/shared";
+import { CheckBoxInput, NumberInput, Select } from "~/components/shared";
 import {
   CURRENCIES,
   PAYMENT_METHODS,
@@ -88,6 +88,16 @@ export const OrderPrefForm = component$<Props>(({ form, action }) => {
             placeholder="Print Format"
             value={field.value}
             error={field.error}
+          />
+        )}
+      </Field>
+      <Field of={form} name="docNo" type="number">
+        {(field, props) => (
+          <NumberInput
+            value={field.value}
+            error={field.error}
+            placeholder="Document Number"
+            {...props}
           />
         )}
       </Field>

@@ -15,6 +15,7 @@ import { CreateOrderBottomNav } from "~/components/bottom-nav";
 import { ReceiptDialog } from "~/components/dialogs";
 import { OrderForm } from "~/components/forms/order";
 import { ORDER_EMPTY_ROW } from "~/constants/defaults";
+import { fakeMongoDbId } from "~/constants/fake";
 import { getAllItems } from "~/lib/queries/items";
 import { getOrderPref } from "~/lib/queries/order-pref";
 // import { successToast } from "~/providers/toast";
@@ -25,27 +26,47 @@ import { getSessionSS } from "~/utils/auth";
 
 export const useFormAction = formAction$<OrderFormType, ResponseData>(
   async (values, event) => {
-    console.log("values", values);
     const session = getSessionSS(event);
 
-    const order = await prisma.order.create({
-      data: {
-        currency: values.currency,
-        date: new Date(),
-        customerId: "6572dd392ce8dcf9b2347ac0", // TODO: get from customer
-        customerName: values.customer.name,
-        discountAmount: values.discount.amount,
-        discountType: values.discount.type,
-        exchangeRate: values.exchangeRate,
-        docNo: values.docNo,
-        paymentMethod: values.payment.method,
-        items: { create: values.items },
-        notes: values.notes,
-        shopId: session.shopId,
-        userId: session.userId,
-      },
-    });
-    console.log("order", order);
+    const orderPref = await getOrderPref(session.shopId, session.userId);
+
+    const [orderTrans, orderPrefTrans] = await prisma.$transaction([
+      prisma.order.create({
+        data: {
+          currency: values.currency,
+          date: new Date(),
+          customerId: "6572dd392ce8dcf9b2347ac0", // TODO: get from customer
+          customerName: values.customer.name,
+          discountAmount: values.discount.amount,
+          discountType: values.discount.type,
+          exchangeRate: values.exchangeRate,
+          docNo: values.docNo,
+          paymentMethod: values.payment.method,
+          items: { create: values.items },
+          notes: values.notes,
+          shopId: session.shopId,
+          userId: session.userId,
+        },
+      }),
+      prisma.orderPref.upsert({
+        where: {
+          id: orderPref?.id || fakeMongoDbId,
+        },
+        update: {
+          docNo: {
+            increment: 1,
+          },
+        },
+        create: {
+          docNo: 1,
+          currency: values.currency,
+          shouldPrint: true,
+          paymentMethod: values.payment.method,
+          shopId: session.shopId,
+          userId: session.userId,
+        },
+      }),
+    ]);
   },
   valiForm$(OrderSchema),
 );

@@ -66,6 +66,7 @@ export const Button = component$<Props>(
             fullWidth && "w-full",
             justify && `justify-${justify}`,
           )}
+          // class="btn btn-circle btn-secondary btn-sm w-full justify-start"
           form={form}
           onClick$={onClick$}
           type={type}

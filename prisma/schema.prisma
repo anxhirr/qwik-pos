@@ -200,6 +200,7 @@ model OrderPref {
   paymentMethod String
   shouldPrint   Boolean
   printFormat   String  @default("80mm")
+  docNo         Int     @default(1)
   shopId        String  @map("shop_id") @db.ObjectId
   userId        String  @map("user_id") @db.ObjectId
 
