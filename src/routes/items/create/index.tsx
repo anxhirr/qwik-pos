@@ -55,6 +55,9 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
             id: session.shopId,
           },
         },
+        categories: {
+          connect: values.categoryIDs.map((id) => ({ id })),
+        },
       },
     });
 

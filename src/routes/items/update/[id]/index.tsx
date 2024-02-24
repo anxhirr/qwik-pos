@@ -26,6 +26,7 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(
       where: { id, shopId: session.shopId },
       include: {
         priceRules: true,
+        categories: true,
       },
     });
 

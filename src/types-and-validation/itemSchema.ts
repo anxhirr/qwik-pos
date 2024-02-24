@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import {
   type Input,
   boolean,
@@ -28,3 +29,8 @@ export const ItemSchema = object({
 });
 
 export type ItemFormType = Input<typeof ItemSchema>;
+export type PrismaItemWithPrice = Prisma.ItemGetPayload<{
+  include: {
+    priceRules: true;
+  };
+}>;

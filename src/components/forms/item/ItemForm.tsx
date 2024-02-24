@@ -13,6 +13,7 @@ import {
   FieldArray,
   insert,
   remove,
+  replace,
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
 import { Button } from "~/components/buttons/base";
@@ -50,21 +51,10 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
   });
 
   const handleCatSelect = $((option: CustomSelectOption, index: number) => {
-    console.log("option", option);
-    console.log("index", index);
-    // const item = items.value.find((item) => item.id === option.value);
-    // if (!item) return;
-    // replace(form, "items", {
-    //   at: index,
-    //   value: {
-    //     // id: item.id,
-    //     name: item.name,
-    //     unit: item.unit,
-    //     quantity: 10,
-    //     unitPrice: 10,
-    //     unitPriceWithTax: 10,
-    //   },
-    // });
+    replace(form, "categoryIDs", {
+      at: index,
+      value: option.value,
+    });
   });
 
   return (

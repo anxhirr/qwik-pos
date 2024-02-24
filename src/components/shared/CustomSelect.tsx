@@ -13,6 +13,7 @@ export interface Props {
   isMulti?: boolean;
   isCreatable?: true;
   onCreate?: (option: CustomSelectOption) => void;
+  initialSelectedOptions?: CustomSelectOption[];
 }
 
 type selectHandler = {
@@ -30,14 +31,18 @@ export const CustomSelect = component$<Props>((props) => {
     isCreatable = false,
     onCreate,
     onClear,
+    initialSelectedOptions,
   } = props;
   const input = useSignal("");
   const showMenu = useSignal(false);
 
-  const selectedOptions = useSignal<CustomSelectOption[]>([
-    // { label: "test", value: "test" },
-    // { label: "test2", value: "test2" },
-  ]);
+  // const selectedOptions = useSignal<CustomSelectOption[]>([
+  //   // { label: "test", value: "test" },
+  //   // { label: "test2", value: "test2" },
+  // ]);
+  const selectedOptions = useSignal<CustomSelectOption[]>(
+    initialSelectedOptions || [],
+  );
 
   const visibleOptions = useSignal<CustomSelectOption[]>([]);
 

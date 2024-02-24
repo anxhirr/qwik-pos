@@ -16,7 +16,7 @@ export const TableRowActions = component$<Props>(
       {
         Icon: EditIcon,
         id: "edit",
-        onClick$: $((id: string) => navigate(`/${entity}/${id}`)),
+        onClick$: $((id: string) => navigate(`/${entity}/update/${id}`)),
         tooltipText: "Edit",
       },
       {

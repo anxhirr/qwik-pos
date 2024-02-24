@@ -1,6 +1,5 @@
 import { $, component$, useSignal, useStore } from "@builder.io/qwik";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
-import type { Item } from "@prisma/client";
 import type { SortingState } from "@tanstack/table-core";
 import {
   createTable,
@@ -13,10 +12,14 @@ import { columnsItems } from "~/components/table/columns/items";
 import { ENTITY } from "~/constants/enum";
 import { getAllItems } from "~/lib/queries/items";
 import { prisma } from "~/routes/plugin@auth";
+import type { PrismaItemWithPrice } from "~/types-and-validation/itemSchema";
 import { getSessionSS } from "~/utils/auth";
 import { tableFlexRender } from "~/utils/table";
 
-const useTable = (tableState: { sorting: SortingState }, data: Item[]) =>
+const useTable = (
+  tableState: { sorting: SortingState },
+  data: PrismaItemWithPrice[],
+) =>
   createTable({
     columns: columnsItems,
     data,
