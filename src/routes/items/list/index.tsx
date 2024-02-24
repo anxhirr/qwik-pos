@@ -103,6 +103,9 @@ export default component$(() => {
                       showConfirmDialog.value = true;
                       confirmDialogEntityId.value = entityId;
                     }}
+                    onDeleteConfirm$={(entityId) => {
+                      console.log("entityId", entityId);
+                    }}
                   />
                 </td>
               </tr>

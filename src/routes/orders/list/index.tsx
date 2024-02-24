@@ -1,9 +1,7 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
-import { DeleteEntityConfirmDialog } from "~/components/dialogs/shared/DeleteEntityConfirmDialog";
 import { TableBase } from "~/components/table/base";
 import { useOrderTable } from "~/components/table/common";
-import { ENTITY } from "~/constants/enum";
 import { getAllOrders } from "~/lib/queries/orders";
 import { prisma } from "~/routes/plugin@auth";
 import { getSessionSS } from "~/utils/auth";
@@ -38,12 +36,20 @@ export default component$(() => {
   const data = useLoader();
   const deleteOrder = useDeleteAction();
   const table = useOrderTable(data.value);
-  const showConfirmDialog = useSignal<boolean>(false);
-  const confirmDialogEntityId = useSignal<string>("");
 
   return (
     <>
-      <TableBase table={table.instance} entity="ORDER" />
+      <TableBase
+        table={table.instance}
+        entity="ORDER"
+        onDelete$={(id) => {
+          console.log("id", id);
+        }}
+        onDeleteConfirm$={(id) => {
+          console.log("id", id);
+          deleteOrder.submit({ id });
+        }}
+      />
       <div class="join">
         <button class="btn join-item">«</button>
         <button class="btn join-item">
@@ -64,21 +70,6 @@ export default component$(() => {
           {JSON.stringify(table.instance?.getState().pagination, null, 2)}
         </pre>
       </div>
-
-      <DeleteEntityConfirmDialog
-        entity={ENTITY.ORDER}
-        show={showConfirmDialog}
-        hide={$(() => {
-          showConfirmDialog.value = false;
-        })}
-        onCancel$={() => {
-          showConfirmDialog.value = false;
-        }}
-        onConfirm$={() => {
-          deleteOrder.submit({ id: confirmDialogEntityId.value });
-          showConfirmDialog.value = false;
-        }}
-      />
     </>
   );
 });
