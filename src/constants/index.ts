@@ -1,7 +1,9 @@
 import {
   CategoryIcon,
+  CreateOrderIcon,
   HomeIcon,
   ItemsIcon,
+  OrderIcon,
   PlusIcon,
   ReceiptIcon,
   SettingsIcon,
@@ -38,7 +40,7 @@ export const ACCORDIONS = [
     items: [
       {
         title: "Order",
-        Icon: PlusIcon,
+        Icon: OrderIcon,
         route: "/pref/order",
       },
       {
@@ -89,7 +91,7 @@ export const LIST_ITEMS = [
   // },
   {
     title: "Create Order",
-    Icon: PlusIcon,
+    Icon: CreateOrderIcon,
     route: "/orders/create",
   },
   {
