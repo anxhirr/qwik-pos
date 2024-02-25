@@ -29,13 +29,6 @@ export const PRINT_FORMATS = ["80mm", "58mm", "A4", "A5"] as const;
 
 export const DISCOUNT_TYPES = ["PERCENTAGE", "AMOUNT"] as const;
 
-export const ENTITY = {
-  ITEM: "ITEM",
-  CUSTOMER: "CUSTOMER",
-  ORDER: "ORDER",
-  CATEGORY: "CATEGORY",
-} as const;
-
 export const BOTTOM_NAVBAR_SLOT = "BOTTOM_NAVBAR_SLOT" as const;
 export const BOTTOM_NAVBAR_SLOTS = {
   START: "START",

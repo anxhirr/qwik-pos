@@ -3,7 +3,6 @@ import type { Category } from "@prisma/client";
 import { DeleteIcon, EditIcon } from "../icons";
 import { Button } from "../buttons/base";
 import { DeleteEntityConfirmDialog } from "../dialogs/shared/DeleteEntityConfirmDialog";
-import { ENTITY } from "~/constants/enum";
 
 type Props = {
   data: Category;
@@ -37,7 +36,7 @@ export const CategoryCard = component$<Props>(
           />
         </div>
         <DeleteEntityConfirmDialog
-          entity={ENTITY.CATEGORY}
+          entity="CATEGORY"
           show={showConfirmDialog}
           onConfirm$={handleDelete$}
           onCancel$={() => {
