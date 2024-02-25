@@ -7,7 +7,7 @@ import type {
   Signal,
 } from "@builder.io/qwik";
 import type { Order } from "@prisma/client";
-import type { Table } from "@tanstack/table-core";
+import type { ColumnDef, Table } from "@tanstack/table-core";
 import type { PrismaItemWithPrice } from "~/types-and-validation/itemSchema";
 
 export type OrderItemType = {
@@ -77,5 +77,6 @@ type IconProps = {
 type Size = "xs" | "sm" | "md" | "lg";
 type Position = "top" | "bottom" | "left" | "right";
 
-// type AvailableTableData = Order[] | PrismaItemWithPrice[];
 type AvailableTables = Table<Order> | Table<PrismaItemWithPrice>;
+type TableHookData<T> = Readonly<Signal<T[]>>;
+type TableHookColumns<T> = ColumnDef<T, any>[];

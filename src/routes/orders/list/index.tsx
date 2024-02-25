@@ -35,7 +35,7 @@ export const useDeleteAction = routeAction$(async (data, { fail }) => {
 export default component$(() => {
   const data = useLoader();
   const deleteOrder = useDeleteAction();
-  const table = useOrderTable(data.value);
+  const table = useOrderTable(data);
 
   return (
     <>

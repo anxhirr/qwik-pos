@@ -1,17 +1,21 @@
 import type { NoSerialize } from "@builder.io/qwik";
 import { noSerialize, useStore, useVisibleTask$ } from "@builder.io/qwik";
-import type { ColumnDef, Table } from "@tanstack/table-core";
+import type { Table } from "@tanstack/table-core";
 import {
   createTable,
   getCoreRowModel,
   getPaginationRowModel,
 } from "@tanstack/table-core";
+import type { TableHookColumns, TableHookData } from "../../../types";
 
-const createUnSeralizedTable = <T>(data: T[], columns: ColumnDef<T, any>[]) =>
+const createUnSeralizedTable = <T>(
+  data: TableHookData<T>,
+  columns: TableHookColumns<T>,
+) =>
   noSerialize(
     createTable({
       columns,
-      data,
+      data: data.value,
       state: {
         columnPinning: { left: [], right: [] },
         pagination: {
@@ -26,14 +30,18 @@ const createUnSeralizedTable = <T>(data: T[], columns: ColumnDef<T, any>[]) =>
     }),
   );
 
-export const useTable = <T>(data: T[], columns: ColumnDef<T, any>[]) => {
+export const useTable = <T>(
+  data: TableHookData<T>,
+  columns: TableHookColumns<T>,
+) => {
   const table = useStore<{
     instance: NoSerialize<Table<T>>;
   }>({
     instance: createUnSeralizedTable<T>(data, columns),
   });
 
-  useVisibleTask$(() => {
+  useVisibleTask$(({ track }) => {
+    track(data);
     table.instance = createUnSeralizedTable<T>(data, columns);
   });
 
