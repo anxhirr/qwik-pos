@@ -54,6 +54,7 @@ export interface ModularInputProps {
   class?: string;
   label?: string;
   error?: string;
+  disabled?: boolean;
 }
 
 interface DialogProps {

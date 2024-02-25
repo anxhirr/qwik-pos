@@ -22,6 +22,7 @@ export const OrderOptionsDrawer = component$<Props>(({ show, hide, form }) => {
             error={field.error}
             placeholder="Doc No"
             label="Doc No"
+            disabled
           />
         )}
       </Field>

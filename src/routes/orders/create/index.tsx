@@ -14,7 +14,7 @@ import {
 import { CreateOrderBottomNav } from "~/components/bottom-nav";
 import { ReceiptDialog } from "~/components/dialogs";
 import { OrderForm } from "~/components/forms/order";
-import { ORDER_EMPTY_ROW } from "~/constants/defaults";
+import { INITIAL_ORDER_DOC_NO, ORDER_EMPTY_ROW } from "~/constants/defaults";
 import { fakeMongoDbId } from "~/constants/fake";
 import { getAllItems } from "~/lib/queries/items";
 import { getOrderPref } from "~/lib/queries/order-pref";
@@ -40,7 +40,7 @@ export const useFormAction = formAction$<OrderFormType, ResponseData>(
           discountAmount: values.discount.amount,
           discountType: values.discount.type,
           exchangeRate: values.exchangeRate,
-          docNo: values.docNo,
+          docNo: orderPref?.docNo || INITIAL_ORDER_DOC_NO,
           paymentMethod: values.payment.method,
           items: { create: values.items },
           notes: values.notes,
@@ -58,7 +58,7 @@ export const useFormAction = formAction$<OrderFormType, ResponseData>(
           },
         },
         create: {
-          docNo: 1,
+          docNo: INITIAL_ORDER_DOC_NO,
           currency: values.currency,
           shouldPrint: true,
           paymentMethod: values.payment.method,
@@ -104,7 +104,7 @@ export const useFormLoader = routeLoader$<InitialValues<OrderFormType>>(
         name: "",
         // id: "",
       },
-      docNo: 0,
+      docNo: pref?.docNo,
       // layout: "",
       notes: "",
     };

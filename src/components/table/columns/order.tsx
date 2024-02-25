@@ -2,6 +2,7 @@ import { $ } from "@builder.io/qwik";
 import type { Order } from "@prisma/client";
 import type { CellContext } from "@tanstack/table-core";
 import { createColumnHelper } from "@tanstack/table-core";
+import { Tooltip } from "~/components/tooltip/base";
 
 const columnHelper = createColumnHelper<Order>();
 export const columnsOrder = [
@@ -19,9 +20,10 @@ export const columnsOrder = [
   }),
   columnHelper.accessor("date", {
     header: "Date",
-    cell: $(
-      // TODO: check why when using dollar sign, the type is not inferred
-      (order: CellContext<Order, Date>) => order.getValue().toDateString(),
-    ),
+    cell: $((order: CellContext<Order, Date>) => (
+      <Tooltip text={order.getValue().toLocaleTimeString()}>
+        <div>{order.getValue().toLocaleDateString()}</div>
+      </Tooltip>
+    )),
   }),
 ];

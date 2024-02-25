@@ -5,5 +5,8 @@ export const getAllOrders = async (shopId: string) => {
     where: {
       shopId,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 }
