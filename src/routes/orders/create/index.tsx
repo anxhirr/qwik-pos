@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type {
   InitialValues,
@@ -8,6 +8,7 @@ import type {
 import {
   formAction$,
   getErrors,
+  reset,
   useFormStore,
   valiForm$,
 } from "@modular-forms/qwik";
@@ -68,6 +69,10 @@ export const useFormAction = formAction$<OrderFormType, ResponseData>(
       }),
     ]);
     console.log("orderTrans, orderPrefTrans", orderTrans, orderPrefTrans);
+
+    return {
+      status: "success",
+    };
   },
   valiForm$(OrderSchema),
 );
@@ -128,12 +133,22 @@ export default component$(() => {
   console.log("errors", errors);
 
   const handleSubmit = $<SubmitHandler<OrderFormType>>((values) => {
-    // if (action.status === 200) {
-    //   successToast("Order created successfully");
-    // }
-    showReceiptDialog.value = true;
     order.value = values;
   });
+
+  useTask$(({ track }) => {
+    track(action);
+    if (action.isRunning) {
+      console.log("isRunning");
+      return;
+    }
+
+    if (action.status === 200) {
+      showReceiptDialog.value = true;
+      reset(form);
+    }
+  });
+
   return (
     <>
       <div class="main-content">
