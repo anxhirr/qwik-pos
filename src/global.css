@@ -21,9 +21,8 @@ body {
   @apply h-full;
 }
 
-
 *::-webkit-scrollbar {
-  width: 16px;
+  width: 14px;
 }
 
 *::-webkit-scrollbar-track {

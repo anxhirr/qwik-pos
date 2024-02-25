@@ -42,7 +42,7 @@ export default component$(() => {
 
   return (
     <>
-      <div class="flex-1">
+      <div class="main-content">
         <ul class="3xl:grid-cols-5 grid grid-cols-1 gap-4  sm:grid-cols-3 xl:grid-cols-4">
           {data.value.map((cat) => {
             const { id, name, color, type } = cat;

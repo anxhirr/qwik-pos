@@ -110,7 +110,7 @@ export default component$(() => {
 
   return (
     <>
-      <div class="flex-1">
+      <div class="main-content">
         <ItemForm form={form} action={action} categories={categories.value} />
       </div>
       <UpdateItemBottomNav form={form} />

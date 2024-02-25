@@ -74,7 +74,7 @@ export default component$(() => {
 
   return (
     <>
-      <div class="flex-1">
+      <div class="main-content">
         <GeneralPrefForm form={form} action={action} />
       </div>
 

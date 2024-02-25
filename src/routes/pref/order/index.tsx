@@ -92,7 +92,7 @@ export default component$(() => {
 
   return (
     <>
-      <div class="flex-1">
+      <div class="main-content">
         <OrderPrefForm form={form} action={action} />
       </div>
 
