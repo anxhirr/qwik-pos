@@ -5,6 +5,7 @@ import { BottomNav } from ".";
 import { BOTTOM_NAVBAR_SLOTS, ORDER_FORM_ID } from "~/constants/enum";
 import { Button } from "~/components/buttons";
 import { CreateBtn } from "../buttons/common";
+import { PendingIcon } from "../icons";
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
@@ -23,6 +24,7 @@ export const CreateOrderBottomNav = component$<Props>(({ form }) => {
             show={form.dirty}
             type="submit"
             variant="warning"
+            Icon={PendingIcon}
             form={ORDER_FORM_ID}
           />
           <CreateBtn

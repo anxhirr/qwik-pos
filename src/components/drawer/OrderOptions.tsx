@@ -13,7 +13,7 @@ type Props = {
 
 export const OrderOptionsDrawer = component$<Props>(({ show, hide, form }) => {
   return (
-    <Drawer show={show} hide={hide} title="Drawer">
+    <Drawer show={show} hide={hide} title="Extra Options">
       <Field of={form} type="number" name="docNo">
         {(field, props) => (
           <NumberInput

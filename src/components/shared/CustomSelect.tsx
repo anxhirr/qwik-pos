@@ -3,6 +3,7 @@ import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
 import type { CustomSelectOption } from "../../../types";
 import { CloseIcon } from "../icons";
 import { Button } from "../buttons";
+import clsx from "clsx";
 
 export interface Props {
   value: string | undefined;
@@ -14,6 +15,7 @@ export interface Props {
   isCreatable?: true;
   onCreate?: (option: CustomSelectOption) => void;
   initialSelectedOptions?: CustomSelectOption[];
+  fullWidth?: boolean;
 }
 
 type selectHandler = {
@@ -32,6 +34,7 @@ export const CustomSelect = component$<Props>((props) => {
     onCreate,
     onClear,
     initialSelectedOptions,
+    fullWidth,
   } = props;
   const input = useSignal("");
   const showMenu = useSignal(false);
@@ -107,7 +110,7 @@ export const CustomSelect = component$<Props>((props) => {
   });
 
   return (
-    <div class="relative max-w-xs">
+    <div class={clsx("relative", { "max-w-xs": !fullWidth })}>
       <div class="min-h-12 flex h-full rounded-lg border border-base-content border-opacity-20 py-2 ps-4">
         <div class="flex flex-1 flex-wrap items-center gap-1 overflow-hidden">
           {isMulti && (

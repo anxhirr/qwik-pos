@@ -43,6 +43,7 @@ import {
   BackspaceFillIcon,
   DeleteIcon,
   ReplayFillIcon,
+  MoreHorizIcon,
 } from "~/components/icons";
 import { ORDER_EMPTY_ROW } from "~/constants/defaults";
 
@@ -188,6 +189,7 @@ export const OrderForm = component$<Props>(
                 text="Extra Options"
                 type="button"
                 variant="secondary"
+                Icon={MoreHorizIcon}
               />
             </div>
           </div>
@@ -222,6 +224,7 @@ export const OrderForm = component$<Props>(
                                   options={options.value}
                                   placeholder="Item"
                                   value={field.value}
+                                  fullWidth
                                   onSelect={$((option: CustomSelectOption) => {
                                     handleItemSelect(option, index);
                                     // TODO: add ux logic
