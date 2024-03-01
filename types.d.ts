@@ -6,9 +6,15 @@ import type {
   QwikIntrinsicElements,
   Signal,
 } from "@builder.io/qwik";
+import type { ActionStore } from "@builder.io/qwik-city";
+import type {
+  FormActionStore,
+  PartialValues,
+  ResponseData,
+} from "@modular-forms/qwik";
 import type { Order } from "@prisma/client";
 import type { ColumnDef, Table } from "@tanstack/table-core";
-import type { PrismaItemWithPrice } from "~/types-and-validation/itemSchema";
+import type { PrismaItemWithPrice } from "~/types-and-validation";
 
 export type OrderItemType = {
   id: string;
@@ -81,3 +87,11 @@ type Position = "top" | "bottom" | "left" | "right";
 type AvailableTables = Table<Order> | Table<PrismaItemWithPrice>;
 type TableHookData<T> = Readonly<Signal<T[]>>;
 type TableHookColumns<T> = ColumnDef<T, any>[];
+
+type FromStoreAction<T> = ActionStore<
+  FormActionStore<T, ResponseData>,
+  PartialValues<T>,
+  true
+>;
+
+type CRUDactions = "CREATE" | "UPDATE";

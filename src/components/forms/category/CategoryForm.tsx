@@ -1,10 +1,4 @@
 import { component$ } from "@builder.io/qwik";
-import type { ActionStore } from "@builder.io/qwik-city";
-import type {
-  FormActionStore,
-  Maybe,
-  PartialValues,
-} from "@modular-forms/qwik";
 import {
   Field,
   Form,
@@ -14,16 +8,11 @@ import {
 import { Select, TextInput } from "~/components/shared";
 import { CATEGORY_ENUM, CATEGORY_FORM_ID } from "~/constants/enum";
 import type { CategoryFormType } from "~/types-and-validation/categorySchema";
+import type { FromStoreAction } from "../../../../types";
 
 type Props = {
   form: FormStore<CategoryFormType, ResponseData>;
-  action: Maybe<
-    ActionStore<
-      FormActionStore<CategoryFormType, ResponseData>,
-      PartialValues<CategoryFormType>,
-      true
-    >
-  >;
+  action: FromStoreAction<CategoryFormType>;
 };
 
 export const CategoryForm = component$<Props>(({ form, action }) => {

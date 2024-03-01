@@ -25,3 +25,16 @@ export const createCategory = async ({ name, color, type, shopId }: CategoryType
     },
   });
 }
+
+export const updateCategory = async (id:string,{ name, color, type }: CategoryFormType) => {
+  return await prisma.category.update({
+    where: {
+      id,
+    },
+    data: {
+      name,
+      color,
+      type,
+    },
+  });
+}
