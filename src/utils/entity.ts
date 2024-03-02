@@ -1,12 +1,6 @@
+import { ENTITY_ROUTE_MAP } from "~/constants/maps";
 import type { Entity } from "../../types";
 
-const ENTITY_TO_ROUTE = {
-  ITEM: "/items",
-  CATEGORY: "/categories",
-  ORDER: "/orders",
-  CUSTOMER: "/customers",
-} as const;
-
 export const getEntityRoute = (entity: Entity) => {
-  return ENTITY_TO_ROUTE[entity];
+  return ENTITY_ROUTE_MAP.get(entity);
 };

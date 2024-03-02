@@ -1,5 +1,5 @@
 import { PlusIcon, UpdateIcon } from "~/components/icons";
-import type { CRUDactions, IconProps } from "../../types";
+import type { CRUDactions, Entity, IconProps } from "../../types";
 import type { Component } from "@builder.io/qwik";
 
 export const CRUD_ACTIONS_LOADING = new Map([
@@ -16,3 +16,10 @@ export const CRUD_ACTIONS_ICON = new Map([
   ["CREATE", PlusIcon],
   ["UPDATE", UpdateIcon],
 ]) as ReadonlyMap<CRUDactions, Component<IconProps>>;
+
+export const ENTITY_ROUTE_MAP = new Map([
+  ["ITEM", "/items"],
+  ["CATEGORY", "/categories"],
+  ["ORDER", "/orders"],
+  ["CUSTOMER", "/customers"],
+]) as ReadonlyMap<Entity, string>;
