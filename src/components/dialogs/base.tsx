@@ -21,7 +21,7 @@ export const Dialog = component$<DialogProps>(
           <Slot />
         </div>
 
-        {closeOnOutsideClick && <DialogBackdrop hide={hide} />}
+        <DialogBackdrop show={closeOnOutsideClick} hide={hide} />
       </dialog>
     );
   },
@@ -59,11 +59,14 @@ export const DialogFooter = component$<DialogFooterProps>(
 
 type DialogBackdropProps = {
   hide: () => void;
+  show: boolean;
 };
 
-const DialogBackdrop = component$<DialogBackdropProps>(({ hide }) => {
+const DialogBackdrop = component$<DialogBackdropProps>(({ hide, show }) => {
+  if (!show) return null;
   return (
-    <form method="dialog" class="modal-backdrop">
+    // TODO: why do i need to add a harcoded bg-[#0006] here, isnt it already in the modal class?
+    <form method="dialog" class="modal-backdrop bg-[#0006]">
       <button onClick$={hide} />
     </form>
   );
