@@ -10,3 +10,9 @@ export const ORDER_EMPTY_ROW = {
 } as const;
 
 export const INITIAL_ORDER_DOC_NO = 1;
+
+export const CATEGORY_EMPTY_DATA = {
+  name: "",
+  type: "",
+  color: "",
+} as const;

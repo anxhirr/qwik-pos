@@ -5,6 +5,7 @@ import { useItemsTable } from "~/components/table/common";
 import { getAllItems } from "~/lib/queries/items";
 import { prisma } from "~/routes/plugin@auth";
 import { getSessionSS } from "~/utils/auth";
+import { checkIsIdValid } from "~/utils/route-action";
 
 export const useItemsLoader = routeLoader$(async (event) => {
   const session = getSessionSS(event);
@@ -16,7 +17,7 @@ export const useItemsLoader = routeLoader$(async (event) => {
 //TODO: maybe add types?
 export const useDeleteItem = routeAction$(async (item, { fail }) => {
   const { id } = item;
-  if (!id || typeof id !== "string") {
+  if (!checkIsIdValid(id)) {
     fail(500, {
       message: "id is missing",
     });

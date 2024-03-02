@@ -1,7 +1,12 @@
 import { CategoriesBottomNav } from "~/components/bottom-nav/categories";
 
-import { $, component$, useSignal } from "@builder.io/qwik";
-import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
+import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
+import {
+  routeAction$,
+  routeLoader$,
+  useLocation,
+  useNavigate,
+} from "@builder.io/qwik-city";
 import { prisma } from "../plugin@auth";
 import { CategoryCard } from "~/components/cards/CategoryCard";
 import { CategoryDialog } from "~/components/dialogs";
@@ -13,6 +18,10 @@ import { formAction$, valiForm$ } from "@modular-forms/qwik";
 import { getSessionSS } from "~/utils/auth";
 import { createCategory, updateCategory } from "~/lib/queries/categories";
 import type { CRUDactions } from "../../../types";
+import { checkIsIdValid } from "~/utils/route-action";
+import { checkIsSearchParamsIdValid } from "~/utils/form-action";
+import type { Category } from "@prisma/client";
+import { CATEGORY_EMPTY_DATA } from "~/constants/defaults";
 
 export const useCategoriesLoader = routeLoader$(async () => {
   const categories = await prisma.category.findMany();
@@ -43,20 +52,22 @@ export const useCreateFormAction = formAction$<CategoryFormType>(
   },
   valiForm$(CategorySchema),
 );
+
 export const useUpdateFormAction = formAction$<CategoryFormType>(
   async (values, event) => {
-    const session = getSessionSS(event);
-    console.log("session", session);
+    const id = event.url.searchParams.get("update");
+    if (!checkIsSearchParamsIdValid(id)) {
+      return {
+        status: "error",
+        message: "id is missing",
+      };
+    }
 
-    // TODO: update category
-    const updated = await updateCategory(
-      "id", // TODO: replace with actual "id"
-      {
-        name: values.name,
-        color: values.color,
-        type: values.type,
-      },
-    );
+    const updated = await updateCategory(id, {
+      name: values.name,
+      color: values.color,
+      type: values.type,
+    });
 
     if (!updated.id) {
       return {
@@ -71,18 +82,16 @@ export const useUpdateFormAction = formAction$<CategoryFormType>(
   },
   valiForm$(CategorySchema),
 );
-
 export const useDeleteCategory = routeAction$(async (cat, { fail }) => {
   const { id } = cat;
-  if (!id || typeof id !== "string") {
+  if (!checkIsIdValid(id)) {
     fail(500, {
       message: "id is missing",
     });
     return;
   }
 
-  const result = await prisma.category.delete({ where: { id } });
-  console.log("result", result);
+  await prisma.category.delete({ where: { id } });
 
   return {
     status: 200,
@@ -92,28 +101,54 @@ export const useDeleteCategory = routeAction$(async (cat, { fail }) => {
 
 export default component$(() => {
   const data = useCategoriesLoader();
+  const loc = useLocation();
+  const nav = useNavigate();
+  const { pathname } = loc.url;
   const deleteRouteAction = useDeleteCategory();
   const createFormAction = useCreateFormAction();
   const updateFormAction = useUpdateFormAction();
 
   const showDialog = useSignal(false);
   const dialodMode = useSignal<CRUDactions>("CREATE");
-  const dialogFormData = useSignal<CategoryFormType>({
-    color: "",
-    name: "",
-    type: "",
-  });
+  const dialogFormData = useSignal<CategoryFormType>(CATEGORY_EMPTY_DATA);
 
   const showCreateDialog = $(() => {
     showDialog.value = true;
     dialodMode.value = "CREATE";
+    dialogFormData.value = CATEGORY_EMPTY_DATA;
+    nav(`${pathname}?create`);
   });
-  const showUpdateDialog = $(() => {
+  const showUpdateDialog = $((cat: Category) => {
+    const { id, name, color, type } = cat;
     showDialog.value = true;
     dialodMode.value = "UPDATE";
+    dialogFormData.value = {
+      name,
+      color,
+      type,
+    };
+    const searchParams = new URLSearchParams({
+      update: id,
+    });
+    nav(`${pathname}?${searchParams.toString()}`);
   });
   const hideDialog = $(() => {
     showDialog.value = false;
+    const searchParams = new URLSearchParams();
+    nav(`${pathname}?${searchParams.toString()}`);
+  });
+
+  useTask$(() => {
+    const { searchParams } = loc.url;
+    const update = searchParams.get("update");
+    const create = searchParams.get("create");
+
+    if (create) showCreateDialog();
+
+    if (update) {
+      const cat = data.value.find((c) => c.id === update);
+      cat && showUpdateDialog(cat);
+    }
   });
 
   return (
@@ -121,7 +156,7 @@ export default component$(() => {
       <div class="main-content">
         <ul class="3xl:grid-cols-5 grid grid-cols-1 gap-4  sm:grid-cols-3 xl:grid-cols-4">
           {data.value.map((cat) => {
-            const { id, name, color, type } = cat;
+            const { id } = cat;
             return (
               <li key={id} class="h-full">
                 <CategoryCard
@@ -137,15 +172,7 @@ export default component$(() => {
                       console.log("error", error);
                     }
                   }}
-                  onEdit$={() => {
-                    console.log("edit");
-                    showUpdateDialog();
-                    dialogFormData.value = {
-                      name,
-                      color,
-                      type,
-                    };
-                  }}
+                  onUpdate$={() => showUpdateDialog(cat)}
                 />
               </li>
             );

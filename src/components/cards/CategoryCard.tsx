@@ -6,13 +6,13 @@ import { DeleteEntityConfirmDialog } from "../dialogs/shared/DeleteEntityConfirm
 
 type Props = {
   data: Category;
-  onEdit$: () => void;
+  onUpdate$: () => void;
   onDeleteConfirm$: (entityId: string) => void;
   onDelete$?: (entityId: string) => void;
 };
 
 export const CategoryCard = component$<Props>(
-  ({ data, onEdit$, onDelete$, onDeleteConfirm$ }) => {
+  ({ data, onUpdate$, onDelete$, onDeleteConfirm$ }) => {
     const showConfirmDialog = useSignal(false);
     return (
       <div class="card h-full max-w-xs bg-secondary shadow-xl">
@@ -25,7 +25,7 @@ export const CategoryCard = component$<Props>(
         <div class="card-actions justify-end">
           <Button
             variant="ghost"
-            onClick$={onEdit$}
+            onClick$={onUpdate$}
             text="Edit"
             Icon={EditIcon}
           />
