@@ -95,3 +95,5 @@ type FromStoreAction<T> = ActionStore<
 >;
 
 type CRUDactions = "CREATE" | "UPDATE";
+
+type PaymentMethod = "CASH" | "CARD" | "BANK";

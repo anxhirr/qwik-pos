@@ -1,5 +1,10 @@
-import { PlusIcon, UpdateIcon } from "~/components/icons";
-import type { CRUDactions, Entity, IconProps } from "../../types";
+import { CreditCardIcon, PlusIcon, UpdateIcon } from "~/components/icons";
+import type {
+  CRUDactions,
+  Entity,
+  IconProps,
+  PaymentMethod,
+} from "../../types";
 import type { Component } from "@builder.io/qwik";
 
 export const CRUD_ACTIONS_LOADING = new Map([
@@ -23,3 +28,9 @@ export const ENTITY_ROUTE_MAP = new Map([
   ["ORDER", "/orders"],
   ["CUSTOMER", "/customers"],
 ]) as ReadonlyMap<Entity, string>;
+
+export const PAYMENT_METHOD_ICON_MAP = new Map([
+  ["BANK", PlusIcon], // TODO: add appropriate icons
+  ["CASH", PlusIcon],
+  ["CARD", CreditCardIcon],
+]) as ReadonlyMap<PaymentMethod, Component<IconProps>>;
