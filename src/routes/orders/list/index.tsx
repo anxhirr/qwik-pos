@@ -51,26 +51,6 @@ export default component$(() => {
           deleteOrder.submit({ id });
         }}
       />
-      <div class="join">
-        <button class="btn join-item">«</button>
-        <button class="btn join-item">
-          Page {(table.instance?.getState().pagination.pageIndex || 0) + 1} of{" "}
-          {table.instance?.getPageCount()}
-        </button>
-        <button
-          class="btn join-item"
-          // onClick$={() => console.log("table", table.instance?.nextPage())}
-          onClick$={() => {
-            console.log("table", table.instance?.nextPage);
-            table.instance?.nextPage();
-          }}
-        >
-          »
-        </button>
-        <pre>
-          {JSON.stringify(table.instance?.getState().pagination, null, 2)}
-        </pre>
-      </div>
     </>
   );
 });

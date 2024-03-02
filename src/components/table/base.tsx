@@ -4,6 +4,7 @@ import { tableFlexRender } from "~/utils/table";
 import { TableRowActions } from "./actions/base";
 import type { AvailableTables, Entity } from "../../../types";
 import { TableHeaderCheckBox, TableRowCheckBox } from "./selection";
+import { TableFooter } from "./footer/base";
 
 type Props = {
   table: NoSerialize<AvailableTables>;
@@ -59,7 +60,7 @@ export const TableBase = component$<Props>(
             );
           })}
         </tbody>
-        <tfoot></tfoot>
+        <TableFooter table={table} />
       </table>
     );
   },
