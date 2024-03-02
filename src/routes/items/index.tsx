@@ -2,12 +2,12 @@ import { component$ } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { ItemCard } from "~/components/cards/ItemCard";
 import { getSessionSS } from "~/utils/auth";
-import { getAllItems } from "~/lib/queries/items";
+import { getInfinitItems } from "~/lib/queries/items";
 import { ItemsBottomNav } from "~/components/bottom-nav";
 
 export const useItemsLoader = routeLoader$(async (event) => {
   const session = getSessionSS(event);
-  const items = await getAllItems(session.shopId);
+  const items = await getInfinitItems(session.shopId); // TODO: add infinite scroll
 
   return items;
 });

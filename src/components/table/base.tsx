@@ -3,6 +3,7 @@ import { component$ } from "@builder.io/qwik";
 import { tableFlexRender } from "~/utils/table";
 import { TableRowActions } from "./actions/base";
 import type { AvailableTables, Entity } from "../../../types";
+import { TableHeaderCheckBox, TableRowCheckBox } from "./selection";
 
 type Props = {
   table: NoSerialize<AvailableTables>;
@@ -25,6 +26,7 @@ export const TableBase = component$<Props>(
         <thead>
           {table?.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
+              <TableHeaderCheckBox entity={entity} />
               {headerGroup.headers.map(({ column }) => {
                 const id = column.id;
                 return <th key={id}>{column.columnDef.header}</th>;
@@ -37,6 +39,7 @@ export const TableBase = component$<Props>(
           {table?.getRowModel().rows.map((row) => {
             return (
               <tr key={row.id} class="hover">
+                <TableRowCheckBox entity={entity} entityId={row.original.id} />
                 {row.getAllCells().map((cell) => (
                   <td key={cell.id}>
                     {tableFlexRender(
@@ -45,15 +48,13 @@ export const TableBase = component$<Props>(
                     )}
                   </td>
                 ))}
-                <td>
-                  <TableRowActions
-                    entity={entity}
-                    entityId={row.original.id}
-                    onDelete$={onDelete$}
-                    onDeleteConfirm$={onDeleteConfirm$}
-                    showConfirmDialogOnDelete={showConfirmDialogOnDelete}
-                  />
-                </td>
+                <TableRowActions
+                  entity={entity}
+                  entityId={row.original.id}
+                  onDelete$={onDelete$}
+                  onDeleteConfirm$={onDeleteConfirm$}
+                  showConfirmDialogOnDelete={showConfirmDialogOnDelete}
+                />
               </tr>
             );
           })}

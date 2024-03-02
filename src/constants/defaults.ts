@@ -16,3 +16,6 @@ export const CATEGORY_EMPTY_DATA = {
   type: "",
   color: "",
 } as const;
+
+export const LISTS_DEFAULT_TAKE = 100 as const;
+export const LISTS_DEFAULT_SKIP = 0 as const;

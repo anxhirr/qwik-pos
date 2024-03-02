@@ -53,21 +53,23 @@ export const TableRowActions = component$<Props>(
 
     return (
       <>
-        <div class="flex gap-2">
-          {ACTION_BUTTONS.map(({ onClick$, id, Icon, tooltipText, show }) => {
-            if (show === false) return null;
-            return (
-              <Button
-                key={id}
-                onClick$={() => onClick$(entityId)}
-                variant="secondary"
-                Icon={Icon}
-                size="sm"
-                tooltipText={tooltipText}
-              />
-            );
-          })}
-        </div>
+        <td>
+          <div class="flex gap-2">
+            {ACTION_BUTTONS.map(({ onClick$, id, Icon, tooltipText, show }) => {
+              if (show === false) return null;
+              return (
+                <Button
+                  key={id}
+                  onClick$={() => onClick$(entityId)}
+                  variant="secondary"
+                  Icon={Icon}
+                  size="sm"
+                  tooltipText={tooltipText}
+                />
+              );
+            })}
+          </div>
+        </td>
 
         <DeleteEntityConfirmDialog
           entity={entity}
