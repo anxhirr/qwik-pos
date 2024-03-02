@@ -97,3 +97,13 @@ type FromStoreAction<T> = ActionStore<
 type CRUDactions = "CREATE" | "UPDATE";
 
 type PaymentMethod = "CASH" | "CARD" | "BANK";
+
+type PrintFormat = "80mm" | "58mm" | "A4" | "A5";
+
+type DiscountType = "PERCENTAGE" | "AMOUNT";
+
+type Currency = "ALL" | "EUR" | "USD";
+
+type Language = "AL" | "EN";
+
+type CategoryType = "ITEM" | "CUSTOMER";

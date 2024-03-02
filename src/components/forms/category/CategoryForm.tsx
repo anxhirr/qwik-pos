@@ -6,7 +6,7 @@ import {
   type FormStore,
 } from "@modular-forms/qwik";
 import { Select, TextInput } from "~/components/shared";
-import { CATEGORY_ENUM, CATEGORY_FORM_ID } from "~/constants/enum";
+import { CATEGORY_TYPES_ENUM, CATEGORY_FORM_ID } from "~/constants/enum";
 import type { CategoryFormType } from "~/types-and-validation/categorySchema";
 import type { FromStoreAction } from "../../../../types";
 
@@ -28,7 +28,7 @@ export const CategoryForm = component$<Props>(({ form, action }) => {
           {(field, props) => (
             <Select
               {...props}
-              options={CATEGORY_ENUM.map((option) => ({
+              options={CATEGORY_TYPES_ENUM.map((option) => ({
                 label: option,
                 value: option,
               }))}
