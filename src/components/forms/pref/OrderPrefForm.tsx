@@ -1,10 +1,4 @@
 import { component$ } from "@builder.io/qwik";
-import type { ActionStore } from "@builder.io/qwik-city";
-import type {
-  FormActionStore,
-  Maybe,
-  PartialValues,
-} from "@modular-forms/qwik";
 import {
   Field,
   Form,
@@ -19,16 +13,11 @@ import {
   PRINT_FORMATS,
 } from "~/constants/enum";
 import type { OrderPrefFormType } from "~/types-and-validation/orderPrefSchema";
+import type { FromStoreAction } from "../../../../types";
 
 type Props = {
   form: FormStore<OrderPrefFormType, ResponseData>;
-  action: Maybe<
-    ActionStore<
-      FormActionStore<OrderPrefFormType, ResponseData>,
-      PartialValues<OrderPrefFormType>,
-      true
-    >
-  >;
+  action: FromStoreAction<OrderPrefFormType>;
 };
 
 export const OrderPrefForm = component$<Props>(({ form, action }) => {

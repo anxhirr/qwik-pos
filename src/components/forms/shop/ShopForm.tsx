@@ -1,10 +1,4 @@
 import { component$ } from "@builder.io/qwik";
-import type { ActionStore } from "@builder.io/qwik-city";
-import type {
-  FormActionStore,
-  Maybe,
-  PartialValues,
-} from "@modular-forms/qwik";
 import {
   Field,
   Form,
@@ -14,16 +8,11 @@ import {
 import { Select, TextInput } from "~/components/shared";
 import { CURRENCIES, SHOP_FORM_ID } from "~/constants/enum";
 import type { ShopFormType } from "~/types-and-validation/shopSchema";
+import type { FromStoreAction } from "../../../../types";
 
 type Props = {
   form: FormStore<ShopFormType, ResponseData>;
-  action: Maybe<
-    ActionStore<
-      FormActionStore<ShopFormType, ResponseData>,
-      PartialValues<ShopFormType>,
-      true
-    >
-  >;
+  action: FromStoreAction<ShopFormType>;
 };
 
 export const ShopForm = component$<Props>(({ form, action }) => {

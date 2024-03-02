@@ -1,10 +1,4 @@
 import { $, component$, useComputed$ } from "@builder.io/qwik";
-import type { ActionStore } from "@builder.io/qwik-city";
-import type {
-  FormActionStore,
-  Maybe,
-  PartialValues,
-} from "@modular-forms/qwik";
 import {
   Field,
   Form,
@@ -27,18 +21,12 @@ import { DateInput } from "~/components/shared";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { ITEM_FORM_ID } from "~/constants/enum";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
-import type { CustomSelectOption } from "../../../../types";
+import type { CustomSelectOption, FromStoreAction } from "../../../../types";
 import { BackspaceFillIcon, PlusIcon } from "~/components/icons";
 
 type Props = {
   form: FormStore<ItemFormType, ResponseData>;
-  action: Maybe<
-    ActionStore<
-      FormActionStore<ItemFormType, ResponseData>,
-      PartialValues<ItemFormType>,
-      true
-    >
-  >;
+  action: FromStoreAction<ItemFormType>;
   categories: Category[];
 };
 

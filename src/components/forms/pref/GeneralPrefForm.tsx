@@ -1,10 +1,4 @@
 import { component$ } from "@builder.io/qwik";
-import type { ActionStore } from "@builder.io/qwik-city";
-import type {
-  FormActionStore,
-  Maybe,
-  PartialValues,
-} from "@modular-forms/qwik";
 import {
   Field,
   Form,
@@ -14,16 +8,11 @@ import {
 import { Select } from "~/components/shared";
 import { LANGUAGES, PREF_ORDER_FORM_ID } from "~/constants/enum";
 import type { GeneralPrefFormType } from "~/types-and-validation/generalPrefSchema";
+import type { FromStoreAction } from "../../../../types";
 
 type Props = {
   form: FormStore<GeneralPrefFormType, ResponseData>;
-  action: Maybe<
-    ActionStore<
-      FormActionStore<GeneralPrefFormType, ResponseData>,
-      PartialValues<GeneralPrefFormType>,
-      true
-    >
-  >;
+  action: FromStoreAction<GeneralPrefFormType>;
 };
 
 export const GeneralPrefForm = component$<Props>(({ form, action }) => {

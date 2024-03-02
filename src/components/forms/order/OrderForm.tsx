@@ -1,12 +1,6 @@
 import type { Signal } from "@builder.io/qwik";
 import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
-import type { ActionStore } from "@builder.io/qwik-city";
-import type {
-  FormActionStore,
-  Maybe,
-  PartialValues,
-  SubmitHandler,
-} from "@modular-forms/qwik";
+import type { SubmitHandler } from "@modular-forms/qwik";
 import {
   Field,
   Form,
@@ -34,7 +28,7 @@ import {
   PAYMENT_METHODS,
 } from "~/constants/enum";
 import { type OrderFormType } from "~/types-and-validation/orderSchema";
-import type { CustomSelectOption } from "../../../../types";
+import type { CustomSelectOption, FromStoreAction } from "../../../../types";
 import { Button } from "~/components/buttons";
 import { OrderOptionsDrawer } from "~/components/drawer";
 import {
@@ -51,13 +45,7 @@ type ItemWithPriceRules = Item & { priceRules: PriceRule[] };
 
 type Props = {
   form: FormStore<OrderFormType, ResponseData>;
-  action: Maybe<
-    ActionStore<
-      FormActionStore<OrderFormType, ResponseData>,
-      PartialValues<OrderFormType>,
-      true
-    >
-  >;
+  action: FromStoreAction<OrderFormType>;
   items: Readonly<Signal<ItemWithPriceRules[]>>;
   handleSubmit: SubmitHandler<OrderFormType>;
 };
