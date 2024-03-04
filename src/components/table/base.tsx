@@ -27,7 +27,7 @@ export const TableBase = component$<Props>(
         <thead>
           {table?.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              <TableHeaderCheckBox entity={entity} />
+              <TableHeaderCheckBox entity={entity} table={table} />
               {headerGroup.headers.map(({ column }) => {
                 const id = column.id;
                 return <th key={id}>{column.columnDef.header}</th>;
@@ -40,7 +40,11 @@ export const TableBase = component$<Props>(
           {table?.getRowModel().rows.map((row) => {
             return (
               <tr key={row.id} class="hover">
-                <TableRowCheckBox entity={entity} entityId={row.original.id} />
+                <TableRowCheckBox
+                  table={table}
+                  entity={entity}
+                  entityId={row.original.id}
+                />
                 {row.getAllCells().map((cell) => (
                   <td key={cell.id}>
                     {tableFlexRender(

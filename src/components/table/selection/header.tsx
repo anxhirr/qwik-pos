@@ -1,17 +1,22 @@
+import type { NoSerialize } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
-import type { Entity } from "../../../../types";
+import type { AvailableTables, Entity } from "../../../../types";
 import { IndeterminateCheckbox } from "./base";
 
 type Props = {
   entity: Entity;
+  table: NoSerialize<AvailableTables>;
 };
 
-export const TableHeaderCheckBox = component$<Props>(({ entity }) => {
-  console.log("entity", entity);
-
+export const TableHeaderCheckBox = component$<Props>(() => {
   return (
     <th>
-      <IndeterminateCheckbox />
+      <IndeterminateCheckbox
+        checked={true}
+        onChange$={(e) => {
+          console.log("e", e);
+        }}
+      />
     </th>
   );
 });
