@@ -8,13 +8,14 @@ type Props = {
   table: NoSerialize<AvailableTables>;
 };
 
-export const TableHeaderCheckBox = component$<Props>(() => {
+export const TableHeaderCheckBox = component$<Props>(({ table }) => {
   return (
     <th>
       <IndeterminateCheckbox
         checked={true}
         onChange$={(e) => {
           console.log("e", e);
+          table?.getToggleAllPageRowsSelectedHandler();
         }}
       />
     </th>

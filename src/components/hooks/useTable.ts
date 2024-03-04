@@ -3,6 +3,7 @@ import { noSerialize, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import type {
   ColumnPinningState,
   PaginationState,
+  RowSelectionState,
   SortingState,
   Table,
 } from "@tanstack/table-core";
@@ -19,6 +20,7 @@ type TableState = {
   pagination: PaginationState;
   columnPinning: ColumnPinningState;
   globalFilter: string;
+  rowSelection: RowSelectionState;
 };
 
 const createUnSeralizedTable = <T>(
@@ -38,6 +40,8 @@ const createUnSeralizedTable = <T>(
         state.pagination = newState(state).pagination;
         state.columnPinning = newState(state).columnPinning;
         state.globalFilter = newState(state).globalFilter;
+        state.rowSelection = newState(state).rowSelection;
+        console.log("onStateChange");
       },
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
@@ -45,6 +49,11 @@ const createUnSeralizedTable = <T>(
       enableGlobalFilter: true,
       onGlobalFilterChange: (value) => {
         state.globalFilter = value;
+        console.log("onGlobalFilterChange");
+      },
+      onRowSelectionChange: (newSelection) => {
+        state.rowSelection = newSelection(state).rowSelection;
+        console.log("onRowSelectionChange");
       },
     }),
   );
@@ -54,6 +63,7 @@ const initialState: TableState = {
   pagination: { pageIndex: 0, pageSize: 5 },
   columnPinning: { left: [], right: [] },
   globalFilter: "",
+  rowSelection: {},
 };
 
 export const useTable = <T>(

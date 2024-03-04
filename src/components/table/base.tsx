@@ -62,6 +62,7 @@ export const TableBase = component$<Props>(
                   table={table}
                   entity={entity}
                   entityId={row.original.id}
+                  rowId={row.id}
                 />
                 {row.getAllCells().map((cell) => (
                   <td key={cell.id}>
