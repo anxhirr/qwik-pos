@@ -5,6 +5,7 @@ import { TableRowActions } from "./actions/base";
 import type { AvailableTables, Entity } from "../../../types";
 import { TableHeaderCheckBox, TableRowCheckBox } from "./selection";
 import { TableFooter } from "./footer/base";
+import { ArrowDropDownIcon, ArrowDropUpIcon } from "../icons";
 
 type Props = {
   table: NoSerialize<AvailableTables>;
@@ -30,7 +31,24 @@ export const TableBase = component$<Props>(
               <TableHeaderCheckBox entity={entity} table={table} />
               {headerGroup.headers.map(({ column }) => {
                 const id = column.id;
-                return <th key={id}>{column.columnDef.header}</th>;
+                return (
+                  <th
+                    key={id}
+                    onClick$={() => {
+                      const thisCol = table.getColumn(id)!;
+                      thisCol.toggleSorting();
+                    }}
+                  >
+                    <div class="flex">
+                      {column.columnDef.header}
+                      {column.getIsSorted() ? (
+                        <ArrowDropUpIcon />
+                      ) : (
+                        <ArrowDropDownIcon />
+                      )}
+                    </div>
+                  </th>
+                );
               })}
             </tr>
           ))}

@@ -10,6 +10,7 @@ import {
   createTable,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
 } from "@tanstack/table-core";
 import type { TableHookColumns, TableHookData } from "../../../types";
 
@@ -17,6 +18,7 @@ type TableState = {
   sorting: SortingState;
   pagination: PaginationState;
   columnPinning: ColumnPinningState;
+  globalFilter: string;
 };
 
 const createUnSeralizedTable = <T>(
@@ -34,10 +36,16 @@ const createUnSeralizedTable = <T>(
         // TODO:this is working but seems tricky, might check again later
         state.sorting = newState(state).sorting;
         state.pagination = newState(state).pagination;
-        // state.columnPinning = newState(state).columnPinning;
+        state.columnPinning = newState(state).columnPinning;
+        state.globalFilter = newState(state).globalFilter;
       },
       getCoreRowModel: getCoreRowModel(),
+      getSortedRowModel: getSortedRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
+      enableGlobalFilter: true,
+      onGlobalFilterChange: (value) => {
+        state.globalFilter = value;
+      },
     }),
   );
 
@@ -45,6 +53,7 @@ const initialState: TableState = {
   sorting: [],
   pagination: { pageIndex: 0, pageSize: 5 },
   columnPinning: { left: [], right: [] },
+  globalFilter: "",
 };
 
 export const useTable = <T>(
