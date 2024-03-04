@@ -22,9 +22,9 @@ export const columnsOrder = [
     cell: $((order: CellContext<Order, PaymentMethod>) => {
       const Icon = PAYMENT_METHOD_ICON_MAP.get(order.getValue());
       return (
-        <div class="flex">
+        <div class="flex-center gap-1">
           {Icon && <Icon />}
-          <div>{order.getValue()}</div>
+          <span>{order.getValue()}</span>
         </div>
       );
     }),

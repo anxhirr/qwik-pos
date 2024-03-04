@@ -1,4 +1,9 @@
-import { CreditCardIcon, PlusIcon, UpdateIcon } from "~/components/icons";
+import {
+  CreditCardIcon,
+  EuroIcon,
+  PlusIcon,
+  UpdateIcon,
+} from "~/components/icons";
 import type {
   CRUDactions,
   Entity,
@@ -31,6 +36,6 @@ export const ENTITY_ROUTE_MAP = new Map([
 
 export const PAYMENT_METHOD_ICON_MAP = new Map([
   ["BANK", PlusIcon], // TODO: add appropriate icons
-  ["CASH", PlusIcon],
+  ["CASH", EuroIcon],
   ["CARD", CreditCardIcon],
 ]) as ReadonlyMap<PaymentMethod, Component<IconProps>>;
