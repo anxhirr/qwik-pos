@@ -83,6 +83,7 @@ type IconProps = {
 
 type Size = "xs" | "sm" | "md" | "lg";
 type Position = "top" | "bottom" | "left" | "right";
+type Variant = "info" | "success" | "warning" | "error";
 
 type AvailableTables = Table<Order> | Table<PrismaItemWithPrice>;
 type TableHookData<T> = Readonly<Signal<T[]>>;

@@ -3,6 +3,7 @@ import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
 import { TableBase } from "~/components/table/base";
 import { useOrderTable } from "~/components/table/common";
 import { getAllOrders } from "~/lib/queries/orders";
+import { useToastsContext } from "~/routes/layout";
 import { prisma } from "~/routes/plugin@auth";
 import { getSessionSS } from "~/utils/auth";
 import { checkIsIdValid } from "~/utils/route-action";
@@ -38,6 +39,8 @@ export default component$(() => {
   const deleteOrder = useDeleteAction();
   const table = useOrderTable(data);
 
+  const toastsStore = useToastsContext();
+
   return (
     <>
       <TableBase
@@ -49,6 +52,12 @@ export default component$(() => {
         onDeleteConfirm$={(id) => {
           console.log("id", id);
           deleteOrder.submit({ id });
+
+          toastsStore.toasts.push({
+            id: "1",
+            message: "Order deleted successfully",
+            type: "success",
+          });
         }}
       />
     </>
