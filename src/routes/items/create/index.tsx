@@ -17,7 +17,7 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => {
     name: "",
     unit: "",
     category: "",
-    categoryIDs: [""], // TODO: categories picker does not show if array is empty
+    categoryIDs: [""],
     barcode: "",
     code: "",
     description: "",
