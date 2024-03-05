@@ -1,7 +1,7 @@
 import type { Signal } from "@builder.io/qwik";
 import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
 import type { CustomSelectOption } from "../../../types";
-import { CloseIcon } from "../icons";
+import { BackspaceFillIcon, CloseIcon } from "../icons";
 import { Button } from "../buttons";
 import clsx from "clsx";
 import {
@@ -148,21 +148,12 @@ export const CustomSelect = component$<Props>((props) => {
     <div class={clsx("relative", { "max-w-xs": !fullWidth })}>
       <div
         class={clsx(
-          "min-h-12 flex h-full rounded-lg border border-base-content border-opacity-20 p-2",
-          !selectedOptions.value.length && "ps-4",
+          "min-h-12 flex h-full rounded-lg border border-base-content border-opacity-20 py-2",
         )}
       >
-        <div class="flex flex-1 flex-wrap items-center gap-1 overflow-hidden">
+        <div class="flex flex-1 flex-wrap items-center overflow-hidden">
           {isMulti && (
             <>
-              {/* {selectedOptions.value.map((opt) => (
-                <MultiValue
-                  key={opt.value}
-                  label={opt.label}
-                  onClear={$(() => onUnselect(opt))}
-                />
-              ))} */}
-
               <FieldArray of={form} name="categoryIDs">
                 {(fieldArray) => (
                   <>
@@ -182,7 +173,12 @@ export const CustomSelect = component$<Props>((props) => {
                                   type="text"
                                   placeholder={placeholder}
                                   value={input.value}
-                                  class="input max-h-8 min-w-[10px] flex-1 !border-none p-0 !outline-none"
+                                  class={clsx(
+                                    "input max-h-8 min-w-[10px] flex-1 !border-none p-0 !outline-none",
+                                    selectedOptions.value.length
+                                      ? "ps-2"
+                                      : "ps-4",
+                                  )}
                                   onInput$={handleChange}
                                   onFocus$={() => (showMenu.value = true)}
                                   onBlur$={closeOnBlur}
@@ -262,60 +258,11 @@ export const CustomSelect = component$<Props>((props) => {
               </FieldArray>
             </>
           )}
-          {/* <input
-            type="text"
-            placeholder={placeholder}
-            value={input.value}
-            class="input max-h-8 min-w-[10px] flex-1 !border-none p-0 !outline-none"
-            onInput$={handleChange}
-            onFocus$={() => (showMenu.value = true)}
-            onBlur$={() => {
-              // close menu if focus is outside of menu and input
-              const isAtMenu = !menuRef.value?.contains(document.activeElement);
-              if (isAtMenu) return;
-              showMenu.value = false;
-            }}
-          /> */}
         </div>
         <div class="mx-1 flex items-center">
           <ClearButton input={input} onClear={handleClear} />
         </div>
       </div>
-      {/* {showMenu.value && (
-        <div ref={menuRef} class="absolute top-[100%] z-50 w-full">
-          <div class="mt-1 rounded-lg bg-secondary">
-            <ul>
-              {visibleOptions.value.map((opt) => (
-                <Option
-                  key={opt.value}
-                  label={opt.label}
-                  onSelect={$(() =>
-                    handleSelect({ option: opt, parentEmitFn: onSelect }),
-                  )}
-                />
-              ))}
-
-              {noResultsFound && !isCreatable && (
-                <li class="p-2 ps-4 text-sm text-base-content">
-                  No results found
-                </li>
-              )}
-
-              {isCreatable && noResultsFound && (
-                <Option
-                  label={`Create "${input.value}"`}
-                  onSelect={$(() =>
-                    handleSelect({
-                      option: { label: input.value, value: input.value },
-                      parentEmitFn: onCreate, // TODO: remove warning
-                    }),
-                  )}
-                />
-              )}
-            </ul>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 });
@@ -330,7 +277,7 @@ const ClearButton = component$<{
       isCircle
       variant="ghost"
       size="sm"
-      Icon={CloseIcon}
+      Icon={BackspaceFillIcon}
       onClick$={props.onClear}
     />
   );
@@ -339,8 +286,8 @@ const ClearButton = component$<{
 const MultiValue = component$<{ label: string; onClear: () => void }>(
   ({ label, onClear }) => {
     return (
-      <div class="flex max-w-min items-center justify-between gap-2 rounded-lg bg-secondary text-sm">
-        <span class="p-1 ps-2">{label}</span>
+      <div class="ms-2 flex max-w-min items-center justify-between gap-2 rounded-lg bg-secondary text-sm">
+        <span class="whitespace-nowrap p-1 ps-2">{label}</span>
         <Button
           isCircle
           variant="ghost"
