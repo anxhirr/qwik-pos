@@ -209,7 +209,7 @@ export const OrderForm = component$<Props>(
                               {(field, props) => (
                                 <CustomSelect
                                   {...props}
-                                  options={options.value}
+                                  options={options.value.slice(0, 10)}
                                   placeholder="Item"
                                   value={field.value}
                                   fullWidth
