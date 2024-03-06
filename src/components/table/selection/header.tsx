@@ -12,10 +12,9 @@ export const TableHeaderCheckBox = component$<Props>(({ table }) => {
   return (
     <th>
       <IndeterminateCheckbox
-        checked={true}
-        onChange$={(e) => {
-          console.log("e", e);
-          table?.getToggleAllPageRowsSelectedHandler();
+        checked={!!table?.getIsAllRowsSelected()}
+        onChange$={() => {
+          table?.toggleAllRowsSelected();
         }}
       />
     </th>

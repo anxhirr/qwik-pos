@@ -14,11 +14,10 @@ export const TableRowCheckBox = component$<Props>(({ table, rowId }) => {
   return (
     <td>
       <IndeterminateCheckbox
-        checked={false}
-        onChange$={(e) => {
-          console.log("e", e);
+        checked={!!table?.getRow(rowId)?.getIsSelected()}
+        onChange$={() => {
           const row = table?.getRow(rowId);
-          console.log("row", row);
+          row?.toggleSelected();
         }}
       />
     </td>

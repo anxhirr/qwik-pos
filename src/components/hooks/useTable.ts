@@ -35,13 +35,15 @@ const createUnSeralizedTable = <T>(
       state: state,
       renderFallbackValue: "fallback",
       onStateChange: (newState) => {
-        // TODO:this is working but seems tricky, might check again later
-        state.sorting = newState(state).sorting;
-        state.pagination = newState(state).pagination;
-        state.columnPinning = newState(state).columnPinning;
-        state.globalFilter = newState(state).globalFilter;
-        state.rowSelection = newState(state).rowSelection;
-        console.log("onStateChange");
+        // @ts-ignore
+        const updated = newState(state);
+        console.log("onStateChange updated", updated);
+
+        state.sorting = updated.sorting;
+        state.pagination = updated.pagination;
+        state.columnPinning = updated.columnPinning;
+        state.globalFilter = updated.globalFilter;
+        state.rowSelection = updated.rowSelection;
       },
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
@@ -52,8 +54,11 @@ const createUnSeralizedTable = <T>(
         console.log("onGlobalFilterChange");
       },
       onRowSelectionChange: (newSelection) => {
-        state.rowSelection = newSelection(state).rowSelection;
-        console.log("onRowSelectionChange");
+        // @ts-ignore
+        const updated = newSelection(state.rowSelection);
+        console.log("onRowSelectionChange updated", updated);
+
+        state.rowSelection = updated;
       },
     }),
   );
