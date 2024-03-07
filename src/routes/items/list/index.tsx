@@ -1,11 +1,12 @@
 import { component$ } from "@builder.io/qwik";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
+import { ItemsListBottomNav } from "~/components/bottom-nav";
 import { TableBase } from "~/components/table/base";
 import { useItemsTable } from "~/components/table/common";
 import { getAllItems } from "~/lib/queries/items";
 import { prisma } from "~/routes/plugin@auth";
 import { getSessionSS } from "~/utils/auth";
-import { checkIsIdValid } from "~/utils/route-action";
+import { checkIsIdValid, checkIsIdsValid } from "~/utils/route-action";
 
 export const useItemsLoader = routeLoader$(async (event) => {
   const session = getSessionSS(event);
@@ -33,23 +34,55 @@ export const useDeleteItem = routeAction$(async (item, { fail }) => {
   };
 });
 
+export const useBulkDeleteItem = routeAction$(async (ids, { fail }) => {
+  if (!checkIsIdsValid(ids)) {
+    fail(500, {
+      message: "ids are missing",
+    });
+    return;
+  }
+
+  const result = await prisma.item.deleteMany({ where: { id: { in: ids } } });
+  console.log("result", result);
+
+  return {
+    status: 200,
+    message: "Items deleted successfully",
+  };
+});
+
 export default component$(() => {
   const items = useItemsLoader();
   const deleteItem = useDeleteItem();
+  const bulkDeleteItem = useBulkDeleteItem();
   const table = useItemsTable(items);
 
   return (
     <>
-      <TableBase
-        entity="ITEM"
-        table={table.instance}
-        onDelete$={(id) => {
-          console.log("onDelete id", id);
+      <div class="main-content">
+        <TableBase
+          entity="ITEM"
+          table={table.instance}
+          onDelete$={(id) => {
+            console.log("onDelete id", id);
+          }}
+          onDeleteConfirm$={(id) => {
+            deleteItem.submit({ id });
+          }}
+        />
+      </div>
+
+      <ItemsListBottomNav
+        onDeleteClick$={() => {
+          const selected = table.instance?.getSelectedRowModel();
+          const original = selected?.rows.map((row) => row.original);
+          const ids = original?.map((item) => item.id);
+          bulkDeleteItem.submit(ids);
         }}
-        onDeleteConfirm$={(id) => {
-          console.log("onDeleteConfirm id", id);
-          deleteItem.submit({ id });
-        }}
+        showDeleteBtn={
+          table.instance?.getIsAllRowsSelected() ||
+          table.instance?.getIsSomeRowsSelected()
+        }
       />
     </>
   );

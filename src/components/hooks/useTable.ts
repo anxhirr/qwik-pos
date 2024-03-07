@@ -14,6 +14,7 @@ import {
   getSortedRowModel,
 } from "@tanstack/table-core";
 import type { TableHookColumns, TableHookData } from "../../../types";
+import { DEFAULT_PAGE_SIZE } from "~/constants/defaults";
 
 type TableState = {
   sorting: SortingState;
@@ -65,7 +66,7 @@ const createUnSeralizedTable = <T>(
 
 const initialState: TableState = {
   sorting: [],
-  pagination: { pageIndex: 0, pageSize: 5 },
+  pagination: { pageIndex: 0, pageSize: DEFAULT_PAGE_SIZE },
   columnPinning: { left: [], right: [] },
   globalFilter: "",
   rowSelection: {},

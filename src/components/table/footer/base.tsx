@@ -5,6 +5,8 @@ import {
   KeyboardArrowLeftIcon,
   KeyboardArrowRightIcon,
 } from "~/components/icons";
+import { Select } from "~/components/shared";
+import { PAGE_SIZES } from "~/constants/enum";
 
 type Props = {
   table: NoSerialize<AvailableTables>;
@@ -41,6 +43,19 @@ export const TableFooter = component$<Props>(({ table }) => {
                 <KeyboardArrowRightIcon />
               </button>
             </div>
+
+            <Select
+              options={PAGE_SIZES.map((size) => ({
+                label: `${size} per page`,
+                value: size,
+              }))}
+              placeholder="Page Size"
+              name="pageSize"
+              value={table?.getState().pagination.pageSize}
+              onChange$={(e) => {
+                table?.setPageSize(Number(e.target.value));
+              }}
+            />
           </div>
         </td>
       </tr>

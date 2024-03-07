@@ -3,6 +3,7 @@ import type {
   Currency,
   DiscountType,
   Language,
+  PageSizes,
   PaymentMethod,
   PrintFormat,
 } from "../../types";
@@ -29,6 +30,8 @@ export const PREF_ORDER_FORM_ID = "PREF_ORDER_FORM_ID" as const;
 
 export const CURRENCIES: Currency[] = ["ALL", "EUR", "USD"] as const;
 export const LANGUAGES: Language[] = ["AL", "EN"] as const;
+
+export const PAGE_SIZES: PageSizes[] = [10, 20, 50, 100] as const;
 
 export const PAYMENT_METHODS: PaymentMethod[] = ["CASH", "CARD", "BANK"];
 

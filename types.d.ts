@@ -38,7 +38,7 @@ export type AuthSession = DefaultSession & {
 };
 
 export interface CustomSelectOption {
-  value: string;
+  value: string | number;
   label: string;
 }
 
@@ -115,3 +115,5 @@ type Currency = "ALL" | "EUR" | "USD";
 type Language = "AL" | "EN";
 
 type CategoryType = "ITEM" | "CUSTOMER";
+
+type PageSizes = 10 | 20 | 50 | 100;

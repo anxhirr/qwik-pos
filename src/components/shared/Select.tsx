@@ -13,7 +13,7 @@ type Props = {
       element: HTMLSelectElement,
     ) => void
   >;
-  value?: string | undefined;
+  value?: string | number | undefined;
   error?: string;
   placeholder?: string;
   class?: string;
