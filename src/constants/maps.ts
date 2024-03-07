@@ -39,3 +39,10 @@ export const PAYMENT_METHOD_ICON_MAP = new Map([
   ["CASH", EuroIcon],
   ["CARD", CreditCardIcon],
 ]) as ReadonlyMap<PaymentMethod, Component<IconProps>>;
+
+export const ENTITY_PLURAL_MAP = new Map([
+  ["ITEM", "Items"],
+  ["CATEGORY", "Categories"],
+  ["ORDER", "Orders"],
+  ["CUSTOMER", "Customers"],
+]) as ReadonlyMap<Entity, string>;

@@ -1,6 +1,7 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import { routeAction$, routeLoader$ } from "@builder.io/qwik-city";
 import { ItemsListBottomNav } from "~/components/bottom-nav";
+import { DeleteEntityConfirmDialog } from "~/components/dialogs/shared/DeleteEntityConfirmDialog";
 import { TableBase } from "~/components/table/base";
 import { useItemsTable } from "~/components/table/common";
 import { getAllItems } from "~/lib/queries/items";
@@ -56,6 +57,7 @@ export default component$(() => {
   const deleteItem = useDeleteItem();
   const bulkDeleteItem = useBulkDeleteItem();
   const table = useItemsTable(items);
+  const showConfirmDialog = useSignal(false);
 
   return (
     <>
@@ -74,15 +76,31 @@ export default component$(() => {
 
       <ItemsListBottomNav
         onDeleteClick$={() => {
-          const selected = table.instance?.getSelectedRowModel();
-          const original = selected?.rows.map((row) => row.original);
-          const ids = original?.map((item) => item.id);
-          bulkDeleteItem.submit(ids);
+          showConfirmDialog.value = true;
         }}
         showDeleteBtn={
           table.instance?.getIsAllRowsSelected() ||
           table.instance?.getIsSomeRowsSelected()
         }
+      />
+
+      <DeleteEntityConfirmDialog
+        entity={"ITEM"}
+        show={showConfirmDialog}
+        hide={$(() => {
+          showConfirmDialog.value = false;
+        })}
+        onCancel$={() => {
+          showConfirmDialog.value = false;
+        }}
+        isBulk
+        onConfirm$={() => {
+          showConfirmDialog.value = false;
+          const selected = table.instance?.getSelectedRowModel();
+          const original = selected?.rows.map((row) => row.original);
+          const ids = original?.map((item) => item.id);
+          bulkDeleteItem.submit(ids);
+        }}
       />
     </>
   );
