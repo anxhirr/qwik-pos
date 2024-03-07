@@ -1,5 +1,11 @@
 import type { Signal } from "@builder.io/qwik";
-import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  useOnDocument,
+  useSignal,
+  useTask$,
+} from "@builder.io/qwik";
 import type { CustomSelectOption } from "../../../types";
 import { BackspaceFillIcon, CloseIcon } from "../icons";
 import { Button } from "../buttons";
@@ -27,6 +33,7 @@ export interface Props {
   initialSelectedOptions?: CustomSelectOption[];
   fullWidth?: boolean;
   form?: FormStore<ItemFormType, ResponseData>;
+  closeOnOutsideClick?: boolean;
 }
 
 export const CustomSelect = component$<Props>((props) => {
@@ -43,10 +50,12 @@ export const CustomSelect = component$<Props>((props) => {
     fullWidth,
     form,
     onUnselect,
+    closeOnOutsideClick,
   } = props;
   const input = useSignal("");
   const showMenu = useSignal(false);
   const menuRef = useSignal<Element>();
+  const inputRef = useSignal<Element>();
 
   const selectedOptions = useSignal<CustomSelectOption[]>(
     initialSelectedOptions || [],
@@ -78,12 +87,6 @@ export const CustomSelect = component$<Props>((props) => {
     filteredOptions.value = finalOptions;
   });
 
-  const afterOptionSelect = $(() => {
-    clearInput();
-    updateMenuOptions();
-    hideMenu();
-  });
-
   const handleSelect = $(
     (
       option: CustomSelectOption,
@@ -99,26 +102,15 @@ export const CustomSelect = component$<Props>((props) => {
         input.value = option.label;
       }
 
-      afterOptionSelect();
+      clearInput();
+      hideMenu();
+      updateMenuOptions();
     },
   );
 
-  useTask$(({ track }) => {
-    // populates initial options
-    track(() => options);
-    revertVisibleOptions();
-  });
-
-  useTask$(({ track }) => {
-    track(() => value);
-
-    if (!value) return;
-
-    input.value = value;
-  });
-
   const handleUnselect = $((opt: CustomSelectOption, index: number) => {
     selectedOptions.value.splice(index, 1);
+    updateMenuOptions();
     onUnselect?.(opt, index);
   });
 
@@ -133,6 +125,20 @@ export const CustomSelect = component$<Props>((props) => {
     clearInput();
     clearSelectedOptions();
     onClear?.();
+  });
+
+  useTask$(({ track }) => {
+    // populates initial options
+    track(() => options);
+    revertVisibleOptions();
+  });
+
+  useTask$(({ track }) => {
+    track(() => value);
+
+    if (!value) return;
+
+    input.value = value;
   });
 
   return (
@@ -167,6 +173,9 @@ export const CustomSelect = component$<Props>((props) => {
                                     placeholder={placeholder}
                                     selectedOptions={selectedOptions}
                                     showMenu={showMenu}
+                                    menuRef={menuRef}
+                                    inputRef={inputRef}
+                                    closeOnOutsideClick={closeOnOutsideClick}
                                   />
 
                                   {showMenu.value && (
@@ -230,6 +239,9 @@ export const CustomSelect = component$<Props>((props) => {
               placeholder={placeholder}
               selectedOptions={selectedOptions}
               showMenu={showMenu}
+              menuRef={menuRef}
+              inputRef={inputRef}
+              closeOnOutsideClick={closeOnOutsideClick}
             />
             {showMenu.value && (
               <div class="absolute top-[100%] z-50 w-full">
@@ -318,26 +330,51 @@ const Input = component$<{
   placeholder: string;
   selectedOptions: Signal<CustomSelectOption[]>;
   showMenu: Signal<boolean>;
-}>(({ placeholder, input, onInput$, selectedOptions, showMenu }) => {
-  const closeOnBlur = $(() => {
-    // TODO: close menu if focus is outside of menu and input
-  });
+  menuRef: Signal<Element | undefined>;
+  inputRef: Signal<Element | undefined>;
+  closeOnOutsideClick?: boolean;
+}>(
+  ({
+    placeholder,
+    input,
+    onInput$,
+    selectedOptions,
+    showMenu,
+    menuRef,
+    inputRef,
+    closeOnOutsideClick = true,
+  }) => {
+    const onClickOutside = $((e: Event) => {
+      console.log("clicked outside element", e);
+      if (closeOnOutsideClick) showMenu.value = false;
+    });
 
-  return (
-    <input
-      type="text"
-      placeholder={placeholder}
-      value={input.value}
-      class={clsx(
-        "input max-h-8 min-w-[10px] flex-1 !border-none p-0 !outline-none",
-        selectedOptions.value.length ? "ps-2" : "ps-4",
-      )}
-      onInput$={onInput$}
-      onFocus$={() => (showMenu.value = true)}
-      onBlur$={closeOnBlur}
-    />
-  );
-});
+    useOnDocument(
+      "click",
+      $((e) => {
+        if (!menuRef.value || !inputRef.value) return;
+        if (menuRef.value.contains(e.target as Node)) return;
+        if (inputRef.value.contains(e.target as Node)) return;
+
+        onClickOutside(e);
+      }),
+    );
+    return (
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder={placeholder}
+        value={input.value}
+        class={clsx(
+          "input max-h-8 min-w-[10px] flex-1 !border-none p-0 !outline-none",
+          selectedOptions.value.length ? "ps-2" : "ps-4",
+        )}
+        onInput$={onInput$}
+        onFocus$={() => (showMenu.value = true)}
+      />
+    );
+  },
+);
 
 const ClearButton = component$<{
   onClear: () => void;
