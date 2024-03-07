@@ -28,7 +28,11 @@ import {
   PAYMENT_METHODS,
 } from "~/constants/enum";
 import { type OrderFormType } from "~/types-and-validation/orderSchema";
-import type { CustomSelectOption, FromStoreAction } from "../../../../types";
+import type {
+  CustomSelectOption,
+  FromStoreAction,
+  CustSelectParentEmitFnArgs,
+} from "../../../../types";
 import { Button } from "~/components/buttons";
 import { OrderOptionsDrawer } from "~/components/drawer";
 import {
@@ -213,12 +217,14 @@ export const OrderForm = component$<Props>(
                                   placeholder="Item"
                                   value={field.value}
                                   fullWidth
-                                  onSelect={$((option: CustomSelectOption) => {
-                                    handleItemSelect(option, index);
-                                    // TODO: add ux logic
-                                    // addNewEmptyRow(fieldArray.items.length);
-                                    // TODO: focus on next row
-                                  })}
+                                  onSelect={$(
+                                    (data: CustSelectParentEmitFnArgs) => {
+                                      handleItemSelect(data.newOpt, index);
+                                      // TODO: add ux logic
+                                      // addNewEmptyRow(fieldArray.items.length);
+                                      // TODO: focus on next row
+                                    },
+                                  )}
                                 />
                               )}
                             </Field>

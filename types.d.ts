@@ -42,7 +42,7 @@ export interface CustomSelectOption {
   label: string;
 }
 
-export interface ParentEmitFnArgs {
+export interface CustSelectParentEmitFnArgs {
   selectedOpts: CustomSelectOption[];
   newOpt: CustomSelectOption;
   newOptIndex: number;

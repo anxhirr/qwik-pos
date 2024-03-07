@@ -6,13 +6,16 @@ import {
   useSignal,
   useTask$,
 } from "@builder.io/qwik";
-import type { CustomSelectOption, ParentEmitFnArgs } from "../../../types";
+import type {
+  CustomSelectOption,
+  CustSelectParentEmitFnArgs,
+} from "../../../types";
 import { BackspaceFillIcon, CloseIcon } from "../icons";
 import { Button } from "../buttons";
 import clsx from "clsx";
 
 type SelectHandler = (option: CustomSelectOption, menuOptIdx: number) => void;
-type ParentEmitFn = (args: ParentEmitFnArgs) => void;
+type ParentEmitFn = (args: CustSelectParentEmitFnArgs) => void;
 
 export interface Props {
   value: string | undefined;

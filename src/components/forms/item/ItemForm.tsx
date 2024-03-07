@@ -24,7 +24,7 @@ import { type ItemFormType } from "~/types-and-validation/itemSchema";
 import type {
   CustomSelectOption,
   FromStoreAction,
-  ParentEmitFnArgs,
+  CustSelectParentEmitFnArgs,
 } from "../../../../types";
 import { BackspaceFillIcon, PlusIcon } from "~/components/icons";
 
@@ -42,7 +42,7 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
     }));
   });
 
-  const handleCatSelect = $(({ selectedOpts }: ParentEmitFnArgs) => {
+  const handleCatSelect = $(({ selectedOpts }: CustSelectParentEmitFnArgs) => {
     const values = selectedOpts.map((opt) => opt.value);
     setValues(form, "categoryIDs", values);
   });
@@ -99,10 +99,10 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
             options={options.value}
             placeholder="Categories"
             value={""}
-            onSelect={$((data: ParentEmitFnArgs) => {
+            onSelect={$((data: CustSelectParentEmitFnArgs) => {
               handleCatSelect(data);
             })}
-            onCreate={$((data: ParentEmitFnArgs) => {
+            onCreate={$((data: CustSelectParentEmitFnArgs) => {
               handleCatSelect(data);
             })}
             onUnselect={$((option: CustomSelectOption, index: number) => {
