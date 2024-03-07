@@ -7,8 +7,7 @@ import {
   FieldArray,
   insert,
   remove,
-  replace,
-  getValues,
+  setValues,
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
 import { Button } from "~/components/buttons/base";
@@ -22,7 +21,11 @@ import { DateInput } from "~/components/shared";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { ITEM_FORM_ID } from "~/constants/enum";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
-import type { CustomSelectOption, FromStoreAction } from "../../../../types";
+import type {
+  CustomSelectOption,
+  FromStoreAction,
+  ParentEmitFnArgs,
+} from "../../../../types";
 import { BackspaceFillIcon, PlusIcon } from "~/components/icons";
 
 type Props = {
@@ -39,18 +42,9 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
     }));
   });
 
-  const handleCatSelect = $((option: CustomSelectOption, index: number) => {
-    replace(form, "categoryIDs", {
-      at: index,
-      value: option.value,
-    });
-    insert(form, "categoryIDs", {
-      value: "",
-      at: index + 1,
-    });
-
-    const formvalues = getValues(form);
-    console.log("formvalues", formvalues);
+  const handleCatSelect = $(({ selectedOpts }: ParentEmitFnArgs) => {
+    const values = selectedOpts.map((opt) => opt.value);
+    setValues(form, "categoryIDs", values);
   });
 
   const handleCatUnselect = $((option: CustomSelectOption, index: number) => {
@@ -84,19 +78,33 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
             )}
           </Field>
 
+          <FieldArray of={form} name="categoryIDs">
+            {/* just to show categoryIDs key */}
+            {(fieldArray) => (
+              <>
+                {fieldArray.items.map((item, index) => {
+                  return (
+                    <Field key={item} of={form} name={`categoryIDs.${index}`}>
+                      {() => <></>}
+                    </Field>
+                  );
+                })}
+              </>
+            )}
+          </FieldArray>
+
           <CustomSelect
             isMulti
             isCreatable
             options={options.value}
             placeholder="Categories"
             value={""}
-            onSelect={$((option: CustomSelectOption, index: number) => {
-              handleCatSelect(option, index);
+            onSelect={$((data: ParentEmitFnArgs) => {
+              handleCatSelect(data);
             })}
-            onCreate={$((option: CustomSelectOption, index: number) => {
-              handleCatSelect(option, index); // TODO: create category
+            onCreate={$((data: ParentEmitFnArgs) => {
+              handleCatSelect(data);
             })}
-            form={form}
             onUnselect={$((option: CustomSelectOption, index: number) => {
               handleCatUnselect(option, index);
             })}
