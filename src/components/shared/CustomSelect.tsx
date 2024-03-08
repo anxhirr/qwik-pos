@@ -13,7 +13,12 @@ import type {
 import { BackspaceFillIcon, CloseIcon } from "../icons";
 import { Button } from "../buttons";
 import clsx from "clsx";
-import type { FormStore, ResponseData } from "@modular-forms/qwik";
+import type {
+  FieldArrayPath,
+  FieldArrayStore,
+  FormStore,
+  ResponseData,
+} from "@modular-forms/qwik";
 import {
   Field,
   FieldArray,
@@ -22,8 +27,8 @@ import {
   remove,
   setValues,
 } from "@modular-forms/qwik";
-import type { ItemFormType } from "~/types-and-validation";
 import { isUndefined } from "~/utils";
+import type { ItemFormType } from "~/types-and-validation";
 
 type SelectHandler = (option: CustomSelectOption, menuOptIdx: number) => void;
 type ParentEmitFn = (args: CustSelectParentEmitFnArgs) => void;
@@ -41,6 +46,10 @@ export interface Props {
   fullWidth?: boolean;
   closeOnOutsideClick?: boolean;
   form: FormStore<ItemFormType, ResponseData>;
+  fieldArrayName: FieldArrayStore<
+    ItemFormType,
+    FieldArrayPath<ItemFormType>
+  >["name"];
 }
 
 const filterByInput = (options: CustomSelectOption[], value: string) => {
@@ -80,6 +89,7 @@ export const CustomSelect = component$<Props>((props) => {
     fullWidth,
     closeOnOutsideClick,
     form,
+    fieldArrayName,
   } = props;
   const input = useSignal("");
   const showMenu = useSignal(false);
@@ -110,7 +120,7 @@ export const CustomSelect = component$<Props>((props) => {
       parentEmitFn: ParentEmitFn,
     ) => {
       if (isMulti)
-        insert(form, "categories", {
+        insert(form, fieldArrayName, {
           at: selectedOptions.length,
           value: option,
         });
@@ -134,7 +144,7 @@ export const CustomSelect = component$<Props>((props) => {
 
   const handleClear = $(() => {
     clearInput();
-    setValues(form, "categories", []);
+    setValues(form, fieldArrayName, []);
     onClear?.();
   });
 
@@ -159,7 +169,7 @@ export const CustomSelect = component$<Props>((props) => {
       >
         {isMulti && (
           <div class="flex flex-wrap items-center gap-2 overflow-hidden">
-            <FieldArray of={form} name="categories">
+            <FieldArray of={form} name={fieldArrayName}>
               {(fieldArray) => (
                 <>
                   {fieldArray.items.map((item, index) => {

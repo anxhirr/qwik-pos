@@ -17,7 +17,6 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => {
     name: "",
     unit: "",
     category: "",
-    // categoryIDs: [""],
     categories: [],
     barcode: "",
     code: "",
@@ -57,7 +56,6 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
           },
         },
         categories: {
-          // connect: values.categoryIDs.map((id) => ({ id })),
           connect: values.categories.map((cat) => ({ id: cat.value })),
         },
       },

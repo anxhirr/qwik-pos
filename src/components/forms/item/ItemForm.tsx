@@ -82,6 +82,7 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
               handleCatSelect(data);
             })}
             form={form}
+            fieldArrayName="categories"
           />
           <FieldArray of={form} name="priceRules">
             {(fieldArray) => (

@@ -14,7 +14,11 @@ import type {
 } from "@modular-forms/qwik";
 import type { Order } from "@prisma/client";
 import type { ColumnDef, Table } from "@tanstack/table-core";
-import type { PrismaItemWithPrice } from "~/types-and-validation";
+import type {
+  ItemFormType,
+  OrderFormType,
+  PrismaItemWithPrice,
+} from "~/types-and-validation";
 
 export type OrderItemType = {
   id: string;
@@ -93,6 +97,8 @@ type Variant = "info" | "success" | "warning" | "error";
 type AvailableTables = Table<Order> | Table<PrismaItemWithPrice>;
 type TableHookData<T> = Readonly<Signal<T[]>>;
 type TableHookColumns<T> = ColumnDef<T, any>[];
+
+type AvailableFormTypes = ItemFormType | OrderFormType;
 
 type FromStoreAction<T> = ActionStore<
   FormActionStore<T, ResponseData>,
