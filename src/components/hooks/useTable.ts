@@ -38,7 +38,6 @@ const createUnSeralizedTable = <T>(
       onStateChange: (newState) => {
         // @ts-ignore
         const updated = newState(state);
-        console.log("onStateChange updated", updated);
 
         state.sorting = updated.sorting;
         state.pagination = updated.pagination;
@@ -52,12 +51,10 @@ const createUnSeralizedTable = <T>(
       enableGlobalFilter: true,
       onGlobalFilterChange: (value) => {
         state.globalFilter = value;
-        console.log("onGlobalFilterChange");
       },
       onRowSelectionChange: (newSelection) => {
         // @ts-ignore
         const updated = newSelection(state.rowSelection);
-        console.log("onRowSelectionChange updated", updated);
 
         state.rowSelection = updated;
       },

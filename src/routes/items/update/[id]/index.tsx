@@ -6,7 +6,6 @@ import {
   valiForm$,
   formAction$,
   type ResponseData,
-  getErrors,
 } from "@modular-forms/qwik";
 import { UpdateItemBottomNav } from "~/components/bottom-nav";
 import { ItemForm } from "~/components/forms/item/ItemForm";
@@ -29,18 +28,26 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(
         categories: true,
       },
     });
+    console.log("item", item);
 
     if (!item) {
       throw new Error("Item not found");
     }
 
     return {
-      ...item,
+      active: item.active,
+      barcode: item.barcode,
+      code: item.code,
+      description: item.description,
+      favorite: item.favorite,
+      name: item.name,
+      unit: item.unit,
       priceRules: item.priceRules.map((rule) => ({
         ...rule,
         start: new Date(rule.start).toISOString(),
         end: new Date(rule.end).toISOString(),
       })),
+      categoryIDs: item.categories.map((cat) => cat.id),
     };
   },
 );
@@ -105,8 +112,6 @@ export default component$(() => {
     validate: valiForm$(ItemSchema),
     fieldArrays: ["priceRules", "categoryIDs"],
   });
-
-  console.log("getErrors", getErrors(form));
 
   return (
     <>

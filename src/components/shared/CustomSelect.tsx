@@ -13,6 +13,17 @@ import type {
 import { BackspaceFillIcon, CloseIcon } from "../icons";
 import { Button } from "../buttons";
 import clsx from "clsx";
+import type { FormStore, ResponseData } from "@modular-forms/qwik";
+import {
+  Field,
+  FieldArray,
+  getValues,
+  insert,
+  remove,
+  setValues,
+} from "@modular-forms/qwik";
+import type { ItemFormType } from "~/types-and-validation";
+import { isUndefined } from "~/utils";
 
 type SelectHandler = (option: CustomSelectOption, menuOptIdx: number) => void;
 type ParentEmitFn = (args: CustSelectParentEmitFnArgs) => void;
@@ -22,7 +33,6 @@ export interface Props {
   options: CustomSelectOption[];
   placeholder?: string;
   onSelect: ParentEmitFn;
-  onUnselect?: SelectHandler; // Add type for this, if isMulti, then this is required
   onClear?: () => void;
   isMulti?: boolean;
   isCreatable?: true;
@@ -30,7 +40,32 @@ export interface Props {
   initialSelectedOptions?: CustomSelectOption[];
   fullWidth?: boolean;
   closeOnOutsideClick?: boolean;
+  form: FormStore<ItemFormType, ResponseData>;
 }
+
+const filterByInput = (options: CustomSelectOption[], value: string) => {
+  return options.filter((item) =>
+    item.label.toLowerCase().includes(value.toLowerCase()),
+  );
+};
+
+const filterByOptions = (
+  options: CustomSelectOption[],
+  selectedOptions: CustomSelectOption[],
+) => {
+  const values = selectedOptions.map((opt) => opt.value);
+  return options.filter((opt) => !values.includes(opt.value));
+};
+
+const getFilteredOptions = (
+  options: CustomSelectOption[],
+  selectedOptions: CustomSelectOption[],
+  input: string,
+) => {
+  const possibleOptions = filterByInput(options, input);
+  const finalOptions = filterByOptions(possibleOptions, selectedOptions);
+  return finalOptions;
+};
 
 export const CustomSelect = component$<Props>((props) => {
   const {
@@ -38,30 +73,35 @@ export const CustomSelect = component$<Props>((props) => {
     placeholder = "Select",
     options,
     value,
-    isMulti = false,
-    isCreatable = false,
+    isMulti,
+    isCreatable,
     onCreate,
     onClear,
-    initialSelectedOptions,
     fullWidth,
-    onUnselect,
     closeOnOutsideClick,
+    form,
   } = props;
   const input = useSignal("");
   const showMenu = useSignal(false);
   const menuRef = useSignal<Element>();
   const inputRef = useSignal<Element>();
 
-  const selectedOptions = useSignal<CustomSelectOption[]>(
-    initialSelectedOptions || [],
-  );
+  const selectedOptions = getValues(
+    form,
+    "categories",
+  )! as CustomSelectOption[];
 
-  const filteredOptions = useSignal<CustomSelectOption[]>([]);
+  const possibleOptions = useSignal<CustomSelectOption[]>([]);
 
-  const clearSelectedOptions = $(() => (selectedOptions.value = []));
   const clearInput = $(() => (input.value = ""));
-  const revertVisibleOptions = $(() => (filteredOptions.value = options));
+  const revertPossibleOptions = $(() => (possibleOptions.value = options));
   const hideMenu = $(() => (showMenu.value = false));
+
+  const filteredOptions = getFilteredOptions(
+    options,
+    selectedOptions,
+    input.value,
+  );
 
   const handleSelect = $(
     (
@@ -69,7 +109,11 @@ export const CustomSelect = component$<Props>((props) => {
       menuOptIdx: number,
       parentEmitFn: ParentEmitFn,
     ) => {
-      if (isMulti) selectedOptions.value = [...selectedOptions.value, option];
+      if (isMulti)
+        insert(form, "categories", {
+          at: selectedOptions.length,
+          value: option,
+        });
 
       if (!isMulti) input.value = option.label;
 
@@ -77,18 +121,11 @@ export const CustomSelect = component$<Props>((props) => {
       hideMenu();
 
       parentEmitFn({
-        selectedOpts: selectedOptions.value,
         newOpt: option,
-        newOptIndex: selectedOptions.value.length,
         menuOptIdx,
       });
     },
   );
-
-  const handleUnselect = $((opt: CustomSelectOption, index: number) => {
-    selectedOptions.value = selectedOptions.value.filter((_, i) => i !== index);
-    onUnselect?.(opt, index);
-  });
 
   const handleChange = $((ev: Event) => {
     const value = (ev.target as HTMLInputElement).value;
@@ -97,46 +134,19 @@ export const CustomSelect = component$<Props>((props) => {
 
   const handleClear = $(() => {
     clearInput();
-    clearSelectedOptions();
+    setValues(form, "categories", []);
     onClear?.();
-  });
-
-  const updateMenuOptions = $(() => {
-    if (!input.value && !selectedOptions.value.length) {
-      revertVisibleOptions();
-      return;
-    }
-
-    // remove selected options from visible options
-    const possibleOptions = options.filter(
-      (opt) => !selectedOptions.value.includes(opt),
-    );
-
-    // filter based on input
-    const finalOptions = possibleOptions.filter((item) =>
-      item.label.toLowerCase().includes(input.value.toLowerCase()),
-    );
-
-    filteredOptions.value = finalOptions;
-  });
-
-  useTask$(({ track }) => {
-    track(() => selectedOptions.value);
-    track(() => input.value);
-    updateMenuOptions();
   });
 
   useTask$(({ track }) => {
     // populates initial options
     track(() => options);
-    revertVisibleOptions();
+    revertPossibleOptions();
   });
 
   useTask$(({ track }) => {
     track(() => value);
-
-    if (!value) return;
-
+    if (isUndefined(value)) return;
     input.value = value;
   });
 
@@ -149,13 +159,34 @@ export const CustomSelect = component$<Props>((props) => {
       >
         {isMulti && (
           <div class="flex flex-wrap items-center gap-2 overflow-hidden">
-            {selectedOptions.value.map((opt, i) => (
-              <MultiValue
-                key={opt.value}
-                label={opt.label}
-                onClear={$(() => handleUnselect(opt, i))}
-              />
-            ))}
+            <FieldArray of={form} name="categories">
+              {(fieldArray) => (
+                <>
+                  {fieldArray.items.map((item, index) => {
+                    return (
+                      <div key={item}>
+                        <Field of={form} name={`categories.${index}.label`}>
+                          {(field) => (
+                            <MultiValue
+                              label={field.value as string}
+                              onRemove={$(() => {
+                                remove(form, "categories", {
+                                  at: index,
+                                });
+                              })}
+                            />
+                          )}
+                        </Field>
+                        <Field of={form} name={`categories.${index}.value`}>
+                          {() => <></>}
+                          {/* just to get value to be tracked */}
+                        </Field>
+                      </div>
+                    );
+                  })}
+                </>
+              )}
+            </FieldArray>
           </div>
         )}
         <>
@@ -163,7 +194,6 @@ export const CustomSelect = component$<Props>((props) => {
             input={input}
             onInput$={handleChange}
             placeholder={placeholder}
-            selectedOptions={selectedOptions}
             showMenu={showMenu}
             menuRef={menuRef}
             inputRef={inputRef}
@@ -176,7 +206,7 @@ export const CustomSelect = component$<Props>((props) => {
       {showMenu.value && (
         <div class="absolute top-[100%] z-50 w-full">
           <Menu
-            options={filteredOptions.value}
+            options={filteredOptions}
             onSelect={$((option: CustomSelectOption, menuOptIdx: number) => {
               handleSelect(option, menuOptIdx, onSelect);
             })}
@@ -245,7 +275,6 @@ const Input = component$<{
   input: Signal<string>;
   onInput$: (ev: Event) => void;
   placeholder: string;
-  selectedOptions: Signal<CustomSelectOption[]>;
   showMenu: Signal<boolean>;
   menuRef: Signal<Element | undefined>;
   inputRef: Signal<Element | undefined>;
@@ -308,8 +337,8 @@ const ClearButton = component$<{
   );
 });
 
-const MultiValue = component$<{ label: string; onClear: () => void }>(
-  ({ label, onClear }) => {
+const MultiValue = component$<{ label: string; onRemove: () => void }>(
+  ({ label, onRemove: onClear }) => {
     return (
       <div class="flex max-w-min items-center justify-between gap-2 rounded-lg bg-secondary text-sm">
         <span class="whitespace-nowrap p-1 ps-2">{label}</span>

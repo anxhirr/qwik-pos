@@ -38,14 +38,12 @@ export type AuthSession = DefaultSession & {
 };
 
 export interface CustomSelectOption {
-  value: string | number;
+  value: string;
   label: string;
 }
 
 export interface CustSelectParentEmitFnArgs {
-  selectedOpts: CustomSelectOption[];
   newOpt: CustomSelectOption;
-  newOptIndex: number;
   menuOptIdx: number;
 }
 

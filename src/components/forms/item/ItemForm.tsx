@@ -7,7 +7,6 @@ import {
   FieldArray,
   insert,
   remove,
-  setValues,
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
 import { Button } from "~/components/buttons/base";
@@ -22,7 +21,6 @@ import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { ITEM_FORM_ID } from "~/constants/enum";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
 import type {
-  CustomSelectOption,
   FromStoreAction,
   CustSelectParentEmitFnArgs,
 } from "../../../../types";
@@ -42,15 +40,8 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
     }));
   });
 
-  const handleCatSelect = $(({ selectedOpts }: CustSelectParentEmitFnArgs) => {
-    const values = selectedOpts.map((opt) => opt.value);
-    setValues(form, "categoryIDs", values);
-  });
-
-  const handleCatUnselect = $((option: CustomSelectOption, index: number) => {
-    remove(form, "categoryIDs", {
-      at: index,
-    });
+  const handleCatSelect = $(({ newOpt }: CustSelectParentEmitFnArgs) => {
+    console.log("newOpt", newOpt);
   });
 
   return (
@@ -78,21 +69,6 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
             )}
           </Field>
 
-          <FieldArray of={form} name="categoryIDs">
-            {/* just to show categoryIDs key */}
-            {(fieldArray) => (
-              <>
-                {fieldArray.items.map((item, index) => {
-                  return (
-                    <Field key={item} of={form} name={`categoryIDs.${index}`}>
-                      {() => <></>}
-                    </Field>
-                  );
-                })}
-              </>
-            )}
-          </FieldArray>
-
           <CustomSelect
             isMulti
             isCreatable
@@ -105,9 +81,7 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
             onCreate={$((data: CustSelectParentEmitFnArgs) => {
               handleCatSelect(data);
             })}
-            onUnselect={$((option: CustomSelectOption, index: number) => {
-              handleCatUnselect(option, index);
-            })}
+            form={form}
           />
           <FieldArray of={form} name="priceRules">
             {(fieldArray) => (
