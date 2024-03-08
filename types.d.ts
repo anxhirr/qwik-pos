@@ -64,6 +64,9 @@ export interface ModularInputProps {
   onBlur$: PropFunction<
     (event: QwikFocusEvent<HTMLInputElement>, element: HTMLInputElement) => void
   >;
+  onFocus$?: PropFunction<
+    (event: QwikFocusEvent<HTMLInputElement>, element: HTMLInputElement) => void
+  >;
   placeholder?: string;
   required?: boolean;
   class?: string;

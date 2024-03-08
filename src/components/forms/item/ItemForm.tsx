@@ -7,6 +7,7 @@ import {
   FieldArray,
   insert,
   remove,
+  getValues,
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
 import { Button } from "~/components/buttons/base";
@@ -14,6 +15,7 @@ import {
   CheckBoxInput,
   CustomSelect,
   NumberInput,
+  SelectMultiValue,
   TextInput,
 } from "~/components/shared";
 import { DateInput } from "~/components/shared";
@@ -23,6 +25,7 @@ import { type ItemFormType } from "~/types-and-validation/itemSchema";
 import type {
   FromStoreAction,
   CustSelectParentEmitFnArgs,
+  CustomSelectOption,
 } from "../../../../types";
 import { BackspaceFillIcon, PlusIcon } from "~/components/icons";
 
@@ -39,9 +42,16 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
       value: cat.id,
     }));
   });
+  const selectedCategories = getValues(
+    form,
+    "categories",
+  )! as CustomSelectOption[];
 
   const handleCatSelect = $(({ newOpt }: CustSelectParentEmitFnArgs) => {
-    console.log("newOpt", newOpt);
+    insert(form, "categories", {
+      at: selectedCategories.length,
+      value: newOpt,
+    });
   });
 
   return (
@@ -81,9 +91,37 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
             onCreate={$((data: CustSelectParentEmitFnArgs) => {
               handleCatSelect(data);
             })}
-            form={form}
-            fieldArrayName="categories"
-          />
+            selectedOptions={selectedCategories}
+          >
+            <FieldArray of={form} name="categories">
+              {(fieldArray) => (
+                <>
+                  {fieldArray.items.map((item, index) => {
+                    return (
+                      <div key={item}>
+                        <Field of={form} name={`categories.${index}.label`}>
+                          {(field) => (
+                            <SelectMultiValue
+                              label={field.value as string}
+                              onRemove={$(() => {
+                                remove(form, "categories", {
+                                  at: index,
+                                });
+                              })}
+                            />
+                          )}
+                        </Field>
+                        <Field of={form} name={`categories.${index}.value`}>
+                          {() => <></>}
+                          {/* just to get value to be tracked */}
+                        </Field>
+                      </div>
+                    );
+                  })}
+                </>
+              )}
+            </FieldArray>
+          </CustomSelect>
           <FieldArray of={form} name="priceRules">
             {(fieldArray) => (
               <>

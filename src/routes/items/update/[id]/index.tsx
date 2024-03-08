@@ -60,6 +60,14 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
     const session = getSessionSS(event);
     const { id } = event.params;
 
+    const current = await prisma.item.findUnique({
+      where: { id },
+      select: { categoryIDs: true },
+    });
+
+    const existingCatIds = current?.categoryIDs || [];
+    const newCatIds = values.categories.map((cat) => cat.value);
+
     const item = await prisma.item.update({
       where: { id },
       data: {
@@ -75,7 +83,6 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
             id: session.shopId,
           },
         },
-        // TODO: check this
         priceRules: {
           deleteMany: {},
           create: values.priceRules.map((rule) => ({
@@ -83,6 +90,10 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
             end: new Date(rule.end),
             price: rule.price,
           })),
+        },
+        categories: {
+          disconnect: existingCatIds.map((id) => ({ id })),
+          connect: newCatIds.map((id) => ({ id })),
         },
       },
     });

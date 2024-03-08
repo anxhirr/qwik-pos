@@ -63,6 +63,7 @@ model Shop {
   generalPref GeneralPref[]
   Order      Order[]
   categories Category[]
+  parties    Party[]
 
   @@map("shops")
 }
@@ -186,9 +187,6 @@ model Category {
   @@map("categories")
 }
 
-// currency
-// customer
-// shouldPrint
 model OrderPref {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime  @default(now()) @map("created_at")
@@ -267,4 +265,24 @@ model Order {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("orders")
+}
+
+model Party {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name        String
+  address     String
+  city        String
+  phone       String
+  email       String
+  description String
+  types       String[]
+  shopId      String @map("shop_id") @db.ObjectId
+
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@map("parties")
 }
