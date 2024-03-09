@@ -44,6 +44,7 @@ import {
   MoreHorizIcon,
 } from "~/components/icons";
 import { ORDER_EMPTY_ROW } from "~/constants/defaults";
+import { getActivePrice } from "~/utils";
 
 type ItemWithPriceRules = Item & { priceRules: PriceRule[] };
 
@@ -74,8 +75,8 @@ export const OrderForm = component$<Props>(
           name: item.name,
           unit: item.unit,
           quantity: 1,
-          unitPrice: item.priceRules[0].price,
-          unitPriceWithTax: 10,
+          unitPrice: getActivePrice(item.priceRules),
+          unitPriceWithTax: getActivePrice(item.priceRules),
         },
       });
     });

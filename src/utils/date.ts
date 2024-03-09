@@ -13,3 +13,15 @@ export const createDateTimeLocalString = (
     seconds ? `:${second}` : ""
   }${miliseconds ? `.${milisecond}` : ""}`;
 };
+
+export const getActiveRuleIndex = (
+  rules: {
+    start: string | Date;
+    end: string | Date;
+  }[],
+) => {
+  const now = new Date();
+  return rules.findIndex(
+    (rule) => new Date(rule.start) < now && new Date(rule.end) > now,
+  );
+};

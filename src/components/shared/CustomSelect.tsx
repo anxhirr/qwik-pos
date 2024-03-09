@@ -85,7 +85,7 @@ export const CustomSelect = component$<Props>((props) => {
   );
 
   const clearInput = $(() => (input.value = ""));
-  const revertPossibleOptions = $(() => (possibleOptions.value = options));
+  const restoreOptions = $(() => (possibleOptions.value = options));
   const hideMenu = $(() => (showMenu.value = false));
 
   const handleSelect = $(
@@ -94,9 +94,9 @@ export const CustomSelect = component$<Props>((props) => {
       menuOptIdx: number,
       parentEmitFn: ParentEmitFn,
     ) => {
-      if (!isMulti) input.value = option.label;
+      input.value = option.label;
 
-      clearInput();
+      if (isMulti) clearInput();
       hideMenu();
 
       parentEmitFn({
@@ -119,7 +119,7 @@ export const CustomSelect = component$<Props>((props) => {
   useTask$(({ track }) => {
     // populates initial options
     track(() => options);
-    revertPossibleOptions();
+    restoreOptions();
   });
 
   useTask$(({ track }) => {

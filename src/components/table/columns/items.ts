@@ -2,6 +2,7 @@ import { $ } from "@builder.io/qwik";
 import type { CellContext } from "@tanstack/table-core";
 import { createColumnHelper } from "@tanstack/table-core";
 import type { PrismaItemWithPrice } from "~/types-and-validation/itemSchema";
+import { getActivePrice } from "~/utils/item";
 import { renderBoolean } from "~/utils/table";
 
 type Cell<T> = CellContext<PrismaItemWithPrice, T>;
@@ -22,13 +23,7 @@ export const columnsItems = [
   columnHelper.accessor("priceRules", {
     header: "Active Price",
     cell: $((item: Cell<PrismaItemWithPrice["priceRules"]>) => {
-      const price = item.getValue().find(
-        (
-          rule, // TODO: check if this logic is correct
-        ) =>
-          new Date(rule.start) < new Date() && new Date(rule.end) > new Date(),
-      );
-      return price?.price || "No active price";
+      return getActivePrice(item.getValue()) || "No active price";
     }),
   }),
   columnHelper.accessor("active", {

@@ -27,9 +27,18 @@ import { getSessionSS } from "~/utils/auth";
 
 export const useFormAction = formAction$<OrderFormType, ResponseData>(
   async (values, event) => {
-    const session = getSessionSS(event);
+    const { shopId, userId } = getSessionSS(event);
 
-    const orderPref = await getOrderPref(session.shopId, session.userId);
+    const orderPref = await prisma.orderPref.findFirst({
+      where: {
+        shopId,
+        userId,
+      },
+      select: {
+        id: true,
+        docNo: true,
+      },
+    });
 
     const [orderTrans, orderPrefTrans] = await prisma.$transaction([
       prisma.order.create({
@@ -45,8 +54,8 @@ export const useFormAction = formAction$<OrderFormType, ResponseData>(
           paymentMethod: values.payment.method,
           items: { create: values.items },
           notes: values.notes,
-          shopId: session.shopId,
-          userId: session.userId,
+          shopId,
+          userId,
         },
       }),
       prisma.orderPref.upsert({
@@ -63,8 +72,8 @@ export const useFormAction = formAction$<OrderFormType, ResponseData>(
           currency: values.currency,
           shouldPrint: true,
           paymentMethod: values.payment.method,
-          shopId: session.shopId,
-          userId: session.userId,
+          shopId,
+          userId,
         },
       }),
     ]);
