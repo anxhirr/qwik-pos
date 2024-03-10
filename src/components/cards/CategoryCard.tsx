@@ -19,7 +19,11 @@ export const CategoryCard = component$<Props>(
         <div class="card-body">
           <h2 class="card-title">
             {data.name}
-            <div class="badge badge-accent">{data.type}</div>
+            {data.types.map((type) => (
+              <div key={type} class="badge badge-accent">
+                {type}
+              </div>
+            ))}
           </h2>
         </div>
         <div class="card-actions justify-end">

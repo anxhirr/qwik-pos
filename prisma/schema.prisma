@@ -64,6 +64,7 @@ model Shop {
   Order      Order[]
   categories Category[]
   parties    Party[]
+  facilities Facility[]
 
   @@map("shops")
 }
@@ -176,7 +177,7 @@ model Category {
   deletedAt DateTime? @map("deleted_at")
 
   name  String
-  type  String
+  types String[]
   color String
   shopId String @map("shop_id") @db.ObjectId
 
@@ -285,4 +286,20 @@ model Party {
   shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
 
   @@map("parties")
+}
+
+model Facility {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  name        String
+  description String
+  shopId      String @map("shop_id") @db.ObjectId
+  types       String[]
+
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@map("facilities")
 }

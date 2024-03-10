@@ -1,6 +1,7 @@
 import {
   CategoryIcon,
   CreateOrderIcon,
+  FacilityIcon,
   HomeIcon,
   ItemsIcon,
   OrderIcon,
@@ -58,6 +59,11 @@ export const ACCORDIONS = [
         title: "Categories",
         Icon: CategoryIcon,
         route: "/categories",
+      },
+      {
+        title: "Facilities",
+        Icon: FacilityIcon,
+        route: "/facilities",
       },
     ],
   },

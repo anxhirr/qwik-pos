@@ -16,7 +16,7 @@ export const INITIAL_ORDER_DOC_NO = 1 as const;
 
 export const CATEGORY_EMPTY_DATA: CategoryFormType = {
   name: "",
-  type: "",
+  types: [],
   color: "",
 } as const;
 

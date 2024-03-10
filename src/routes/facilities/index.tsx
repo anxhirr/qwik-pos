@@ -35,7 +35,7 @@ export const useCreateFormAction = formAction$<CategoryFormType>(
     const newCategory = await createCategory({
       name: values.name,
       color: values.color,
-      types: values.types,
+      type: values.type,
       shopId: session.shopId,
     });
 
@@ -66,7 +66,7 @@ export const useUpdateFormAction = formAction$<CategoryFormType>(
     const updated = await updateCategory(id, {
       name: values.name,
       color: values.color,
-      types: values.types,
+      type: values.type,
     });
 
     if (!updated.id) {
@@ -119,13 +119,13 @@ export default component$(() => {
     nav(`${pathname}?create`);
   });
   const showUpdateDialog = $((cat: Category) => {
-    const { id, name, color, types } = cat;
+    const { id, name, color, type } = cat;
     showDialog.value = true;
     dialodMode.value = "UPDATE";
     dialogFormData.value = {
       name,
       color,
-      types,
+      type,
     };
     const searchParams = new URLSearchParams({
       update: id,

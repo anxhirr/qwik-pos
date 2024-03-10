@@ -27,6 +27,7 @@ export const CategoryDialog = component$<CategoryDialogProps>(
         value: formData,
       },
       validate: valiForm$(CategorySchema),
+      fieldArrays: ["types"],
     });
 
     useTask$(({ track }) => {

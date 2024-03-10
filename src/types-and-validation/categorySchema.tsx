@@ -1,8 +1,8 @@
 import type { Input } from "valibot";
-import { minLength, object, string } from "valibot";
+import { array, minLength, object, string } from "valibot";
 
 export const CategorySchema = object({
-  type: string([minLength(1, "Please select type.")]),
+  types: array(string([minLength(1, "Please select type.")])),
   name: string([minLength(1, "Please enter name.")]),
   color: string(),
 });

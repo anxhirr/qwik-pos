@@ -11,12 +11,12 @@ export const getAllCategories = async (shopId: string) => {
 
 type CategoryType = CategoryFormType & { shopId: string };
 
-export const createCategory = async ({ name, color, type, shopId }: CategoryType) => {
+export const createCategory = async ({ name, color, types, shopId }: CategoryType) => {
   return await prisma.category.create({
     data: {
       name,
       color,
-      type,
+      types,
       shop: {
         connect: {
           id: shopId,
@@ -26,7 +26,7 @@ export const createCategory = async ({ name, color, type, shopId }: CategoryType
   });
 }
 
-export const updateCategory = async (id:string,{ name, color, type }: CategoryFormType) => {
+export const updateCategory = async (id:string,{ name, color, types }: CategoryFormType) => {
   return await prisma.category.update({
     where: {
       id,
@@ -34,7 +34,7 @@ export const updateCategory = async (id:string,{ name, color, type }: CategoryFo
     data: {
       name,
       color,
-      type,
+      types
     },
   });
 }

@@ -1,14 +1,21 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import {
   Field,
   Form,
   type ResponseData,
   type FormStore,
+  FieldArray,
+  remove,
+  getValues,
+  insert,
 } from "@modular-forms/qwik";
-import { Select, TextInput } from "~/components/shared";
+import { CustomSelect, SelectMultiValue, TextInput } from "~/components/shared";
 import { CATEGORY_TYPES_ENUM, CATEGORY_FORM_ID } from "~/constants/enum";
 import type { CategoryFormType } from "~/types-and-validation/categorySchema";
-import type { FromStoreAction } from "../../../../types";
+import type {
+  CustSelectParentEmitFnArgs,
+  FromStoreAction,
+} from "../../../../types";
 
 type Props = {
   form: FormStore<CategoryFormType, ResponseData>;
@@ -16,6 +23,17 @@ type Props = {
 };
 
 export const CategoryForm = component$<Props>(({ form, action }) => {
+  const selectedTypes = getValues(form, "types").map((type) => ({
+    label: type,
+    value: type,
+  }));
+
+  const handleTypeSelect = $(({ newOpt }: CustSelectParentEmitFnArgs) => {
+    insert(form, "types", {
+      at: selectedTypes.length,
+      value: newOpt.value,
+    });
+  });
   return (
     <Form
       id={CATEGORY_FORM_ID}
@@ -24,18 +42,49 @@ export const CategoryForm = component$<Props>(({ form, action }) => {
       action={action}
     >
       <div class="flex">
-        <Field of={form} name="type">
-          {(field, props) => (
-            <Select
-              {...props}
-              options={CATEGORY_TYPES_ENUM.map((option) => ({
-                label: option,
-                value: option,
-              }))}
-              placeholder="Type"
-            />
-          )}
-        </Field>
+        <CustomSelect
+          isMulti
+          isCreatable
+          options={CATEGORY_TYPES_ENUM.map((option) => ({
+            label: option,
+            value: option,
+          }))}
+          placeholder="Categories"
+          value={""}
+          onSelect={$((data: CustSelectParentEmitFnArgs) => {
+            handleTypeSelect(data);
+          })}
+          onCreate={$((data: CustSelectParentEmitFnArgs) => {
+            handleTypeSelect(data);
+          })}
+          selectedOptions={selectedTypes}
+        >
+          <FieldArray of={form} name="types">
+            {(fieldArray) => (
+              <>
+                {fieldArray.items.map((item, index) => {
+                  return (
+                    <div key={item}>
+                      <Field of={form} name={`types.${index}`}>
+                        {(field) => (
+                          <SelectMultiValue
+                            label={field.value as string}
+                            onRemove={$(() => {
+                              remove(form, "types", {
+                                at: index,
+                              });
+                            })}
+                          />
+                        )}
+                      </Field>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </FieldArray>
+        </CustomSelect>
+
         <Field of={form} name="color">
           {(field, props) => (
             <TextInput
