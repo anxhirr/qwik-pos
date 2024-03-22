@@ -207,12 +207,12 @@ export const OrderForm = component$<Props>(
                               type="string"
                               name={`items.${index}.name`}
                             >
-                              {(field, props) => (
+                              {(field) => (
                                 <CustomSelect
-                                  {...props}
                                   options={options.value.slice(0, 10)}
                                   placeholder="Item"
                                   fullWidth
+                                  initialvalue={field.value}
                                   onChange$={$((data: CustomSelectOption[]) => {
                                     handleItemSelect(data[0], index);
                                   })}
