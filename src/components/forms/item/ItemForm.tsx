@@ -39,7 +39,7 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
     }));
   });
 
-  const categoryIDs = getValues(form, "categoryIDs");
+  const categoryIDs = getValues(form, "categoryIDs")!;
 
   return (
     <Form of={form} action={action} id={ITEM_FORM_ID}>

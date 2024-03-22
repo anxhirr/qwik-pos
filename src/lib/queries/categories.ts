@@ -1,17 +1,21 @@
 import { prisma } from "~/routes/plugin@auth";
 import { CategoryFormType } from "~/types-and-validation/categorySchema";
+import { CategoryType } from "../../../types";
 
-export const getAllCategories = async (shopId: string) => {
+export const getAllCategories = async (shopId: string, types: CategoryType[] = ["CUSTOMER","ITEM"]) => {
   return await prisma.category.findMany({
     where: {
     shopId,
+    types: {
+      hasSome: types
+     }
     },
   });
 }
 
-type CategoryType = CategoryFormType & { shopId: string };
+type CategoryDbType = CategoryFormType & { shopId: string };
 
-export const createCategory = async ({ name, color, types, shopId }: CategoryType) => {
+export const createCategory = async ({ name, color, types, shopId }: CategoryDbType) => {
   return await prisma.category.create({
     data: {
       name,
