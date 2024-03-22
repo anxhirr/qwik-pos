@@ -5,7 +5,7 @@ import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
 import { CreateItemBottomNav } from "~/components/bottom-nav/item";
 import { ItemForm } from "~/components/forms/item/ItemForm";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
-import { getAllCategories } from "~/lib/queries/categories";
+import { getItemCategories } from "~/lib/queries/categories";
 import { prisma } from "~/routes/plugin@auth";
 import {
   type ItemFormType,
@@ -79,7 +79,7 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
 
 export const useCategoriesLoader = routeLoader$(async (event) => {
   const session = getSessionSS(event);
-  const categories = await getAllCategories(session.shopId, ["ITEM"]);
+  const categories = await getItemCategories(session.shopId);
   return categories;
 });
 

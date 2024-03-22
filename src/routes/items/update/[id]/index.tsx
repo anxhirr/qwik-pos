@@ -9,7 +9,7 @@ import {
 } from "@modular-forms/qwik";
 import { UpdateItemBottomNav } from "~/components/bottom-nav";
 import { ItemForm } from "~/components/forms/item/ItemForm";
-import { getAllCategories } from "~/lib/queries/categories";
+import { getItemCategories } from "~/lib/queries/categories";
 import { prisma } from "~/routes/plugin@auth";
 import {
   type ItemFormType,
@@ -112,7 +112,7 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
 
 export const useCategoriesLoader = routeLoader$(async (event) => {
   const session = getSessionSS(event);
-  const categories = await getAllCategories(session.shopId, ["ITEM"]);
+  const categories = await getItemCategories(session.shopId);
   return categories;
 });
 

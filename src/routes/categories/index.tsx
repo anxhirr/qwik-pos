@@ -16,15 +16,20 @@ import {
 } from "~/types-and-validation/categorySchema";
 import { formAction$, valiForm$ } from "@modular-forms/qwik";
 import { getSessionSS } from "~/utils/auth";
-import { createCategory, updateCategory } from "~/lib/queries/categories";
+import {
+  createCategory,
+  getAllCategories,
+  updateCategory,
+} from "~/lib/queries/categories";
 import { checkIsIdValid } from "~/utils/route-action";
 import { checkIsSearchParamsIdValid } from "~/utils/form-action";
 import type { Category } from "@prisma/client";
 import { CATEGORY_EMPTY_DATA } from "~/constants/defaults";
 import { useDialog } from "~/components/hooks";
 
-export const useCategoriesLoader = routeLoader$(async () => {
-  const categories = await prisma.category.findMany();
+export const useCategoriesLoader = routeLoader$(async (event) => {
+  const session = getSessionSS(event);
+  const categories = await getAllCategories(session.shopId);
   return categories;
 });
 
