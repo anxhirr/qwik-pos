@@ -39,7 +39,7 @@ export const CategoryDialog = component$<CategoryDialogProps>(
     return (
       <Dialog
         id={CATEGORY_DIALOG_ID}
-        show={show.value}
+        show={show}
         hide={hide}
         title={`${CRUD_ACTIONS_TEXT.get(mode)} Category`}
       >

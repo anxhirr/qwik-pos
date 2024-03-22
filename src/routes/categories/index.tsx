@@ -1,6 +1,6 @@
 import { CategoriesBottomNav } from "~/components/bottom-nav/categories";
 
-import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
+import { $, component$, useTask$ } from "@builder.io/qwik";
 import {
   routeAction$,
   routeLoader$,
@@ -17,11 +17,11 @@ import {
 import { formAction$, valiForm$ } from "@modular-forms/qwik";
 import { getSessionSS } from "~/utils/auth";
 import { createCategory, updateCategory } from "~/lib/queries/categories";
-import type { CRUDactions } from "../../../types";
 import { checkIsIdValid } from "~/utils/route-action";
 import { checkIsSearchParamsIdValid } from "~/utils/form-action";
 import type { Category } from "@prisma/client";
 import { CATEGORY_EMPTY_DATA } from "~/constants/defaults";
+import { useDialog } from "~/components/hooks";
 
 export const useCategoriesLoader = routeLoader$(async () => {
   const categories = await prisma.category.findMany();
@@ -108,32 +108,27 @@ export default component$(() => {
   const createFormAction = useCreateFormAction();
   const updateFormAction = useUpdateFormAction();
 
-  const showDialog = useSignal(false);
-  const dialodMode = useSignal<CRUDactions>("CREATE");
-  const dialogFormData = useSignal<CategoryFormType>(CATEGORY_EMPTY_DATA);
+  const { dialog, actions } = useDialog<CategoryFormType>(CATEGORY_EMPTY_DATA);
 
   const showCreateDialog = $(() => {
-    showDialog.value = true;
-    dialodMode.value = "CREATE";
-    dialogFormData.value = CATEGORY_EMPTY_DATA;
+    actions.showCreateDialog();
     nav(`${pathname}?create`);
   });
   const showUpdateDialog = $((cat: Category) => {
     const { id, name, color, types } = cat;
-    showDialog.value = true;
-    dialodMode.value = "UPDATE";
-    dialogFormData.value = {
+
+    actions.showUpdateDialog({
       name,
       color,
       types,
-    };
+    });
     const searchParams = new URLSearchParams({
       update: id,
     });
     nav(`${pathname}?${searchParams.toString()}`);
   });
   const hideDialog = $(() => {
-    showDialog.value = false;
+    actions.hideDialog();
     const searchParams = new URLSearchParams();
     nav(`${pathname}?${searchParams.toString()}`);
   });
@@ -143,7 +138,7 @@ export default component$(() => {
     const update = searchParams.get("update");
     const create = searchParams.get("create");
 
-    if (create) showCreateDialog();
+    if (create !== null) showCreateDialog();
 
     if (update) {
       const cat = data.value.find((c) => c.id === update);
@@ -180,13 +175,13 @@ export default component$(() => {
         </ul>
 
         <CategoryDialog
-          show={showDialog}
+          show={dialog.show}
           hide={hideDialog}
-          formData={dialogFormData.value}
+          formData={dialog.formData}
           action={
-            dialodMode.value === "CREATE" ? createFormAction : updateFormAction
+            dialog.mode === "CREATE" ? createFormAction : updateFormAction
           }
-          mode={dialodMode.value}
+          mode={dialog.mode}
         />
       </div>
       <CategoriesBottomNav onCreateNew={showCreateDialog} />

@@ -76,7 +76,7 @@ export interface ModularInputProps {
 }
 
 interface DialogProps {
-  show: Signal<boolean>;
+  show: boolean;
   hide: () => void;
 }
 
