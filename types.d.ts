@@ -46,11 +46,6 @@ export interface CustomSelectOption {
   label: string;
 }
 
-export interface CustSelectParentEmitFnArgs {
-  newOpt: CustomSelectOption;
-  menuOptIdx: number;
-}
-
 export interface ModularInputProps {
   ref: PropFunction<(element: Element) => void>;
   name: string;
