@@ -25,7 +25,6 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(
       where: { id, shopId: session.shopId },
       include: {
         priceRules: true,
-        categories: true,
       },
     });
     console.log("item", item);
@@ -47,10 +46,8 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(
         start: new Date(rule.start).toISOString(),
         end: new Date(rule.end).toISOString(),
       })),
-      categories: item.categories.map((cat) => ({
-        label: cat.name,
-        value: cat.id,
-      })),
+
+      categoryIDs: item.categoryIDs,
     };
   },
 );
@@ -66,7 +63,6 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
     });
 
     const existingCatIds = current?.categoryIDs || [];
-    const newCatIds = values.categories.map((cat) => cat.value);
 
     const item = await prisma.item.update({
       where: { id },
@@ -93,7 +89,7 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
         },
         categories: {
           disconnect: existingCatIds.map((id) => ({ id })),
-          connect: newCatIds.map((id) => ({ id })),
+          connect: values.categoryIDs.map((id) => ({ id })),
         },
       },
     });
@@ -124,7 +120,7 @@ export default component$(() => {
   const form = useFormStore<ItemFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(ItemSchema),
-    fieldArrays: ["priceRules", "categories"],
+    fieldArrays: ["priceRules", "categoryIDs"],
   });
 
   return (

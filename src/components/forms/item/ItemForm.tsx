@@ -7,6 +7,7 @@ import {
   FieldArray,
   insert,
   remove,
+  setValues,
   getValues,
 } from "@modular-forms/qwik";
 import type { Category } from "@prisma/client";
@@ -15,18 +16,13 @@ import {
   CheckBoxInput,
   CustomSelect,
   NumberInput,
-  SelectMultiValue,
   TextInput,
 } from "~/components/shared";
 import { DateInput } from "~/components/shared";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { ITEM_FORM_ID } from "~/constants/enum";
 import { type ItemFormType } from "~/types-and-validation/itemSchema";
-import type {
-  FromStoreAction,
-  CustSelectParentEmitFnArgs,
-  CustomSelectOption,
-} from "../../../../types";
+import type { FromStoreAction, CustomSelectOption } from "../../../../types";
 import { BackspaceFillIcon, PlusIcon } from "~/components/icons";
 
 type Props = {
@@ -42,17 +38,8 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
       value: cat.id,
     }));
   });
-  const selectedCategories = getValues(
-    form,
-    "categories",
-  )! as CustomSelectOption[];
 
-  const handleCatSelect = $(({ newOpt }: CustSelectParentEmitFnArgs) => {
-    insert(form, "categories", {
-      at: selectedCategories.length,
-      value: newOpt,
-    });
-  });
+  const categoryIDs = getValues(form, "categoryIDs");
 
   return (
     <Form of={form} action={action} id={ITEM_FORM_ID}>
@@ -84,44 +71,29 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
             isCreatable
             options={options.value}
             placeholder="Categories"
-            value={""}
-            onSelect={$((data: CustSelectParentEmitFnArgs) => {
-              handleCatSelect(data);
+            onChange$={$((data: CustomSelectOption[]) => {
+              setValues(
+                form,
+                "categoryIDs",
+                data.map((opt) => opt.value),
+              );
             })}
-            onCreate={$((data: CustSelectParentEmitFnArgs) => {
-              handleCatSelect(data);
-            })}
-            selectedOptions={selectedCategories}
-          >
-            <FieldArray of={form} name="categories">
-              {(fieldArray) => (
-                <>
-                  {fieldArray.items.map((item, index) => {
-                    return (
-                      <div key={item}>
-                        <Field of={form} name={`categories.${index}.label`}>
-                          {(field) => (
-                            <SelectMultiValue
-                              label={field.value as string}
-                              onRemove={$(() => {
-                                remove(form, "categories", {
-                                  at: index,
-                                });
-                              })}
-                            />
-                          )}
-                        </Field>
-                        <Field of={form} name={`categories.${index}.value`}>
-                          {() => <></>}
-                          {/* just to get value to be tracked */}
-                        </Field>
-                      </div>
-                    );
-                  })}
-                </>
-              )}
-            </FieldArray>
-          </CustomSelect>
+            initialSelected={categoryIDs}
+          />
+          <FieldArray of={form} name="categoryIDs">
+            {(fieldArray) => (
+              <>
+                {fieldArray.items.map((item, index) => {
+                  return (
+                    <Field key={item} of={form} name={`categoryIDs.${index}`}>
+                      {() => <></>}
+                      {/* just to get value to be tracked */}
+                    </Field>
+                  );
+                })}
+              </>
+            )}
+          </FieldArray>
           <FieldArray of={form} name="priceRules">
             {(fieldArray) => (
               <>

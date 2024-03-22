@@ -216,16 +216,10 @@ export const OrderForm = component$<Props>(
                                   {...props}
                                   options={options.value.slice(0, 10)}
                                   placeholder="Item"
-                                  value={field.value}
                                   fullWidth
-                                  onSelect={$(
-                                    (data: CustSelectParentEmitFnArgs) => {
-                                      handleItemSelect(data.newOpt, index);
-                                      // TODO: add ux logic
-                                      // addNewEmptyRow(fieldArray.items.length);
-                                      // TODO: focus on next row
-                                    },
-                                  )}
+                                  onChange$={$((data: CustomSelectOption[]) => {
+                                    handleItemSelect(data[0], index);
+                                  })}
                                 />
                               )}
                             </Field>

@@ -1,7 +1,6 @@
-import type { Signal } from "@builder.io/qwik";
+import type { QRL, Signal } from "@builder.io/qwik";
 import {
   $,
-  Slot,
   component$,
   useOnDocument,
   useSignal,
@@ -15,23 +14,26 @@ import { BackspaceFillIcon } from "../icons";
 import { Button } from "../buttons";
 import clsx from "clsx";
 
-import { isUndefined } from "~/utils";
+import { isString, isUndefined } from "~/utils";
+import { SelectMultiValue } from "./SelectMultiValue";
 
 type SelectHandler = (option: CustomSelectOption, menuOptIdx: number) => void;
 type ParentEmitFn = (args: CustSelectParentEmitFnArgs) => void;
 
 export interface Props {
-  value: string | undefined;
   options: CustomSelectOption[];
+  onChange$: QRL<(options: CustomSelectOption[]) => void>;
+
+  initialvalue?: string | undefined;
+  initialSelected?: CustomSelectOption[] | string[];
   placeholder?: string;
-  onSelect: ParentEmitFn;
+  onSelect?: ParentEmitFn;
   onClear?: () => void;
+  onCreate?: ParentEmitFn;
   isMulti?: boolean;
   isCreatable?: true;
-  onCreate?: ParentEmitFn;
   fullWidth?: boolean;
   closeOnOutsideClick?: boolean;
-  selectedOptions?: CustomSelectOption[];
 }
 
 const filterByInput = (options: CustomSelectOption[], value: string) => {
@@ -60,27 +62,30 @@ const getFilteredOptions = (
 
 export const CustomSelect = component$<Props>((props) => {
   const {
-    onSelect,
-    placeholder = "Select",
     options,
-    value,
+    onChange$,
+
+    initialvalue,
+    initialSelected: initialSelectedOptions,
+    placeholder = "Select",
+    onSelect,
+    onClear,
+    onCreate,
     isMulti,
     isCreatable,
-    onCreate,
-    onClear,
     fullWidth,
     closeOnOutsideClick,
-    selectedOptions = [],
   } = props;
   const input = useSignal("");
   const showMenu = useSignal(false);
   const menuRef = useSignal<Element>();
   const inputRef = useSignal<Element>();
+  const selectedOptions = useSignal<CustomSelectOption[]>([]);
 
   const possibleOptions = useSignal<CustomSelectOption[]>([]);
   const filteredOptions = getFilteredOptions(
     options,
-    selectedOptions,
+    selectedOptions.value,
     input.value,
   );
 
@@ -89,17 +94,28 @@ export const CustomSelect = component$<Props>((props) => {
   const hideMenu = $(() => (showMenu.value = false));
 
   const handleSelect = $(
-    (
-      option: CustomSelectOption,
-      menuOptIdx: number,
-      parentEmitFn: ParentEmitFn,
-    ) => {
-      input.value = option.label;
+    ({
+      option,
+      menuOptIdx,
+      isCreate = false,
+    }: {
+      option: CustomSelectOption;
+      menuOptIdx: number;
+      isCreate?: boolean;
+    }) => {
+      input.value = isMulti ? "" : option.label;
 
-      if (isMulti) clearInput();
+      selectedOptions.value = isMulti
+        ? [...selectedOptions.value, option]
+        : [option];
+
+      onChange$(selectedOptions.value);
+
       hideMenu();
 
-      parentEmitFn({
+      const parentEmitFn = isCreate ? onCreate : onSelect;
+
+      parentEmitFn?.({
         newOpt: option,
         menuOptIdx,
       });
@@ -116,16 +132,33 @@ export const CustomSelect = component$<Props>((props) => {
     onClear?.();
   });
 
+  // POPULATE INITIAL VALUES
   useTask$(({ track }) => {
-    // populates initial options
     track(() => options);
     restoreOptions();
   });
 
   useTask$(({ track }) => {
-    track(() => value);
-    if (isUndefined(value)) return;
-    input.value = value;
+    track(() => initialSelectedOptions);
+    if (!initialSelectedOptions) return;
+
+    const isArrayOfStrings = initialSelectedOptions.every(isString);
+
+    if (isArrayOfStrings) {
+      const newSelectedOptions = initialSelectedOptions.map((value) => {
+        const option = options.find((opt) => opt.value === value); // find the label
+        return option || { label: value, value: value };
+      });
+      selectedOptions.value = newSelectedOptions;
+    } else {
+      selectedOptions.value = initialSelectedOptions;
+    }
+  });
+
+  useTask$(({ track }) => {
+    track(() => initialvalue);
+    if (isUndefined(initialvalue)) return;
+    input.value = initialvalue;
   });
 
   return (
@@ -137,7 +170,18 @@ export const CustomSelect = component$<Props>((props) => {
       >
         {isMulti && (
           <div class="flex flex-wrap items-center gap-2 overflow-hidden">
-            <Slot />
+            {selectedOptions.value.map((opt) => (
+              <SelectMultiValue
+                label={opt.label}
+                key={opt.value}
+                onRemove={$(() => {
+                  selectedOptions.value = selectedOptions.value.filter(
+                    (selectedOpt) => selectedOpt.value !== opt.value,
+                  );
+                  onChange$(selectedOptions.value);
+                })}
+              />
+            ))}
           </div>
         )}
         <>
@@ -159,10 +203,10 @@ export const CustomSelect = component$<Props>((props) => {
           <CustomSelectMenu
             options={filteredOptions}
             onSelect={$((option: CustomSelectOption, menuOptIdx: number) => {
-              handleSelect(option, menuOptIdx, onSelect);
+              handleSelect({ option, menuOptIdx });
             })}
             onCreate={$((option: CustomSelectOption, menuOptIdx: number) => {
-              handleSelect(option, menuOptIdx, onCreate as ParentEmitFn);
+              handleSelect({ option, menuOptIdx, isCreate: true });
             })}
             isCreatable={isCreatable}
             input={input.value}

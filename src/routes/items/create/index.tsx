@@ -17,7 +17,7 @@ export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => {
     name: "",
     unit: "",
     category: "",
-    categories: [],
+    categoryIDs: [],
     barcode: "",
     code: "",
     description: "",
@@ -56,7 +56,7 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
           },
         },
         categories: {
-          connect: values.categories.map((cat) => ({ id: cat.value })),
+          connect: values.categoryIDs.map((cat) => ({ id: cat })),
         },
       },
     });
@@ -88,7 +88,7 @@ export default component$(() => {
   const form = useFormStore<ItemFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(ItemSchema),
-    fieldArrays: ["priceRules", "categories"],
+    fieldArrays: ["priceRules", "categoryIDs"],
   });
 
   return (
