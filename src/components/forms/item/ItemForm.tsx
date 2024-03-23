@@ -41,6 +41,18 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
 
   const categoryIDs = getValues(form, "categoryIDs")!;
 
+  const handleCreateNewCat = $((newOpt: CustomSelectOption) => {
+    console.log(newOpt);
+  });
+
+  const handleCatsChange = $((options: CustomSelectOption[]) => {
+    setValues(
+      form,
+      "categoryIDs",
+      options.map((opt) => opt.value),
+    );
+  });
+
   return (
     <Form of={form} action={action} id={ITEM_FORM_ID}>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -71,14 +83,11 @@ export const ItemForm = component$<Props>(({ form, action, categories }) => {
             isCreatable
             options={options.value}
             placeholder="Categories"
-            onChange$={$((data: CustomSelectOption[]) => {
-              setValues(
-                form,
-                "categoryIDs",
-                data.map((opt) => opt.value),
-              );
-            })}
+            onChange={handleCatsChange}
             initialSelected={categoryIDs}
+            onCreate={$((newOpt: CustomSelectOption) =>
+              handleCreateNewCat(newOpt),
+            )}
           />
           <FieldArray of={form} name="categoryIDs">
             {(fieldArray) => (

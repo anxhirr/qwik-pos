@@ -1,4 +1,4 @@
-import type { QRL, Signal } from "@builder.io/qwik";
+import type { PropFunction, Signal } from "@builder.io/qwik";
 import {
   $,
   component$,
@@ -14,15 +14,20 @@ import clsx from "clsx";
 import { isString, isUndefined } from "~/utils";
 import { SelectMultiValue } from "./SelectMultiValue";
 
-type SelectHandler = (option: CustomSelectOption, menuOptIdx: number) => void;
-type ParentEmitFn = (args: {
-  newOpt: CustomSelectOption;
-  menuOptIdx: number;
-}) => void;
+type ParentEmitFn = PropFunction<
+  (newOpt: CustomSelectOption, menuOptIdx: number) => void
+>;
+
+type OnChangeFn = PropFunction<
+  (
+    options: CustomSelectOption[],
+    //TODO: add CustomSelectOption
+  ) => void
+>;
 
 export interface Props {
   options: CustomSelectOption[];
-  onChange$: QRL<(options: CustomSelectOption[]) => void>;
+  onChange: OnChangeFn;
 
   initialvalue?: string | undefined;
   initialSelected?: CustomSelectOption[] | string[];
@@ -63,7 +68,7 @@ const getFilteredOptions = (
 export const CustomSelect = component$<Props>((props) => {
   const {
     options,
-    onChange$,
+    onChange,
 
     initialvalue,
     initialSelected: initialSelectedOptions,
@@ -109,16 +114,13 @@ export const CustomSelect = component$<Props>((props) => {
         ? [...selectedOptions.value, option]
         : [option];
 
-      onChange$(selectedOptions.value);
+      onChange(selectedOptions.value);
 
       hideMenu();
 
       const parentEmitFn = isCreate ? onCreate : onSelect;
 
-      parentEmitFn?.({
-        newOpt: option,
-        menuOptIdx,
-      });
+      parentEmitFn?.(option, menuOptIdx);
     },
   );
 
@@ -165,38 +167,39 @@ export const CustomSelect = component$<Props>((props) => {
     <div class={clsx("relative", { "max-w-xs": !fullWidth })}>
       <div
         class={clsx(
-          "min-h-12 flex h-full rounded-lg border border-base-content border-opacity-20 p-2",
+          "min-h-12 h-full rounded-lg border border-base-content border-opacity-20 p-2",
         )}
       >
-        {isMulti && (
-          <div class="flex flex-wrap items-center gap-2 overflow-hidden">
-            {selectedOptions.value.map((opt) => (
-              <SelectMultiValue
-                label={opt.label}
-                key={opt.value}
-                onRemove={$(() => {
-                  selectedOptions.value = selectedOptions.value.filter(
-                    (selectedOpt) => selectedOpt.value !== opt.value,
-                  );
-                  onChange$(selectedOptions.value);
-                })}
-              />
-            ))}
+        <div class="flex w-full flex-wrap items-center gap-2 overflow-hidden">
+          {isMulti && (
+            <>
+              {selectedOptions.value.map((opt) => (
+                <SelectMultiValue
+                  label={opt.label}
+                  key={opt.value}
+                  onRemove={$(() => {
+                    selectedOptions.value = selectedOptions.value.filter(
+                      (selectedOpt) => selectedOpt.value !== opt.value,
+                    );
+                    onChange(selectedOptions.value);
+                  })}
+                />
+              ))}
+            </>
+          )}
+          <div class="flex w-full justify-between">
+            <Input
+              input={input}
+              onInput$={handleChange}
+              placeholder={placeholder}
+              showMenu={showMenu}
+              menuRef={menuRef}
+              inputRef={inputRef}
+              closeOnOutsideClick={closeOnOutsideClick}
+            />
+            <ClearButton input={input} onClear={handleClear} />
           </div>
-        )}
-        <>
-          <Input
-            input={input}
-            onInput$={handleChange}
-            placeholder={placeholder}
-            showMenu={showMenu}
-            menuRef={menuRef}
-            inputRef={inputRef}
-            closeOnOutsideClick={closeOnOutsideClick}
-          />
-        </>
-
-        <ClearButton input={input} onClear={handleClear} />
+        </div>
       </div>
       {showMenu.value && (
         <div class="absolute top-[100%] z-50 w-full">
@@ -218,6 +221,7 @@ export const CustomSelect = component$<Props>((props) => {
   );
 });
 
+type SelectHandler = (option: CustomSelectOption, menuOptIdx: number) => void;
 export const CustomSelectMenu = component$<{
   options: CustomSelectOption[];
   onSelect: SelectHandler;
@@ -304,9 +308,7 @@ const Input = component$<{
         type="text"
         placeholder={placeholder}
         value={input.value}
-        class={clsx(
-          "input ms-2 max-h-8 min-w-[10px] flex-1 !border-none p-0 !outline-none",
-        )}
+        class={clsx("input ms-2 max-h-8 flex-1 !border-none p-0 !outline-none")}
         onInput$={onInput$}
         onFocus$={() => (showMenu.value = true)}
       />

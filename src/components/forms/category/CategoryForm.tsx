@@ -36,9 +36,7 @@ export const CategoryForm = component$<Props>(({ form, action }) => {
             value: option,
           }))}
           placeholder="Categories"
-          onChange$={$((data: CustomSelectOption[]) => {
-            console.log("data", data);
-
+          onChange={$((data: CustomSelectOption[]) => {
             setValues(
               form,
               "types",

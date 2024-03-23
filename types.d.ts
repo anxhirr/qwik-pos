@@ -41,10 +41,10 @@ export type AuthSession = DefaultSession & {
   roleId: string;
 };
 
-export interface CustomSelectOption {
+export type CustomSelectOption = {
   value: string;
   label: string;
-}
+};
 
 export interface ModularInputProps {
   ref: PropFunction<(element: Element) => void>;
