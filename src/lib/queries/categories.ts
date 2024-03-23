@@ -1,5 +1,5 @@
 import { prisma } from "~/routes/plugin@auth";
-import { CategoryFormType } from "~/validation/categorySchema";
+import { CategoryFormType } from "~/validation";
 
 export const getAllCategories = async (shopId: string) => {
   return await prisma.category.findMany({

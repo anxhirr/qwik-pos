@@ -22,20 +22,24 @@ import { DateInput } from "~/components/shared";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { ITEM_FORM_ID } from "~/constants/enum";
 import { type ItemFormType } from "~/validation/itemSchema";
-import type { FromStoreAction, CustomSelectOption } from "../../../../types";
+import type {
+  FromStoreAction,
+  CustomSelectOption,
+  CategoryType,
+  SelectFnArgs,
+} from "../../../../types";
 import { BackspaceFillIcon, PlusIcon } from "~/components/icons";
-import type { ActionStore } from "@builder.io/qwik-city";
 import type { CategoryFormType } from "~/validation";
 
 type Props = {
   form: FormStore<ItemFormType, ResponseData>;
   action: FromStoreAction<ItemFormType>;
   categories: Category[];
-  createCatAction: ActionStore<ResponseData, CategoryFormType, false>;
+  createNewCat: (cat: CategoryFormType) => Promise<string | undefined>;
 };
 
 export const ItemForm = component$<Props>(
-  ({ form, action, categories, createCatAction }) => {
+  ({ form, action, categories, createNewCat }) => {
     const options = useComputed$(() => {
       return categories.map((cat) => ({
         label: cat.name,
@@ -45,15 +49,22 @@ export const ItemForm = component$<Props>(
 
     const categoryIDs = getValues(form, "categoryIDs")!;
 
-    const handleCreateNewCat = $(async (newOpt: CustomSelectOption) => {
-      await createCatAction.submit({
-        name: newOpt.label,
-        color: "red",
-        types: ["ITEM"],
-      });
+    const handleCreateNewCat = $(async ({ option }: SelectFnArgs) => {
+      try {
+        const cat = {
+          name: option.label,
+          types: ["ITEM"] as CategoryType[],
+          color: "blue",
+        };
+        const id = await createNewCat(cat);
+        return id;
+      } catch (error) {
+        console.log("error", error);
+      }
     });
 
     const handleCatsChange = $((options: CustomSelectOption[]) => {
+      console.log("handleCatsChange options", options);
       setValues(
         form,
         "categoryIDs",
@@ -93,9 +104,7 @@ export const ItemForm = component$<Props>(
               placeholder="Categories"
               onChange={handleCatsChange}
               initialSelected={categoryIDs}
-              onCreate={$((newOpt: CustomSelectOption) =>
-                handleCreateNewCat(newOpt),
-              )}
+              onCreate={handleCreateNewCat}
             />
             <FieldArray of={form} name="categoryIDs">
               {(fieldArray) => (

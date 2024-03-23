@@ -47,6 +47,12 @@ export type CustomSelectOption = {
   label: string;
 };
 
+export type SelectFnArgs = {
+  option: CustomSelectOption;
+  index: number;
+  menuOptIdx: number;
+};
+
 export interface ModularInputProps {
   ref: PropFunction<(element: Element) => void>;
   name: string;

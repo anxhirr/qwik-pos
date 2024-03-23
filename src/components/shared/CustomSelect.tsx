@@ -6,7 +6,7 @@ import {
   useSignal,
   useTask$,
 } from "@builder.io/qwik";
-import type { CustomSelectOption } from "../../../types";
+import type { CustomSelectOption, SelectFnArgs } from "../../../types";
 import { BackspaceFillIcon } from "../icons";
 import { Button } from "../buttons";
 import clsx from "clsx";
@@ -15,7 +15,7 @@ import { isString, isUndefined } from "~/utils";
 import { SelectMultiValue } from "./SelectMultiValue";
 
 type ParentEmitFn = PropFunction<
-  (newOpt: CustomSelectOption, menuOptIdx: number) => void
+  ({ option, index, menuOptIdx }: SelectFnArgs) => Promise<string | undefined>
 >;
 
 type OnChangeFn = PropFunction<
@@ -94,33 +94,62 @@ export const CustomSelect = component$<Props>((props) => {
     input.value,
   );
 
+  const loadingIdxs = useSignal<number[]>([]);
+
   const clearInput = $(() => (input.value = ""));
   const restoreOptions = $(() => (possibleOptions.value = options));
   const hideMenu = $(() => (showMenu.value = false));
 
+  const addLoadingIdx = $(
+    (idx: number) => (loadingIdxs.value = [...loadingIdxs.value, idx]),
+  );
+  const removeLoadingIdx = $(
+    (idx: number) =>
+      (loadingIdxs.value = loadingIdxs.value.filter((i) => i !== idx)),
+  );
+
+  const resolveCreatedOption = $(
+    async ({ option, index, menuOptIdx }: SelectFnArgs) => {
+      try {
+        addLoadingIdx(index);
+        const id = await onCreate?.({ option, index, menuOptIdx });
+        if (!id) return;
+        const newOption = { ...option, value: id };
+        removeLoadingIdx(index);
+        return newOption;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+  );
+
   const handleSelect = $(
-    ({
+    async ({
       option,
       menuOptIdx,
-      isCreate = false,
     }: {
       option: CustomSelectOption;
       menuOptIdx: number;
       isCreate?: boolean;
     }) => {
       input.value = isMulti ? "" : option.label;
+      hideMenu();
+
+      const index = selectedOptions.value.length;
+
+      const finalOption = isCreatable
+        ? await resolveCreatedOption({ option, index, menuOptIdx })
+        : option;
+
+      if (!finalOption) return; // creation failed
 
       selectedOptions.value = isMulti
         ? [...selectedOptions.value, option]
         : [option];
 
       onChange(selectedOptions.value);
-
-      hideMenu();
-
-      const parentEmitFn = isCreate ? onCreate : onSelect;
-
-      parentEmitFn?.(option, menuOptIdx);
+      onSelect?.({ option: finalOption, index, menuOptIdx });
     },
   );
 
@@ -209,7 +238,7 @@ export const CustomSelect = component$<Props>((props) => {
               handleSelect({ option, menuOptIdx });
             })}
             onCreate={$((option: CustomSelectOption, menuOptIdx: number) => {
-              handleSelect({ option, menuOptIdx, isCreate: true });
+              handleSelect({ option, menuOptIdx });
             })}
             isCreatable={isCreatable}
             input={input.value}

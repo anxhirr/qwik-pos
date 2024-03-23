@@ -1,4 +1,4 @@
-export * from "./categorySchema";
+export * from "./category";
 export * from "./generalPrefSchema";
 export * from "./itemSchema";
 export * from "./orderPrefSchema";

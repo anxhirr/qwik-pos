@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { routeAction$, routeLoader$, zod$ } from "@builder.io/qwik-city";
 import type { InitialValues, ResponseData } from "@modular-forms/qwik";
 import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
@@ -7,6 +7,7 @@ import { ItemForm } from "~/components/forms/item/ItemForm";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
 import { createCategory, getItemCategories } from "~/lib/queries/categories";
 import { prisma } from "~/routes/plugin@auth";
+import type { CategoryFormType } from "~/validation";
 import { categorySchema } from "~/validation";
 import { type ItemFormType, ItemSchema } from "~/validation/itemSchema";
 import { getSessionSS } from "~/utils/auth";
@@ -87,24 +88,25 @@ export const useCreateCategoryRouteAction = routeAction$(async (cat, event) => {
   const { name, color, types } = cat;
   console.log("cat", cat);
 
-  try {
-    await createCategory({
-      name,
-      color,
-      types,
-      shopId: session.shopId,
-    });
+  const res = await createCategory({
+    name,
+    color,
+    types,
+    shopId: session.shopId,
+  });
 
-    return {
-      status: 200,
-      message: "Category created successfully",
-    };
-  } catch (error) {
-    return {
-      status: 500,
-      message: "Category not created",
-    };
+  if (!res.id) {
+    event.fail(500, {
+      message: "Error creating category",
+      data: res,
+    });
   }
+
+  return {
+    status: "success",
+    message: "Category created successfully",
+    data: res,
+  };
 }, zod$(categorySchema));
 
 export default component$(() => {
@@ -118,6 +120,11 @@ export default component$(() => {
     fieldArrays: ["priceRules", "categoryIDs"],
   });
 
+  const createNewCat = $(async (cat: CategoryFormType) => {
+    const res = await createCatAction.submit(cat);
+    return res.value.data?.id;
+  });
+
   return (
     <>
       <div class="main-content">
@@ -125,7 +132,7 @@ export default component$(() => {
           form={form}
           action={action}
           categories={categories.value}
-          createCatAction={createCatAction}
+          createNewCat={createNewCat}
         />
       </div>
       <CreateItemBottomNav form={form} />
