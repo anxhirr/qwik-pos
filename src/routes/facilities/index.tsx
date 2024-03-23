@@ -10,11 +10,8 @@ import {
 import { prisma } from "../plugin@auth";
 import { CategoryCard } from "~/components/cards/CategoryCard";
 import { CategoryDialog } from "~/components/dialogs";
-import {
-  CategorySchema,
-  type CategoryFormType,
-} from "~/types-and-validation/categorySchema";
-import { formAction$, valiForm$ } from "@modular-forms/qwik";
+import { categorySchema, type CategoryFormType } from "~/validation";
+import { formAction$, zodForm$ } from "@modular-forms/qwik";
 import { getSessionSS } from "~/utils/auth";
 import { createCategory, updateCategory } from "~/lib/queries/categories";
 import type { CRUDactions } from "../../../types";
@@ -50,7 +47,7 @@ export const useCreateFormAction = formAction$<CategoryFormType>(
       message: "Category created successfully",
     };
   },
-  valiForm$(CategorySchema),
+  zodForm$(categorySchema),
 );
 
 export const useUpdateFormAction = formAction$<CategoryFormType>(
@@ -80,7 +77,7 @@ export const useUpdateFormAction = formAction$<CategoryFormType>(
       message: "Category updated successfully",
     };
   },
-  valiForm$(CategorySchema),
+  zodForm$(categorySchema),
 );
 export const useDeleteCategory = routeAction$(async (cat, { fail }) => {
   const { id } = cat;

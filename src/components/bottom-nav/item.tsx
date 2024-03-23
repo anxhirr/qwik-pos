@@ -4,7 +4,7 @@ import { Link } from "@builder.io/qwik-city";
 import { BottomNav } from "./base";
 import { BOTTOM_NAVBAR_SLOTS, ITEM_FORM_ID } from "~/constants/enum";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
-import type { ItemFormType } from "~/types-and-validation/itemSchema";
+import type { ItemFormType } from "~/validation/itemSchema";
 import { Button } from "../buttons";
 import { DeleteIcon, PlusIcon } from "../icons";
 import { CreateBtn, UpdateBtn } from "../buttons/common";

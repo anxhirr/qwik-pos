@@ -3,7 +3,7 @@ import { Drawer } from "./base";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import { Field } from "@modular-forms/qwik";
 import { DateInput, NumberInput, TextInput } from "../shared";
-import type { OrderFormType } from "~/types-and-validation/orderSchema";
+import type { OrderFormType } from "~/validation/orderSchema";
 
 type Props = {
   show: boolean;

@@ -11,10 +11,7 @@ import { UpdateItemBottomNav } from "~/components/bottom-nav";
 import { ItemForm } from "~/components/forms/item/ItemForm";
 import { getItemCategories } from "~/lib/queries/categories";
 import { prisma } from "~/routes/plugin@auth";
-import {
-  type ItemFormType,
-  ItemSchema,
-} from "~/types-and-validation/itemSchema";
+import { type ItemFormType, ItemSchema } from "~/validation/itemSchema";
 import { getSessionSS } from "~/utils/auth";
 
 export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(

@@ -10,11 +10,8 @@ import {
 import { prisma } from "../plugin@auth";
 import { CategoryCard } from "~/components/cards/CategoryCard";
 import { CategoryDialog } from "~/components/dialogs";
-import {
-  CategorySchema,
-  type CategoryFormType,
-} from "~/types-and-validation/categorySchema";
-import { formAction$, valiForm$ } from "@modular-forms/qwik";
+import { categorySchema, type CategoryFormType } from "~/validation";
+import { formAction$, zodForm$ } from "@modular-forms/qwik";
 import { getSessionSS } from "~/utils/auth";
 import {
   createCategory,
@@ -26,6 +23,7 @@ import { checkIsSearchParamsIdValid } from "~/utils/form-action";
 import type { Category } from "@prisma/client";
 import { CATEGORY_EMPTY_DATA } from "~/constants/defaults";
 import { useDialog } from "~/components/hooks";
+import type { CategoryType } from "../../../types";
 
 export const useCategoriesLoader = routeLoader$(async (event) => {
   const session = getSessionSS(event);
@@ -33,7 +31,7 @@ export const useCategoriesLoader = routeLoader$(async (event) => {
   return categories;
 });
 
-export const useCreateFormAction = formAction$<CategoryFormType>(
+export const useCreateCategoryFormAction = formAction$<CategoryFormType>(
   async (values, event) => {
     const session = getSessionSS(event);
 
@@ -55,7 +53,7 @@ export const useCreateFormAction = formAction$<CategoryFormType>(
       message: "Category created successfully",
     };
   },
-  valiForm$(CategorySchema),
+  zodForm$(categorySchema),
 );
 
 export const useUpdateFormAction = formAction$<CategoryFormType>(
@@ -85,7 +83,7 @@ export const useUpdateFormAction = formAction$<CategoryFormType>(
       message: "Category updated successfully",
     };
   },
-  valiForm$(CategorySchema),
+  zodForm$(categorySchema),
 );
 export const useDeleteCategory = routeAction$(async (cat, { fail }) => {
   const { id } = cat;
@@ -110,7 +108,7 @@ export default component$(() => {
   const nav = useNavigate();
   const { pathname } = loc.url;
   const deleteRouteAction = useDeleteCategory();
-  const createFormAction = useCreateFormAction();
+  const createFormAction = useCreateCategoryFormAction();
   const updateFormAction = useUpdateFormAction();
 
   const { dialog, actions } = useDialog<CategoryFormType>(CATEGORY_EMPTY_DATA);
@@ -125,7 +123,7 @@ export default component$(() => {
     actions.showUpdateDialog({
       name,
       color,
-      types,
+      types: types as CategoryType[],
     });
     const searchParams = new URLSearchParams({
       update: id,

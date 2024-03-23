@@ -5,8 +5,8 @@ import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
 import { ShopUpdateActionBar } from "~/components/bottom-nav/shop/update";
 import { ShopForm } from "~/components/forms/shop/ShopForm";
 import { prisma } from "~/routes/plugin@auth";
-import type { ShopFormType } from "~/types-and-validation/shopSchema";
-import { ShopSchema } from "~/types-and-validation/shopSchema";
+import type { ShopFormType } from "~/validation/shopSchema";
+import { ShopSchema } from "~/validation/shopSchema";
 import { getSessionSS } from "~/utils/auth";
 
 export const useFormLoader = routeLoader$<InitialValues<ShopFormType>>(

@@ -27,7 +27,7 @@ import {
   ORDER_FORM_ID,
   PAYMENT_METHODS,
 } from "~/constants/enum";
-import { type OrderFormType } from "~/types-and-validation/orderSchema";
+import { type OrderFormType } from "~/validation/orderSchema";
 import type { CustomSelectOption, FromStoreAction } from "../../../../types";
 import { Button } from "~/components/buttons";
 import { OrderOptionsDrawer } from "~/components/drawer";

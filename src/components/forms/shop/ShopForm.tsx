@@ -7,7 +7,7 @@ import {
 } from "@modular-forms/qwik";
 import { Select, TextInput } from "~/components/shared";
 import { CURRENCIES, SHOP_FORM_ID } from "~/constants/enum";
-import type { ShopFormType } from "~/types-and-validation/shopSchema";
+import type { ShopFormType } from "~/validation/shopSchema";
 import type { FromStoreAction } from "../../../../types";
 
 type Props = {

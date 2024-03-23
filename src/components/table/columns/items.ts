@@ -1,7 +1,7 @@
 import { $ } from "@builder.io/qwik";
 import type { CellContext } from "@tanstack/table-core";
 import { createColumnHelper } from "@tanstack/table-core";
-import type { PrismaItemWithPrice } from "~/types-and-validation/itemSchema";
+import type { PrismaItemWithPrice } from "~/validation/itemSchema";
 import { getActivePrice } from "~/utils/item";
 import { renderBoolean } from "~/utils/table";
 

@@ -10,8 +10,12 @@ import {
 } from "@modular-forms/qwik";
 import { CustomSelect, TextInput } from "~/components/shared";
 import { CATEGORY_TYPES_ENUM, CATEGORY_FORM_ID } from "~/constants/enum";
-import type { CategoryFormType } from "~/types-and-validation/categorySchema";
-import type { CustomSelectOption, FromStoreAction } from "../../../../types";
+import type { CategoryFormType } from "~/validation";
+import type {
+  CategoryType,
+  CustomSelectOption,
+  FromStoreAction,
+} from "../../../../types";
 
 type Props = {
   form: FormStore<CategoryFormType, ResponseData>;
@@ -40,7 +44,7 @@ export const CategoryForm = component$<Props>(({ form, action }) => {
             setValues(
               form,
               "types",
-              data.map((opt) => opt.value),
+              data.map((opt) => opt.value) as CategoryType[],
             );
           })}
           initialSelected={types}

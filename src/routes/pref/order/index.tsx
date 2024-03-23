@@ -8,8 +8,8 @@ import { INITIAL_ORDER_DOC_NO } from "~/constants/defaults";
 import { fakeMongoDbId } from "~/constants/fake";
 import { getOrderPref } from "~/lib/queries/order-pref";
 import { prisma } from "~/routes/plugin@auth";
-import type { OrderPrefFormType } from "~/types-and-validation/orderPrefSchema";
-import { OrderPrefSchema } from "~/types-and-validation/orderPrefSchema";
+import type { OrderPrefFormType } from "~/validation/orderPrefSchema";
+import { OrderPrefSchema } from "~/validation/orderPrefSchema";
 import { getSessionSS } from "~/utils/auth";
 
 export const useFormLoader = routeLoader$<InitialValues<OrderPrefFormType>>(

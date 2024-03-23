@@ -1,4 +1,4 @@
-import type { PrismaItemWithPrice } from "~/types-and-validation";
+import type { PrismaItemWithPrice } from "~/validation";
 import { getActiveRuleIndex } from ".";
 
 export const getActivePrice = (

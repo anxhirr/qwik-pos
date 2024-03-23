@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import { IcBaselineCheckCircle } from "~/components/icons";
 import { SHOP_FORM_ID } from "~/constants/enum";
-import type { ShopFormType } from "~/types-and-validation/shopSchema";
+import type { ShopFormType } from "~/validation/shopSchema";
 import type { IconProps } from "../../../../types";
 
 type Props = {

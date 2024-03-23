@@ -14,11 +14,12 @@ import type {
 } from "@modular-forms/qwik";
 import type { Order } from "@prisma/client";
 import type { ColumnDef, Table } from "@tanstack/table-core";
+import type { CATEGORY_TYPES_ENUM } from "~/constants/enum";
 import type {
   ItemFormType,
   OrderFormType,
   PrismaItemWithPrice,
-} from "~/types-and-validation";
+} from "~/validation";
 
 export type OrderItemType = {
   id: string;
@@ -116,6 +117,6 @@ type Currency = "ALL" | "EUR" | "USD";
 
 type Language = "AL" | "EN";
 
-type CategoryType = "ITEM" | "CUSTOMER";
+type CategoryType = (typeof CATEGORY_TYPES_ENUM)[number];
 
 type PageSizes = 10 | 20 | 50 | 100;

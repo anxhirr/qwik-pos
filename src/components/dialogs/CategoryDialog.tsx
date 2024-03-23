@@ -1,9 +1,9 @@
 import { component$, useTask$ } from "@builder.io/qwik";
 import { CategoryForm } from "../forms/category/CategoryForm";
 import type { ResponseData } from "@modular-forms/qwik";
-import { setValues, useFormStore, valiForm$ } from "@modular-forms/qwik";
-import type { CategoryFormType } from "~/types-and-validation/categorySchema";
-import { CategorySchema } from "~/types-and-validation/categorySchema";
+import { setValues, useFormStore, zodForm$ } from "@modular-forms/qwik";
+import type { CategoryFormType } from "~/validation";
+import { categorySchema } from "~/validation";
 import { CATEGORY_DIALOG_ID, CATEGORY_FORM_ID } from "~/constants/enum";
 import { Dialog, DialogBody, DialogFooter } from ".";
 import type { CRUDactions, DialogProps, FromStoreAction } from "../../../types";
@@ -26,7 +26,7 @@ export const CategoryDialog = component$<CategoryDialogProps>(
       loader: {
         value: formData,
       },
-      validate: valiForm$(CategorySchema),
+      validate: zodForm$(categorySchema),
       fieldArrays: ["types"],
     });
 

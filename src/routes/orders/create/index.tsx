@@ -21,8 +21,8 @@ import { getAllItems } from "~/lib/queries/items";
 import { getOrderPref } from "~/lib/queries/order-pref";
 // import { successToast } from "~/providers/toast";
 import { prisma } from "~/routes/plugin@auth";
-import type { OrderFormType } from "~/types-and-validation/orderSchema";
-import { OrderSchema } from "~/types-and-validation/orderSchema";
+import type { OrderFormType } from "~/validation/orderSchema";
+import { OrderSchema } from "~/validation/orderSchema";
 import { getSessionSS } from "~/utils/auth";
 
 export const useFormAction = formAction$<OrderFormType, ResponseData>(

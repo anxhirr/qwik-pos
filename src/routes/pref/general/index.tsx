@@ -7,8 +7,8 @@ import { GeneralPrefForm } from "~/components/forms/pref/GeneralPrefForm";
 import { fakeMongoDbId } from "~/constants/fake";
 import { getGeneralPref } from "~/lib/queries/general-pref";
 import { prisma } from "~/routes/plugin@auth";
-import type { GeneralPrefFormType } from "~/types-and-validation/generalPrefSchema";
-import { GeneralPrefSchema } from "~/types-and-validation/generalPrefSchema";
+import type { GeneralPrefFormType } from "~/validation/generalPrefSchema";
+import { GeneralPrefSchema } from "~/validation/generalPrefSchema";
 import { getSessionSS } from "~/utils/auth";
 
 export const useFormLoader = routeLoader$<InitialValues<GeneralPrefFormType>>(

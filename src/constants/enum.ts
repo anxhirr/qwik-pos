@@ -1,5 +1,4 @@
 import type {
-  CategoryType,
   Currency,
   DiscountType,
   Language,
@@ -7,10 +6,7 @@ import type {
   PaymentMethod,
   PrintFormat,
 } from "../../types";
-export const CATEGORY_TYPES_ENUM: CategoryType[] = [
-  "ITEM",
-  "CUSTOMER",
-] as const;
+export const CATEGORY_TYPES_ENUM = ["ITEM", "CUSTOMER"] as const;
 
 //DIALOG IDS
 export const CATEGORY_DIALOG_ID = "CATEGORY_DIALOG_ID";

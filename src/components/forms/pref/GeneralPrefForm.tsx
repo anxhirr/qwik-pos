@@ -7,7 +7,7 @@ import {
 } from "@modular-forms/qwik";
 import { Select } from "~/components/shared";
 import { LANGUAGES, PREF_ORDER_FORM_ID } from "~/constants/enum";
-import type { GeneralPrefFormType } from "~/types-and-validation/generalPrefSchema";
+import type { GeneralPrefFormType } from "~/validation/generalPrefSchema";
 import type { FromStoreAction } from "../../../../types";
 
 type Props = {

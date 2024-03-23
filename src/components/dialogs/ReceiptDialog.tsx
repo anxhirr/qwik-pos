@@ -2,7 +2,7 @@ import { component$, useComputed$ } from "@builder.io/qwik";
 import { ORDER_RECEIPT_DIALOG_ID } from "~/constants/enum";
 import { Dialog, DialogBody } from ".";
 import type { DialogProps } from "../../../types";
-import type { OrderFormType } from "~/types-and-validation/orderSchema";
+import type { OrderFormType } from "~/validation/orderSchema";
 import { calcOrderTotal } from "~/utils/order";
 
 interface Props extends DialogProps {

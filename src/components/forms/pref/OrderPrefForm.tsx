@@ -12,7 +12,7 @@ import {
   PREF_ORDER_FORM_ID,
   PRINT_FORMATS,
 } from "~/constants/enum";
-import type { OrderPrefFormType } from "~/types-and-validation/orderPrefSchema";
+import type { OrderPrefFormType } from "~/validation/orderPrefSchema";
 import type { FromStoreAction } from "../../../../types";
 
 type Props = {

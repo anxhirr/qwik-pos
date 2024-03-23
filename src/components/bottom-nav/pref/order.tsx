@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import type { FormStore, ResponseData } from "@modular-forms/qwik";
-import type { OrderPrefFormType } from "~/types-and-validation/orderPrefSchema";
+import type { OrderPrefFormType } from "~/validation/orderPrefSchema";
 import { BottomNav } from "../base";
 import { BOTTOM_NAVBAR_SLOTS, PREF_ORDER_FORM_ID } from "~/constants/enum";
 import { UpdateBtn } from "~/components/buttons/common";

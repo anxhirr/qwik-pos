@@ -1,4 +1,4 @@
-import type { OrderFormType } from "~/types-and-validation/orderSchema";
+import type { OrderFormType } from "~/validation/orderSchema";
 
 export const calcOrderTotal = (order: OrderFormType) => {
   return order.items.reduce((acc, item) => {

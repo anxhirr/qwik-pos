@@ -3,7 +3,7 @@ import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import { BottomNav } from "../base";
 import { BOTTOM_NAVBAR_SLOTS, PREF_ORDER_FORM_ID } from "~/constants/enum";
 import { UpdateBtn } from "~/components/buttons/common";
-import type { GeneralPrefFormType } from "~/types-and-validation/generalPrefSchema";
+import type { GeneralPrefFormType } from "~/validation/generalPrefSchema";
 
 type Props = {
   form?: FormStore<GeneralPrefFormType, ResponseData>;
