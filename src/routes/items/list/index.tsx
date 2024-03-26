@@ -86,7 +86,7 @@ export default component$(() => {
 
       <DeleteEntityConfirmDialog
         entity={"ITEM"}
-        show={showConfirmDialog}
+        show={showConfirmDialog.value}
         hide={$(() => {
           showConfirmDialog.value = false;
         })}

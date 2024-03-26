@@ -177,7 +177,7 @@ export default component$(() => {
         </ul>
 
         <CategoryDialog
-          show={showDialog}
+          show={showDialog.value}
           hide={hideDialog}
           formData={dialogFormData.value}
           action={

@@ -17,7 +17,7 @@ export const ReceiptDialog = component$<Props>(({ show, order, hide }) => {
   return (
     <Dialog
       id={ORDER_RECEIPT_DIALOG_ID}
-      show={show.value}
+      show={show}
       hide={hide}
       title="Receipt"
       closeOnOutsideClick={false}

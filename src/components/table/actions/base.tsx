@@ -73,7 +73,7 @@ export const TableRowActions = component$<Props>(
 
         <DeleteEntityConfirmDialog
           entity={entity}
-          show={showConfirmDialog}
+          show={showConfirmDialog.value}
           hide={$(() => {
             showConfirmDialog.value = false;
           })}

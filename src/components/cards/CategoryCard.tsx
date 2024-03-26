@@ -45,7 +45,7 @@ export const CategoryCard = component$<Props>(
         </div>
         <DeleteEntityConfirmDialog
           entity="CATEGORY"
-          show={showConfirmDialog}
+          show={showConfirmDialog.value}
           onConfirm$={() => {
             onDeleteConfirm$(data.id);
             showConfirmDialog.value = false;

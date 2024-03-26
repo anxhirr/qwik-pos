@@ -172,7 +172,7 @@ export default component$(() => {
       <CreateOrderBottomNav form={form} />
 
       <ReceiptDialog
-        show={showReceiptDialog}
+        show={showReceiptDialog.value}
         order={order.value}
         hide={$(() => {
           showReceiptDialog.value = false;
