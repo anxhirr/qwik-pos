@@ -37,6 +37,7 @@ export interface Props {
   onCreate?: ParentEmitFn;
   isMulti?: boolean;
   isCreatable?: true;
+  optimisticCreate?: boolean;
   fullWidth?: boolean;
   closeOnOutsideClick?: boolean;
 }
@@ -78,6 +79,7 @@ export const CustomSelect = component$<Props>((props) => {
     onCreate,
     isMulti,
     isCreatable,
+    optimisticCreate,
     fullWidth,
     closeOnOutsideClick,
   } = props;
@@ -109,18 +111,53 @@ export const CustomSelect = component$<Props>((props) => {
   );
 
   const resolveCreatedOption = $(
-    async ({ option, index, menuOptIdx }: SelectFnArgs) => {
+    async ({
+      option,
+      index,
+      menuOptIdx,
+      onFinish,
+    }: SelectFnArgs & {
+      onFinish: (option: CustomSelectOption) => void;
+    }) => {
       try {
         addLoadingIdx(index);
-        const id = await onCreate?.({ option, index, menuOptIdx });
+        const createFn = onCreate?.({ option, index, menuOptIdx });
+        const id = optimisticCreate ? option.value : await createFn;
+
         if (!id) return;
+
         const newOption = { ...option, value: id };
-        removeLoadingIdx(index);
-        return newOption;
+
+        if (!optimisticCreate) {
+          removeLoadingIdx(index);
+          onFinish(newOption);
+        }
+
+        if (optimisticCreate) {
+          selectedOptions.value = [...selectedOptions.value, newOption]; // add to our internal state
+          createFn?.then((id) => {
+            if (!id) return;
+            const updatedOption = { ...newOption, value: id }; // attach the new id
+            removeLoadingIdx(index);
+            onFinish(updatedOption);
+          });
+        }
       } catch (error) {
         console.error(error);
         throw error;
       }
+    },
+  );
+
+  const updateParent = $(
+    ({
+      selected,
+      option,
+      index,
+      menuOptIdx,
+    }: SelectFnArgs & { selected: CustomSelectOption[] }) => {
+      onChange(selected);
+      onSelect?.({ option, index, menuOptIdx });
     },
   );
 
@@ -138,18 +175,23 @@ export const CustomSelect = component$<Props>((props) => {
 
       const index = selectedOptions.value.length;
 
-      const finalOption = isCreatable
-        ? await resolveCreatedOption({ option, index, menuOptIdx })
-        : option;
+      resolveCreatedOption({
+        option,
+        index,
+        menuOptIdx,
+        onFinish: (newOption) => {
+          isMulti
+            ? (selectedOptions.value[index] = newOption)
+            : (selectedOptions.value = [newOption]);
 
-      if (!finalOption) return; // creation failed
-
-      selectedOptions.value = isMulti
-        ? [...selectedOptions.value, option]
-        : [option];
-
-      onChange(selectedOptions.value);
-      onSelect?.({ option: finalOption, index, menuOptIdx });
+          updateParent({
+            selected: selectedOptions.value,
+            option: newOption,
+            index,
+            menuOptIdx,
+          });
+        },
+      });
     },
   );
 

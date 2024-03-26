@@ -105,6 +105,7 @@ export const ItemForm = component$<Props>(
               onChange={handleCatsChange}
               initialSelected={categoryIDs}
               onCreate={handleCreateNewCat}
+              // optimisticCreate
             />
             <FieldArray of={form} name="categoryIDs">
               {(fieldArray) => (
