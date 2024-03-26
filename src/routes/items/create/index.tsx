@@ -1,16 +1,16 @@
 import { $, component$ } from "@builder.io/qwik";
-import { routeAction$, routeLoader$, zod$ } from "@builder.io/qwik-city";
+import { routeLoader$ } from "@builder.io/qwik-city";
 import type { InitialValues, ResponseData } from "@modular-forms/qwik";
 import { formAction$, useFormStore, valiForm$ } from "@modular-forms/qwik";
 import { CreateItemBottomNav } from "~/components/bottom-nav/item";
 import { ItemForm } from "~/components/forms/item/ItemForm";
 import { PRICE_END_DATE, PRICE_START_DATE } from "~/constants/defaults";
-import { createCategory, getItemCategories } from "~/lib/queries/categories";
+import { getItemCategories } from "~/lib/queries/categories";
 import { prisma } from "~/routes/plugin@auth";
 import type { CategoryFormType } from "~/validation";
-import { categorySchema } from "~/validation";
 import { type ItemFormType, ItemSchema } from "~/validation/itemSchema";
 import { getSessionSS } from "~/utils/auth";
+import { useCreateCategoryRouteAction } from "~/shared/actions/category";
 
 export const useFormLoader = routeLoader$<InitialValues<ItemFormType>>(() => {
   const loader = {
@@ -82,32 +82,7 @@ export const useCategoriesLoader = routeLoader$(async (event) => {
   return categories;
 });
 
-export const useCreateCategoryRouteAction = routeAction$(async (cat, event) => {
-  const session = getSessionSS(event);
-  console.log("session", session);
-  const { name, color, types } = cat;
-  console.log("cat", cat);
-
-  const res = await createCategory({
-    name,
-    color,
-    types,
-    shopId: session.shopId,
-  });
-
-  if (!res.id) {
-    event.fail(500, {
-      message: "Error creating category",
-      data: res,
-    });
-  }
-
-  return {
-    status: "success",
-    message: "Category created successfully",
-    data: res,
-  };
-}, zod$(categorySchema));
+export { useCreateCategoryRouteAction } from "~/shared/actions/category";
 
 export default component$(() => {
   const action = useFormAction();
