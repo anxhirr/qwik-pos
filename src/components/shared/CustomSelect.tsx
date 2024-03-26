@@ -110,16 +110,22 @@ export const CustomSelect = component$<Props>((props) => {
       (loadingIdxs.value = loadingIdxs.value.filter((i) => i !== idx)),
   );
 
-  const resolveCreatedOption = $(
+  const resolveOption = $(
     async ({
       option,
       index,
       menuOptIdx,
+      isToBeCreated,
       onFinish,
     }: SelectFnArgs & {
       onFinish: (option: CustomSelectOption) => void;
+      isToBeCreated: boolean;
     }) => {
       try {
+        if (!isCreatable && !isToBeCreated) return onFinish(option);
+
+        // TODO: might handle other cases
+
         addLoadingIdx(index);
         const createFn = onCreate?.({ option, index, menuOptIdx });
         const id = optimisticCreate ? option.value : await createFn;
@@ -165,28 +171,30 @@ export const CustomSelect = component$<Props>((props) => {
     async ({
       option,
       menuOptIdx,
+      isToBeCreated = false,
     }: {
       option: CustomSelectOption;
       menuOptIdx: number;
-      isCreate?: boolean;
+      isToBeCreated?: boolean;
     }) => {
       input.value = isMulti ? "" : option.label;
       hideMenu();
 
       const index = selectedOptions.value.length;
 
-      resolveCreatedOption({
+      resolveOption({
         option,
         index,
         menuOptIdx,
-        onFinish: (newOption) => {
+        isToBeCreated,
+        onFinish: (chosenOption) => {
           isMulti
-            ? (selectedOptions.value[index] = newOption)
-            : (selectedOptions.value = [newOption]);
+            ? (selectedOptions.value[index] = chosenOption)
+            : (selectedOptions.value = [chosenOption]);
 
           updateParent({
             selected: selectedOptions.value,
-            option: newOption,
+            option: chosenOption,
             index,
             menuOptIdx,
           });
@@ -280,7 +288,7 @@ export const CustomSelect = component$<Props>((props) => {
               handleSelect({ option, menuOptIdx });
             })}
             onCreate={$((option: CustomSelectOption, menuOptIdx: number) => {
-              handleSelect({ option, menuOptIdx });
+              handleSelect({ option, menuOptIdx, isToBeCreated: true });
             })}
             isCreatable={isCreatable}
             input={input.value}
@@ -304,7 +312,7 @@ export const CustomSelectMenu = component$<{
   const noResultsFound = !options.length;
 
   return (
-    <div ref={ref} class="rounded-lg bg-secondary">
+    <div ref={ref} class="max-h-40 overflow-y-auto rounded-lg bg-secondary">
       <ul>
         {options.map((opt, i) => (
           <Option
