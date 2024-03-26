@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
+import { qwikTypes } from '@builder.io/qwik-labs/vite';
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(() => {
@@ -10,7 +11,7 @@ export default defineConfig(() => {
         ".prisma/client/edge":"./node_modules/.prisma/client/edge.js" // https://fixtergeek.com/blog/how-to-use-prismaclient-with-qwik-on-cloudflare-pages-2023
       },
     },
-    plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
+    plugins: [qwikCity(), qwikVite(), tsconfigPaths(), qwikTypes()],
     preview: {
       headers: {
         "Cache-Control": "public, max-age=600",

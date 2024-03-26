@@ -1,3 +1,4 @@
+import type { Component } from "@builder.io/qwik";
 import {
   CategoryIcon,
   CreateOrderIcon,
@@ -10,10 +11,22 @@ import {
   SettingsIcon,
   ShopIcon,
   SupportAgentIcon,
-  UsersIcon,
+  // UsersIcon,
 } from "~/components/icons";
+import type { IconProps } from "../../types";
+import type { AppRoutes } from "~/routes.gen";
 
-export const ACCORDIONS = [
+type Accordion = {
+  name: string;
+  Icon: Component<IconProps>;
+  items: {
+    title: string;
+    Icon: Component<IconProps>;
+    route: AppRoutes;
+  }[];
+};
+
+export const ACCORDIONS: Accordion[] = [
   {
     name: "Settings",
     Icon: PlusIcon,
@@ -21,18 +34,18 @@ export const ACCORDIONS = [
       {
         title: "Shop",
         Icon: ShopIcon,
-        route: "/settings/shop",
+        route: "/settings/shop/",
       },
-      {
-        title: "Users",
-        Icon: UsersIcon,
-        route: "/settings/users",
-      },
-      {
-        title: "Roles",
-        Icon: PlusIcon,
-        route: "/settings/roles",
-      },
+      // {
+      //   title: "Users",
+      //   Icon: UsersIcon,
+      //   route: "/settings/users/",
+      // },
+      // {
+      //   title: "Roles",
+      //   Icon: PlusIcon,
+      //   route: "/settings/roles/",
+      // },
     ],
   },
   {
@@ -42,12 +55,12 @@ export const ACCORDIONS = [
       {
         title: "Order",
         Icon: OrderIcon,
-        route: "/pref/order",
+        route: "/pref/order/",
       },
       {
         title: "General",
         Icon: SettingsIcon,
-        route: "/pref/general",
+        route: "/pref/general/",
       },
     ],
   },
@@ -58,12 +71,12 @@ export const ACCORDIONS = [
       {
         title: "Categories",
         Icon: CategoryIcon,
-        route: "/categories",
+        route: "/categories/",
       },
       {
         title: "Facilities",
         Icon: FacilityIcon,
-        route: "/facilities",
+        route: "/facilities/",
       },
     ],
   },
