@@ -52,8 +52,8 @@ export const TableFooter = component$<Props>(({ table }) => {
               placeholder="Page Size"
               name="pageSize"
               value={table?.getState().pagination.pageSize}
-              onChange$={(e) => {
-                table?.setPageSize(Number(e.target?.value));
+              onChange$={(e, target) => {
+                table?.setPageSize(Number(target.value));
               }}
             />
           </div>

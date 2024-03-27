@@ -33,8 +33,8 @@ export const NumberInput = component$(
           value={input.value}
           aria-invalid={!!error}
           aria-errormessage={`${name}-error`}
-          onFocus$={(e) => {
-            e.target.select();
+          onFocus$={(_, target) => {
+            target.select();
           }}
         />
         <InputError name={name} error={error} />

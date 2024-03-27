@@ -80,7 +80,7 @@ export const ACCORDIONS: Accordion[] = [
       },
     ],
   },
-] as const;
+];
 
 export const LIST_ITEMS = [
   {

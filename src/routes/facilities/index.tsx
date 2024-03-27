@@ -1,38 +1,38 @@
 import { CategoriesBottomNav } from "~/components/bottom-nav/categories";
 
-import { $, component$, useSignal, useTask$ } from "@builder.io/qwik";
-import {
-  routeAction$,
-  routeLoader$,
-  useLocation,
-  useNavigate,
-} from "@builder.io/qwik-city";
+import { component$ } from "@builder.io/qwik";
+import { routeAction$, routeLoader$, z, zod$ } from "@builder.io/qwik-city";
 import { prisma } from "../plugin@auth";
 import { CategoryCard } from "~/components/cards/CategoryCard";
 import { CategoryDialog } from "~/components/dialogs";
 import { categorySchema, type CategoryFormType } from "~/validation";
 import { formAction$, zodForm$ } from "@modular-forms/qwik";
 import { getSessionSS } from "~/utils/auth";
-import { createCategory, updateCategory } from "~/lib/queries/categories";
-import type { CRUDactions } from "~/types";
-import { checkIsIdValid } from "~/utils/route-action";
+import {
+  createCategory,
+  getAllCategories,
+  updateCategory,
+} from "~/lib/queries/categories";
 import { checkIsSearchParamsIdValid } from "~/utils/form-action";
-import type { Category } from "@prisma/client";
 import { CATEGORY_EMPTY_DATA } from "~/constants/defaults";
+import { useDialog } from "~/components/hooks";
+import type { CategoryType } from "~/types";
+import type { Category } from "@prisma/client";
 
-export const useCategoriesLoader = routeLoader$(async () => {
-  const categories = await prisma.category.findMany();
+export const useCategoriesLoader = routeLoader$(async (event) => {
+  const session = getSessionSS(event);
+  const categories = await getAllCategories(session.shopId);
   return categories;
 });
 
-export const useCreateFormAction = formAction$<CategoryFormType>(
+export const useCreateCategoryFormAction = formAction$<CategoryFormType>(
   async (values, event) => {
     const session = getSessionSS(event);
 
     const newCategory = await createCategory({
       name: values.name,
       color: values.color,
-      type: values.type,
+      types: values.types,
       shopId: session.shopId,
     });
 
@@ -63,7 +63,7 @@ export const useUpdateFormAction = formAction$<CategoryFormType>(
     const updated = await updateCategory(id, {
       name: values.name,
       color: values.color,
-      type: values.type,
+      types: values.types,
     });
 
     if (!updated.id) {
@@ -79,73 +79,26 @@ export const useUpdateFormAction = formAction$<CategoryFormType>(
   },
   zodForm$(categorySchema),
 );
-export const useDeleteCategory = routeAction$(async (cat, { fail }) => {
-  const { id } = cat;
-  if (!checkIsIdValid(id)) {
-    fail(500, {
-      message: "id is missing",
-    });
-    return;
-  }
-
-  await prisma.category.delete({ where: { id } });
-
-  return {
-    status: 200,
-    message: "Category deleted successfully",
-  };
-});
+export const useDeleteCategory = routeAction$(
+  async (id) => {
+    await prisma.category.delete({ where: { id } });
+    return {
+      status: 200,
+      message: "Category deleted successfully",
+    };
+  },
+  zod$(z.string().min(1)),
+);
 
 export default component$(() => {
   const data = useCategoriesLoader();
-  const loc = useLocation();
-  const nav = useNavigate();
-  const { pathname } = loc.url;
   const deleteRouteAction = useDeleteCategory();
-  const createFormAction = useCreateFormAction();
+  const createFormAction = useCreateCategoryFormAction();
   const updateFormAction = useUpdateFormAction();
 
-  const showDialog = useSignal(false);
-  const dialodMode = useSignal<CRUDactions>("CREATE");
-  const dialogFormData = useSignal<CategoryFormType>(CATEGORY_EMPTY_DATA);
-
-  const showCreateDialog = $(() => {
-    showDialog.value = true;
-    dialodMode.value = "CREATE";
-    dialogFormData.value = CATEGORY_EMPTY_DATA;
-    nav(`${pathname}?create`);
-  });
-  const showUpdateDialog = $((cat: Category) => {
-    const { id, name, color, type } = cat;
-    showDialog.value = true;
-    dialodMode.value = "UPDATE";
-    dialogFormData.value = {
-      name,
-      color,
-      type,
-    };
-    const searchParams = new URLSearchParams({
-      update: id,
-    });
-    nav(`${pathname}?${searchParams.toString()}`);
-  });
-  const hideDialog = $(() => {
-    showDialog.value = false;
-    const searchParams = new URLSearchParams();
-    nav(`${pathname}?${searchParams.toString()}`);
-  });
-
-  useTask$(() => {
-    const { searchParams } = loc.url;
-    const update = searchParams.get("update");
-    const create = searchParams.get("create");
-
-    if (create) showCreateDialog();
-
-    if (update) {
-      const cat = data.value.find((c) => c.id === update);
-      cat && showUpdateDialog(cat);
-    }
+  const { dialog, actions } = useDialog<CategoryFormType, Category[]>({
+    formData: CATEGORY_EMPTY_DATA,
+    data: data.value,
   });
 
   return (
@@ -160,7 +113,7 @@ export default component$(() => {
                   data={cat}
                   onDeleteConfirm$={async (id) => {
                     try {
-                      const res = await deleteRouteAction.submit({ id });
+                      const res = await deleteRouteAction.submit(id);
                       console.log("res", res);
                       if (res.status === 200) {
                         console.log("success");
@@ -169,7 +122,13 @@ export default component$(() => {
                       console.log("error", error);
                     }
                   }}
-                  onUpdate$={() => showUpdateDialog(cat)}
+                  onUpdate$={() => {
+                    actions.showUpdateDialog(cat.id, {
+                      name: cat.name,
+                      color: cat.color,
+                      types: cat.types as CategoryType[],
+                    });
+                  }}
                 />
               </li>
             );
@@ -177,16 +136,16 @@ export default component$(() => {
         </ul>
 
         <CategoryDialog
-          show={showDialog.value}
-          hide={hideDialog}
-          formData={dialogFormData.value}
+          show={dialog.show}
+          hide={actions.hideDialog}
+          formData={dialog.formData}
           action={
-            dialodMode.value === "CREATE" ? createFormAction : updateFormAction
+            dialog.mode === "CREATE" ? createFormAction : updateFormAction
           }
-          mode={dialodMode.value}
+          mode={dialog.mode}
         />
       </div>
-      <CategoriesBottomNav onCreateNew={showCreateDialog} />
+      <CategoriesBottomNav onCreateNew={actions.showCreateDialog} />
     </>
   );
 });

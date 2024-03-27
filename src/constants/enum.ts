@@ -24,21 +24,25 @@ export const ITEM_FORM_ID = "ITEM_FORM_ID" as const;
 export const ORDER_FORM_ID = "ORDER_FORM_ID" as const;
 export const PREF_ORDER_FORM_ID = "PREF_ORDER_FORM_ID" as const;
 
-export const CURRENCIES: Currency[] = ["ALL", "EUR", "USD"] as const;
-export const LANGUAGES: Language[] = ["AL", "EN"] as const;
+export const CURRENCIES: readonly Currency[] = ["ALL", "EUR", "USD"];
+export const LANGUAGES: readonly Language[] = ["AL", "EN"];
 
-export const PAGE_SIZES: PageSizes[] = [10, 20, 50, 100] as const;
+export const PAGE_SIZES: readonly PageSizes[] = [10, 20, 50, 100];
 
-export const PAYMENT_METHODS: PaymentMethod[] = ["CASH", "CARD", "BANK"];
+export const PAYMENT_METHODS: readonly PaymentMethod[] = [
+  "CASH",
+  "CARD",
+  "BANK",
+];
 
-export const PRINT_FORMATS: PrintFormat[] = [
+export const PRINT_FORMATS: readonly PrintFormat[] = [
   "80mm",
   "58mm",
   "A4",
   "A5",
-] as const;
+];
 
-export const DISCOUNT_TYPES: DiscountType[] = ["PERCENTAGE", "AMOUNT"] as const;
+export const DISCOUNT_TYPES: readonly DiscountType[] = ["PERCENTAGE", "AMOUNT"];
 
 export const BOTTOM_NAVBAR_SLOT = "BOTTOM_NAVBAR_SLOT" as const;
 export const BOTTOM_NAVBAR_SLOTS = {
