@@ -4,6 +4,11 @@
 
 export type AppRoutes =
   | "/"
+  | "/account/"
+  | "/account/facilities/"
+  | "/account/integrations/"
+  | "/account/security/"
+  | "/account/shops/"
   | "/categories/"
   | "/facilities/"
   | "/items/"
@@ -20,6 +25,11 @@ export type AppRoutes =
 
 export interface AppRouteMap {
   "/": {};
+  "/account/": {};
+  "/account/facilities/": {};
+  "/account/integrations/": {};
+  "/account/security/": {};
+  "/account/shops/": {};
   "/categories/": {};
   "/facilities/": {};
   "/items/": {};
@@ -37,6 +47,11 @@ export interface AppRouteMap {
 
 export interface AppRouteParamsFunction {
   (route: "/", params?: {}): string;
+  (route: "/account/", params?: {}): string;
+  (route: "/account/facilities/", params?: {}): string;
+  (route: "/account/integrations/", params?: {}): string;
+  (route: "/account/security/", params?: {}): string;
+  (route: "/account/shops/", params?: {}): string;
   (route: "/categories/", params?: {}): string;
   (route: "/facilities/", params?: {}): string;
   (route: "/items/", params?: {}): string;
@@ -54,6 +69,11 @@ export interface AppRouteParamsFunction {
 
 export type AppLinkProps =
   | { route: "/" }
+  | { route: "/account/" }
+  | { route: "/account/facilities/" }
+  | { route: "/account/integrations/" }
+  | { route: "/account/security/" }
+  | { route: "/account/shops/" }
   | { route: "/categories/" }
   | { route: "/facilities/" }
   | { route: "/items/" }

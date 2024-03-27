@@ -5,9 +5,12 @@ import {
   ArrowBackIcon,
   MenuIcon,
   NotificationsIcon,
+  SettingsIcon,
 } from "../icons";
 import { Button } from "../buttons";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
+import { useAuthSession } from "~/routes/plugin@auth";
+import { AppLink } from "~/routes.config";
 
 type Props = {
   title: string;
@@ -15,6 +18,7 @@ type Props = {
 };
 export const NavBar = component$<Props>(({ title, onSearch }) => {
   const uiStore = useContext(UiContext);
+  const auth = useAuthSession();
   const nav = useNavigate();
   const loc = useLocation();
 
@@ -63,7 +67,7 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
             variant="ghost"
             Icon={NotificationsIcon}
           />
-          <div class="dropdown dropdown-end">
+          <div class="dropdown-end dropdown">
             <label tabIndex={0}>
               <Button isCircle variant="ghost" Icon={AccountCircleIcon} />
             </label>
@@ -71,15 +75,16 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
               tabIndex={0}
               class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
             >
+              <li>{auth.value?.user?.email}</li>
               <li>
-                <p class="justify-between">
-                  Profile
-                  <span class="badge">New</span>
-                </p>
+                <AppLink route="/account/">
+                  <div class="flex justify-between">
+                    <span>Account Settings</span>
+                    <SettingsIcon />
+                  </div>
+                </AppLink>
               </li>
-              <li>
-                <p>Settings</p>
-              </li>
+
               <li>
                 <p>Logout</p>
               </li>
