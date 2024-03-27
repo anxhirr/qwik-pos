@@ -2,7 +2,7 @@ import type { PropFunction, QwikChangeEvent } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
 import clsx from "clsx";
 import { InputError } from "./InputError";
-import type { CustomSelectOption } from "../../../types";
+import type { CustomSelectOption } from "~/types";
 
 type Props = {
   name: string;

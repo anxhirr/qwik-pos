@@ -4,12 +4,7 @@ import {
   PlusIcon,
   UpdateIcon,
 } from "~/components/icons";
-import type {
-  CRUDactions,
-  Entity,
-  IconProps,
-  PaymentMethod,
-} from "../../types";
+import type { CRUDactions, Entity, IconProps, PaymentMethod } from "~/types";
 import type { Component } from "@builder.io/qwik";
 
 export const CRUD_ACTIONS_LOADING = new Map([

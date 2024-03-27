@@ -1,5 +1,5 @@
 import type { CategoryFormType, OrderFormType } from "~/validation";
-import type { PageSizes } from "../../types";
+import type { PageSizes } from "~/types";
 
 export const PRICE_START_DATE = new Date("1111-01-01T00:00");
 export const PRICE_END_DATE = new Date("2222-01-01T00:00");

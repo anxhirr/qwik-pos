@@ -1,7 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import { DELETE_ITEM_CONFIRM_DIALOG_ID } from "~/constants/enum";
 import { ConfirmDialogBase } from "..";
-import type { ConfirmDialogProps, Entity } from "../../../../types";
+import type { ConfirmDialogProps, Entity } from "~/types";
 import { ENTITY_PLURAL_MAP } from "~/constants/maps";
 
 interface Props extends ConfirmDialogProps {

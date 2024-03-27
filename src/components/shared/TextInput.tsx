@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { component$ } from "@builder.io/qwik";
-import type { ModularInputProps } from "../../../types";
+import type { ModularInputProps } from "~/types";
 import type { Maybe } from "@modular-forms/qwik";
 import { InputError } from "./InputError";
 import { InputLabel } from "./InputLabel";

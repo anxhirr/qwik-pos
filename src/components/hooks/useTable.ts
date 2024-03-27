@@ -13,7 +13,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
 } from "@tanstack/table-core";
-import type { TableHookColumns, TableHookData } from "../../../types";
+import type { TableHookColumns, TableHookData } from "~/types";
 import { DEFAULT_PAGE_SIZE } from "~/constants/defaults";
 
 type TableState = {

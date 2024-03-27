@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import type { IconProps } from "../../../types";
+import type { IconProps } from "~/types";
 
 export function IcBaselineCheckCircle({ props, key }: IconProps) {
   // TODO: remove or make component$

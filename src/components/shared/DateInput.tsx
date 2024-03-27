@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { component$, useSignal, useTask$ } from "@builder.io/qwik";
-import type { ModularInputProps } from "../../../types";
+import type { ModularInputProps } from "~/types";
 import { InputLabel } from "./InputLabel";
 import { InputError } from "./InputError";
 import { createDateTimeLocalString } from "~/utils/date";

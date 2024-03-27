@@ -4,7 +4,7 @@ import type {
   QwikMouseEvent,
 } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
-import type { IconProps, Position, Size } from "../../../types";
+import type { IconProps, Position, Size } from "~/types";
 import clsx from "clsx";
 import { Indicator } from "../indicator/base";
 import { Tooltip } from "../tooltip/base";

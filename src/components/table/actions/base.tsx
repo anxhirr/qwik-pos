@@ -1,16 +1,17 @@
+import type { PropFunction } from "@builder.io/qwik";
 import { $, component$, useSignal } from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
 import { Button } from "~/components/buttons";
 import { DeleteIcon, EditIcon } from "~/components/icons";
-import type { Entity } from "../../../../types";
+import type { Entity } from "~/types";
 import { DeleteEntityConfirmDialog } from "~/components/dialogs/shared/DeleteEntityConfirmDialog";
 import { getEntityRoute } from "~/utils/entity";
 
 type Props = {
   entity: Entity;
   entityId: string;
-  onDelete$: (entityId: string) => void;
-  onDeleteConfirm$: (entityId: string) => void;
+  onDelete$: PropFunction<(entityId: string) => void>;
+  onDeleteConfirm$: PropFunction<(entityId: string) => void>;
   showConfirmDialogOnDelete?: boolean;
   hideEditButton?: boolean;
   hideDeleteButton?: boolean;

@@ -9,7 +9,7 @@ import {
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import Sidebar from "~/components/Sidebar";
-import type { Variant } from "../../types";
+import { Variant } from "~/types";
 
 type Toast = {
   id: string;

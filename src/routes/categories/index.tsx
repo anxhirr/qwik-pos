@@ -16,7 +16,7 @@ import {
 import { checkIsSearchParamsIdValid } from "~/utils/form-action";
 import { CATEGORY_EMPTY_DATA } from "~/constants/defaults";
 import { useDialog } from "~/components/hooks";
-import type { CategoryType } from "../../../types";
+import type { CategoryType } from "~/types";
 import type { Category } from "@prisma/client";
 
 export const useCategoriesLoader = routeLoader$(async (event) => {

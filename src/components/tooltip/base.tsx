@@ -1,5 +1,5 @@
 import { Slot, component$ } from "@builder.io/qwik";
-import type { Position } from "../../../types";
+import type { Position } from "~/types";
 
 type Props = {
   text: string | undefined;

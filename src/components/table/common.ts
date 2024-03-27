@@ -1,6 +1,6 @@
 import type { Order } from "@prisma/client";
 import { useTable } from "../hooks/useTable";
-import type { TableHookData } from "../../../types";
+import type { TableHookData } from "~/types";
 import type { PrismaItemWithPrice } from "~/validation/itemSchema";
 import { columnsItems, columnsOrder } from "./columns";
 

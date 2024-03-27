@@ -13,7 +13,7 @@ import {
   SupportAgentIcon,
   // UsersIcon,
 } from "~/components/icons";
-import type { IconProps } from "../../types";
+import type { IconProps } from "~/types";
 import type { AppRoutes } from "~/routes.gen";
 
 type Accordion = {

@@ -6,7 +6,7 @@ import {
   useSignal,
   useTask$,
 } from "@builder.io/qwik";
-import type { CustomSelectOption, SelectFnArgs } from "../../../types";
+import type { CustomSelectOption, SelectFnArgs } from "~/types";
 import { BackspaceFillIcon } from "../icons";
 import { Button } from "../buttons";
 import clsx from "clsx";

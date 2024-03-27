@@ -2,7 +2,7 @@ import type { NoSerialize } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
 import { tableFlexRender } from "~/utils/table";
 import { TableRowActions } from "./actions/base";
-import type { AvailableTables, Entity } from "../../../types";
+import type { AvailableTables, Entity } from "~/types";
 import { TableHeaderCheckBox, TableRowCheckBox } from "./selection";
 import { TableFooter } from "./footer/base";
 import { ArrowDropDownIcon, ArrowDropUpIcon } from "../icons";

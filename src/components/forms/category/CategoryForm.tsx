@@ -15,7 +15,7 @@ import type {
   CategoryType,
   CustomSelectOption,
   FromStoreAction,
-} from "../../../../types";
+} from "~/types";
 
 type Props = {
   form: FormStore<CategoryFormType, ResponseData>;

@@ -4,7 +4,7 @@ import type { CellContext } from "@tanstack/table-core";
 import { createColumnHelper } from "@tanstack/table-core";
 import { Tooltip } from "~/components/tooltip/base";
 import { PAYMENT_METHOD_ICON_MAP } from "~/constants/maps";
-import type { PaymentMethod } from "../../../../types";
+import type { PaymentMethod } from "~/types";
 
 const columnHelper = createColumnHelper<Order>();
 export const columnsOrder = [

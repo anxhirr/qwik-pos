@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 import { Dialog, DialogBody, DialogFooter } from "./base";
-import type { ConfirmDialogProps } from "../../../types";
+import type { ConfirmDialogProps } from "~/types";
 import { Button } from "../buttons";
 import { CheckIcon, CloseIcon } from "../icons";
 

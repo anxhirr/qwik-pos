@@ -1,5 +1,5 @@
 import { $, useStore, useTask$ } from "@builder.io/qwik";
-import type { CRUDactions } from "../../../types";
+import type { CRUDactions } from "~/types";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 
 export function useDialog<

@@ -26,7 +26,7 @@ import type {
   CustomSelectOption,
   CategoryType,
   SelectFnArgs,
-} from "../../../../types";
+} from "~/types";
 import { BackspaceFillIcon, PlusIcon } from "~/components/icons";
 import { useCreateCategoryRouteAction } from "~/shared/actions";
 import { useItemCategoriesLoader } from "~/shared/loaders";

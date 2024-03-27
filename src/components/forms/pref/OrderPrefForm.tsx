@@ -13,7 +13,7 @@ import {
   PRINT_FORMATS,
 } from "~/constants/enum";
 import type { OrderPrefFormType } from "~/validation/orderPrefSchema";
-import type { FromStoreAction } from "../../../../types";
+import type { FromStoreAction } from "~/types";
 
 type Props = {
   form: FormStore<OrderPrefFormType, ResponseData>;

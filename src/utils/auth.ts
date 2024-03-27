@@ -3,7 +3,7 @@ import type {
   RequestEventAction,
   RequestEventLoader,
 } from "@builder.io/qwik-city";
-import type { AuthSession } from "../../types";
+import type { AuthSession } from "~/types";
 
 export const getSessionSS = (
   event: RequestEvent | RequestEventLoader | RequestEventAction,

@@ -6,7 +6,7 @@ import type { CategoryFormType } from "~/validation";
 import { categorySchema } from "~/validation";
 import { CATEGORY_DIALOG_ID, CATEGORY_FORM_ID } from "~/constants/enum";
 import { Dialog, DialogBody, DialogFooter } from ".";
-import type { CRUDactions, DialogProps, FromStoreAction } from "../../../types";
+import type { CRUDactions, DialogProps, FromStoreAction } from "~/types";
 import { Button } from "../buttons/base";
 import {
   CRUD_ACTIONS_ICON,

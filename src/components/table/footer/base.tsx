@@ -1,6 +1,6 @@
 import type { NoSerialize } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
-import type { AvailableTables } from "../../../../types";
+import type { AvailableTables } from "~/types";
 import {
   KeyboardArrowLeftIcon,
   KeyboardArrowRightIcon,
@@ -47,13 +47,13 @@ export const TableFooter = component$<Props>(({ table }) => {
             <Select
               options={PAGE_SIZES.map((size) => ({
                 label: `${size} per page`,
-                value: size,
+                value: size.toString(),
               }))}
               placeholder="Page Size"
               name="pageSize"
               value={table?.getState().pagination.pageSize}
               onChange$={(e) => {
-                table?.setPageSize(Number(e.target.value));
+                table?.setPageSize(Number(e.target?.value));
               }}
             />
           </div>

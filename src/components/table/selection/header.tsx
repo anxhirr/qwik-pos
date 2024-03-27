@@ -1,6 +1,6 @@
 import type { NoSerialize } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
-import type { AvailableTables, Entity } from "../../../../types";
+import type { AvailableTables, Entity } from "~/types";
 import { IndeterminateCheckbox } from "./base";
 
 type Props = {

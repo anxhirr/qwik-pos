@@ -9,7 +9,7 @@ import type { FormStore, ResponseData } from "@modular-forms/qwik";
 import { IcBaselineCheckCircle } from "~/components/icons";
 import { SHOP_FORM_ID } from "~/constants/enum";
 import type { ShopFormType } from "~/validation/shopSchema";
-import type { IconProps } from "../../../../types";
+import type { IconProps } from "~/types";
 
 type Props = {
   form?: FormStore<ShopFormType, ResponseData>;

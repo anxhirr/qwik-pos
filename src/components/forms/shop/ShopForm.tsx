@@ -8,7 +8,7 @@ import {
 import { Select, TextInput } from "~/components/shared";
 import { CURRENCIES, SHOP_FORM_ID } from "~/constants/enum";
 import type { ShopFormType } from "~/validation/shopSchema";
-import type { FromStoreAction } from "../../../../types";
+import type { FromStoreAction } from "~/types"
 
 type Props = {
   form: FormStore<ShopFormType, ResponseData>;

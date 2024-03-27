@@ -5,7 +5,7 @@ import type {
   PageSizes,
   PaymentMethod,
   PrintFormat,
-} from "../../types";
+} from "~/types";
 export const CATEGORY_TYPES_ENUM = ["ITEM", "CUSTOMER"] as const;
 
 //DIALOG IDS

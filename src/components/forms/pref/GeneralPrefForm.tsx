@@ -8,7 +8,7 @@ import {
 import { Select } from "~/components/shared";
 import { LANGUAGES, PREF_ORDER_FORM_ID } from "~/constants/enum";
 import type { GeneralPrefFormType } from "~/validation/generalPrefSchema";
-import type { FromStoreAction } from "../../../../types";
+import type { FromStoreAction } from "~/types";
 
 type Props = {
   form: FormStore<GeneralPrefFormType, ResponseData>;

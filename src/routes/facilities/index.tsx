@@ -14,7 +14,7 @@ import { categorySchema, type CategoryFormType } from "~/validation";
 import { formAction$, zodForm$ } from "@modular-forms/qwik";
 import { getSessionSS } from "~/utils/auth";
 import { createCategory, updateCategory } from "~/lib/queries/categories";
-import type { CRUDactions } from "../../../types";
+import type { CRUDactions } from "~/types";
 import { checkIsIdValid } from "~/utils/route-action";
 import { checkIsSearchParamsIdValid } from "~/utils/form-action";
 import type { Category } from "@prisma/client";

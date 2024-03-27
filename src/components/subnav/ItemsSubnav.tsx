@@ -1,6 +1,6 @@
 import { SubNav } from "./base";
 import { component$ } from "@builder.io/qwik";
-import type { Section } from "../../../types";
+import type { Section } from "~/types";
 
 export interface Props {}
 
