@@ -9,7 +9,6 @@ import {
 } from "@modular-forms/qwik";
 import { UpdateItemBottomNav } from "~/components/bottom-nav";
 import { ItemForm } from "~/components/forms/item/ItemForm";
-import { getItemCategories } from "~/lib/queries/categories";
 import { prisma } from "~/routes/plugin@auth";
 import { type ItemFormType, ItemSchema } from "~/validation/itemSchema";
 import { getSessionSS } from "~/utils/auth";
@@ -107,15 +106,11 @@ export const useFormAction = formAction$<ItemFormType, ResponseData>(
   valiForm$(ItemSchema),
 );
 
-export const useCategoriesLoader = routeLoader$(async (event) => {
-  const session = getSessionSS(event);
-  const categories = await getItemCategories(session.shopId);
-  return categories;
-});
+export { useCreateCategoryRouteAction } from "~/shared/actions";
+export { useItemCategoriesLoader } from "~/shared/loaders";
 
 export default component$(() => {
   const action = useFormAction();
-  const categories = useCategoriesLoader();
   const form = useFormStore<ItemFormType, ResponseData>({
     loader: useFormLoader(),
     validate: valiForm$(ItemSchema),
@@ -125,7 +120,7 @@ export default component$(() => {
   return (
     <>
       <div class="main-content">
-        <ItemForm form={form} action={action} categories={categories.value} />
+        <ItemForm form={form} action={action} />
       </div>
       <UpdateItemBottomNav form={form} />
     </>

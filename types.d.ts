@@ -54,7 +54,7 @@ export type SelectFnArgs = {
 };
 
 export interface ModularInputProps {
-  ref: PropFunction<(element: Element) => void>;
+  ref: (element: Element) => void;
   name: string;
   onInput$: PropFunction<(event: Event, element: HTMLInputElement) => void>;
   onChange$: PropFunction<
