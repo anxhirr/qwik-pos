@@ -6,19 +6,15 @@ interface Props {}
 
 const SECTIONS: Section[] = [
   {
-    name: "Overview",
-    route: "/items/",
-  },
-  {
     name: "Create",
-    route: "/items/create/",
+    route: "/orders/create/",
   },
   {
     name: "List",
-    route: "/items/list/",
+    route: "/orders/list/",
   },
 ];
 
-export const ItemsSubnav = component$<Props>(() => {
+export const OrdersSubnav = component$<Props>(() => {
   return <SubNav sections={SECTIONS} />;
 });

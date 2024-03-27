@@ -20,6 +20,7 @@ import type {
   OrderFormType,
   PrismaItemWithPrice,
 } from "~/validation";
+import { AppRoutes } from "./routes.gen";
 
 export type OrderItemType = {
   id: string;

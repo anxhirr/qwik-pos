@@ -1,6 +1,6 @@
 import { Slot, component$ } from "@builder.io/qwik";
 import { ItemsNavbar } from "~/components/navbar/ItemsNavbar";
-import { ItemsSubnav } from "~/components/subnav/ItemsSubnav";
+import { ItemsSubnav } from "~/components/subnav";
 
 export interface LayoutProps {}
 

@@ -89,19 +89,9 @@ export const LIST_ITEMS = [
     route: "/",
   },
   {
-    title: "Create Item",
-    Icon: PlusIcon,
-    route: "/items/create",
-  },
-  {
     title: "Items",
     Icon: ItemsIcon,
     route: "/items",
-  },
-  {
-    title: "Items List",
-    Icon: ItemsIcon,
-    route: "/items/list",
   },
   // {
   //   title: "Customers",
