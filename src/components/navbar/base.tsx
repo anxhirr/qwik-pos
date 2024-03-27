@@ -67,21 +67,19 @@ export const NavBar = component$<Props>(({ title, onSearch }) => {
             variant="ghost"
             Icon={NotificationsIcon}
           />
-          <div class="dropdown-end dropdown">
+          <div class="dropdown dropdown-end">
             <label tabIndex={0}>
               <Button isCircle variant="ghost" Icon={AccountCircleIcon} />
             </label>
             <ul
               tabIndex={0}
-              class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
+              class="menu dropdown-content menu-sm z-[1] mt-3 w-52 gap-2 rounded-box bg-base-100 p-2 shadow"
             >
-              <li>{auth.value?.user?.email}</li>
+              <li class="ms-3"> {auth.value?.user?.email}</li>
               <li>
-                <AppLink route="/account/">
-                  <div class="flex justify-between">
-                    <span>Account Settings</span>
-                    <SettingsIcon />
-                  </div>
+                <AppLink route="/account/" class="flex justify-between">
+                  <span>Account Settings</span>
+                  <SettingsIcon />
                 </AppLink>
               </li>
 

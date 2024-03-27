@@ -126,3 +126,8 @@ type Language = "AL" | "EN";
 type CategoryType = (typeof CATEGORY_TYPES_ENUM)[number];
 
 type PageSizes = 10 | 20 | 50 | 100;
+
+type Section = {
+  name: string;
+  route: AppRoutes;
+};
